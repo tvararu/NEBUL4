@@ -22,7 +22,7 @@ Asta e tot. `vagrant` o sa creeze o masina virtuala cu tot restul dependintelor 
 1. Clonezi proiectul: `$ git clone git@github.com:tvararu/proiect-mds.git`
 2. Navighezi in folderul lui: `$ cd proiect-mds`
 3. Pornesti masina virtuala: `$ vagrant up`
-4. Intri in masina vrituala: `$ vagrant ssh`
+4. Intri in masina virtuala: `$ vagrant ssh`
 5. Pornesti din interiorul masinii virtuale serverul: `$ meteor`
 
 Ar trebui apoi sa poti sa deschizi `localhost:3000` in browserul tau ca sa vezi proiectul. Poti sa il editezi in ce program iti place; ai nevoie de masina virtuala doar ca sa rulezi serverul si suita de teste. Vezi rubrica de [Styleguide](https://github.com/tvararu/proiect-mds/wiki/Styleguide) din [wiki](https://github.com/tvararu/proiect-mds/wiki) pentru mai multe aspecte legate de cod.
