@@ -3,10 +3,10 @@ Proiect MDS
 
 Acesta este proiectul la MDS al echipei formate din studenții:
 
-* [Theodor Văraru](https://github.com/tvararu)
-* [Radu Constantin Cancel](https://github.com/raducc)
 * [Bogdan Boamfă](https://github.com/xbogdan)
+* [Radu Constantin Cancel](https://github.com/raducc)
 * [Alina-Diana Olaru](https://github.com/ciuff)
+* [Theodor Văraru](https://github.com/tvararu)
 
 Lorem ipsum.
 [Sintaxa Markdown](http://daringfireball.net/projects/markdown/syntax)
