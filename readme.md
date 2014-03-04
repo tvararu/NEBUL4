@@ -25,7 +25,9 @@ Asta e tot. `vagrant` o sa creeze o masina virtuala cu tot restul dependintelor 
 4. Intri in masina virtuala: `$ vagrant ssh`
 5. Pornesti din interiorul masinii virtuale serverul: `$ meteor`
 
-Ar trebui apoi sa poti sa deschizi `localhost:3000` in browserul tau ca sa vezi proiectul. Poti sa il editezi in ce program iti place; ai nevoie de masina virtuala doar ca sa rulezi serverul si suita de teste. Vezi rubrica de [Styleguide](https://github.com/tvararu/proiect-mds/wiki/Styleguide) din [wiki](https://github.com/tvararu/proiect-mds/wiki) pentru mai multe aspecte legate de cod.
+Ar trebui apoi sa poti sa deschizi `localhost:3000` in browserul tau ca sa vezi proiectul.
+
+Poti sa editezi codul in orice program; ai nevoie de masina virtuala doar ca sa rulezi serverul si suita de teste. Vezi rubrica de [Styleguide](https://github.com/tvararu/proiect-mds/wiki/Styleguide) din [wiki](https://github.com/tvararu/proiect-mds/wiki) pentru mai multe aspecte legate de cod.
 
 Nu uita sa rulezi `$ vagrant suspend` atunci cand nu mai lucrezi pe proiect si ai inchis conexiunea ssh. Daca nu vrei sa babysituiesti masina virtuala in timp ce dezvolti, poti sa te uiti in fisierul `Vagrantfile` si sa incerci sa iti configurezi sistemul tau de operare dupa felul in care e provizionată masina din vagrant. Daca ai o distributie GNU/Linux, ar trebui sa fie straightforward; dar daca ai Windows de exemplu nici macar nu e posibil (Meteor nu ruleaza nativ pe Windows).
 
