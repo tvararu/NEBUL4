@@ -53,7 +53,7 @@ $ npm install
 Apoi, poti rula suita de teste cu comanda `npm test`:
 
 ```bash
-MBA13 ➜  tests git:(master) ✗ npm test
+MBA13 ➜  tests git:(master) npm test
 
 > tests@0.0.0 test /Users/tvararu/Github/proiect-mds/private/tests
 > node_modules/mocha-casperjs/bin/mocha-casperjs test.js
