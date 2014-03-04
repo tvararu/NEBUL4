@@ -43,7 +43,32 @@ Atat! Ar trebui sa iti poti sa deschizi aplicatia pe `http://localhost:3000`. Me
 Cum rulezi suita de teste
 ---
 
-Placeholder.
+Mai intai trebuie sa instalezi dependintele pentru teste:
+
+```bash
+$ cd private/tests
+$ npm install
+```
+
+Apoi, poti rula suita de teste cu comanda `npm test`:
+
+```bash
+MBA13 ➜  tests git:(master) ✗ npm test
+
+> tests@0.0.0 test /Users/tvararu/Github/proiect-mds/private/tests
+> node_modules/mocha-casperjs/bin/mocha-casperjs test.js
+
+
+
+  Project
+    ✓ should have correct title (223ms)
+    ✓ should output hello world (42ms)
+
+
+  2 passing (304ms)
+
+MBA13 ➜  tests git:(master)
+```
 
 De facut
 ---
