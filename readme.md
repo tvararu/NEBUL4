@@ -7,4 +7,5 @@ Acesta este proiectul la MDS al echipei formate din studenții:
 * [Radu Constantin Cancel](https://github.com/raducc)
 * [Bogdan Boamfă](https://github.com/xbogdan)
 * [Alina-Diana Olaru](https://github.com/ciuff)
+
 Lorem ipsum.
