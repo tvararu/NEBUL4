@@ -35,7 +35,7 @@ Ca sa dezvolti:
 Cam asa:
 
 ```bash
-$ git clone git@github.com:tvararu/proiect-mds.git
+$ git clone https://github.com/tvararu/proiect-mds.git
 $ cd proiect-mds
 $ meteor
 ```
