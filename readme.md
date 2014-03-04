@@ -8,28 +8,30 @@ Acesta este proiectul la MDS al echipei formate din studenții:
 * [Alina-Diana Olaru](https://github.com/ciuff)
 * [Theodor Văraru](https://github.com/tvararu)
 
-How to contribute
+Cum poti contribui
 ---
 
-Proiectul foloseste [Vagrant](http://www.vagrantup.com) pentru gestionarea development environmentului. Ca sa poti sa dezvolti, ai nevoie de urmatoarele softuri instalate:
+Ai nevoie de GNU/Linux sau OSX. Ca dependinte de sistem, ai nevoie de Meteor si Meteorite:
 
-* [git](http://git-scm.com/book/en/Getting-Started-Installing-Git)
-* [Vagrant](http://www.vagrantup.com/downloads.html)
-* [Virtualbox](https://www.virtualbox.org), sau orice alt provider de masini virtuale care e [compatibil cu Vagrant](http://docs.vagrantup.com/v2/providers/index.html)
+```bash
+$ curl https://install.meteor.com/ | sh # Meteor
+$ npm install -g meteorite # Meteorite, care are nevoie de node: http://nodejs.org
+```
 
-Asta e tot. `vagrant` o sa creeze o masina virtuala cu tot restul dependintelor de orice natura:
+Ca sa dezvolti: clonezi proiectul, navighezi in folderul lui si pornesti serverul:
 
-1. Clonezi proiectul: `$ git clone git@github.com:tvararu/proiect-mds.git`
-2. Navighezi in folderul lui: `$ cd proiect-mds`
-3. Pornesti masina virtuala: `$ vagrant up`
-4. Intri in masina virtuala: `$ vagrant ssh`
-5. Pornesti din interiorul masinii virtuale serverul: `$ meteor`
+```bash
+$ git clone git@github.com:tvararu/proiect-mds.git
+$ cd proiect-mds
+$ meteor
+```
 
-Ar trebui apoi sa poti sa deschizi `localhost:3000` in browserul tau ca sa vezi proiectul.
+Atat! Ar trebui sa iti poti sa deschizi aplicatia pe `http://localhost:3000`. Meteor ar trebui sa iti refreshuiasca automat browserul atunci cand detecteaza schimbari de fisiere. Uneori s-ar putea sa trebuiasca sa repornesti serverul.
 
-Poti sa editezi codul in orice program; ai nevoie de masina virtuala doar ca sa rulezi serverul si suita de teste. Vezi rubrica de [Styleguide](https://github.com/tvararu/proiect-mds/wiki/Styleguide) din [wiki](https://github.com/tvararu/proiect-mds/wiki) pentru mai multe aspecte legate de cod.
+Cum rulezi suita de teste
+---
 
-Nu uita sa rulezi `$ vagrant suspend` atunci cand nu mai lucrezi pe proiect si ai inchis conexiunea ssh. Daca nu vrei sa babysituiesti masina virtuala in timp ce dezvolti, poti sa te uiti in fisierul `Vagrantfile` si sa incerci sa iti configurezi sistemul tau de operare dupa felul in care e provizionată masina din vagrant. Daca ai o distributie GNU/Linux, ar trebui sa fie straightforward; dar daca ai Windows de exemplu nici macar nu e posibil (Meteor nu ruleaza nativ pe Windows).
+Placeholder.
 
 De facut
 ---
