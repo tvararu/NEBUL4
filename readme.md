@@ -50,7 +50,7 @@ $ cd private/tests
 $ npm install
 ```
 
-Apoi, poti rula suita de teste cu comanda `npm test`:
+Asigura-te ca serverul e pornit si merge la `http://localhost:3000`. Apoi, poti rula suita de teste cu comanda `npm test`:
 
 ```bash
 MBA13 ➜  tests git:(master) npm test
