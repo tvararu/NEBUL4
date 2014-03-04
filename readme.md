@@ -3,15 +3,21 @@ Proiect MDS
 
 Acesta este proiectul la MDS al echipei formate din studenții:
 
-* [Theodor Văraru](https://github.com/tvararu)
-* [Radu Constantin Cancel](https://github.com/raducc)
 * [Bogdan Boamfă](https://github.com/xbogdan)
+* [Radu Constantin Cancel](https://github.com/raducc)
 * [Alina-Diana Olaru](https://github.com/ciuff)
+* [Theodor Văraru](https://github.com/tvararu)
 
-Lorem ipsum.
+Stack
+---
+
+Vom folosi frameworkul de dezvoltare [Meteor](https://www.meteor.com).
+
+De facut
+---
 [Sintaxa Markdown](http://daringfireball.net/projects/markdown/syntax)
 
-Tot aici sau in [wiki](https://github.com/tvararu/proiect-mds/wiki), trebuie sa mai facem:
+Tot aici sau in [wiki](https://github.com/tvararu/proiect-mds/wiki), trebuie sa mai facem (pe masura ce ne dam seama exact ce sunt):
 
 * un document continand specificarea cerintelor, avand structura urmatoare:
    * descrierea in limbaj natural a intregului sistem
