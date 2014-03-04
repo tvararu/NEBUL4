@@ -19,7 +19,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     cmds.push 'curl https://install.meteor.com/ | sh'
 
     # ACHTUNG: You probably don't need to run any of the commands below if you're not
-    # running Vagrant.
+    # using Vagrant and you're configuring your own machine.
     
     # Symlink the mongo database inside vagrant, otherwise Meteor complains:
     # http://grahamrhay.wordpress.com/2013/06/18/running-meteor-in-a-vagrant-virtualbox/
