@@ -9,4 +9,4 @@ Acesta este proiectul la MDS al echipei formate din studenții:
 * [Alina-Diana Olaru](https://github.com/ciuff)
 
 Lorem ipsum.
-[Sintaxa MD](http://daringfireball.net/projects/markdown/syntax)
+[Sintaxa Markdown](http://daringfireball.net/projects/markdown/syntax)
