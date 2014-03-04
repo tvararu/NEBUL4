@@ -1,0 +1,23 @@
+{
+    "description": "MDS project tests",
+    "devDependencies": {
+        "casper-chai": "^0.2.1",
+        "casperjs": "^1.1.0-beta3",
+        "chai": "^1.9.0",
+        "coffee-script": "^1.7.1",
+        "mocha": "^1.17.1",
+        "mocha-casperjs": "^0.3.5"
+    },
+    "license": "MIT",
+    "main": "test.js",
+    "name": "tests",
+    "readme": "",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tvararu/proiect-mds"
+    },
+    "scripts": {
+        "test": "node_modules/mocha-casperjs/bin/mocha-casperjs test.js"
+    },
+    "version": "0.0.0"
+}
