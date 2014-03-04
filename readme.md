@@ -8,7 +8,13 @@ Acesta este proiectul la MDS al echipei formate din studenții:
 * [Alina-Diana Olaru](https://github.com/ciuff)
 * [Theodor Văraru](https://github.com/tvararu)
 
-Lorem ipsum.
+Stack
+---
+
+Vom folosi frameworkul de dezvoltare [Meteor](https://www.meteor.com).
+
+De facut
+---
 [Sintaxa Markdown](http://daringfireball.net/projects/markdown/syntax)
 
 Tot aici sau in [wiki](https://github.com/tvararu/proiect-mds/wiki), trebuie sa mai facem:
