@@ -8,6 +8,8 @@ Acesta este proiectul la MDS al echipei formate din studenții:
 * [Alina-Diana Olaru](https://github.com/ciuff)
 * [Theodor Văraru](https://github.com/tvararu)
 
+Aplicatia este disponibila la adresa [http://mds.tvararu.ro](http://mds.tvararu.ro).
+
 Cum poti contribui
 ---
 
