@@ -70,6 +70,8 @@ MBA13 ➜  tests git:(master) npm test
 MBA13 ➜  tests git:(master)
 ```
 
+Mai multe detalii despre suita de teste pe [wiki](https://github.com/tvararu/proiect-mds/wiki/Suita-de-teste).
+
 De facut
 ---
 [Sintaxa Markdown](http://daringfireball.net/projects/markdown/syntax)
