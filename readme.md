@@ -11,14 +11,26 @@ Acesta este proiectul la MDS al echipei formate din studenții:
 Cum poti contribui
 ---
 
-Ai nevoie de GNU/Linux sau OSX. Ca dependinte de sistem, ai nevoie de Meteor si Meteorite:
+Ai nevoie de GNU/Linux sau OSX. Ca dependinte de sistem, ai nevoie de [Meteor](https://www.meteor.com) si de [Meteorite](https://github.com/oortcloud/meteorite#installing-meteorite):
 
 ```bash
 $ curl https://install.meteor.com/ | sh # Meteor
 $ npm install -g meteorite # Meteorite, care are nevoie de node: http://nodejs.org
 ```
 
-Ca sa dezvolti: clonezi proiectul, navighezi in folderul lui si pornesti serverul:
+Daca Meteorite plange ceva legat de drepturi, trebuie [sa il instalezi cu sudo -H](https://github.com/oortcloud/meteorite#installing-meteorite):
+
+```bash
+$ sudo -H npm install -g meteorite
+```
+
+Ca sa dezvolti:
+
+1. Clonezi proiectul
+2. Navighezi in folderul lui
+3. Pornesti serverul
+
+Cam asa:
 
 ```bash
 $ git clone git@github.com:tvararu/proiect-mds.git
@@ -26,7 +38,7 @@ $ cd proiect-mds
 $ meteor
 ```
 
-Atat! Ar trebui sa iti poti sa deschizi aplicatia pe `http://localhost:3000`. Meteor ar trebui sa iti refreshuiasca automat browserul atunci cand detecteaza schimbari de fisiere. Uneori s-ar putea sa trebuiasca sa repornesti serverul.
+Atat! Ar trebui sa iti poti sa deschizi aplicatia pe `http://localhost:3000`. Meteor o sa refreshuiasca automat browserul atunci cand detecteaza schimbari de fisiere.
 
 Cum rulezi suita de teste
 ---
