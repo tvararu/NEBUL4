@@ -17,7 +17,7 @@ De facut
 ---
 [Sintaxa Markdown](http://daringfireball.net/projects/markdown/syntax)
 
-Tot aici sau in [wiki](https://github.com/tvararu/proiect-mds/wiki), trebuie sa mai facem:
+Tot aici sau in [wiki](https://github.com/tvararu/proiect-mds/wiki), trebuie sa mai facem (pe masura ce ne dam seama exact ce sunt):
 
 * un document continand specificarea cerintelor, avand structura urmatoare:
    * descrierea in limbaj natural a intregului sistem
