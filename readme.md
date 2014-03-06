@@ -48,28 +48,35 @@ Cum rulezi suita de teste
 Mai intai trebuie sa instalezi dependintele pentru teste:
 
 ```bash
-$ cd private/tests
-$ npm install
+$ npm install -g laika phantomjs
 ```
 
-Asigura-te ca serverul e pornit si merge la `http://localhost:3000`. Apoi, poti rula suita de teste cu comanda `npm test`:
+De asemenea, trebuie sa instalezi `mongodb`, si sa il rulezi intr-un shell separat cu niste parametrii:
 
 ```bash
-MBA13 ➜  tests git:(master) npm test
+mongod --smallfiles --noprealloc --nojournal
+```
 
-> tests@0.0.0 test /Users/tvararu/Github/proiect-mds/private/tests
-> node_modules/mocha-casperjs/bin/mocha-casperjs test.js
+Dupa ce ai facut toate astea, poti sa rulezi suita de teste aflata in `tests/` cu comanda `laika`:
+
+```bash
+MBA13 ➜  proiect-mds git:(master) laika
+
+  injecting laika...
+  loading phantomjs...
+  loading initial app pool...
 
 
+  Landing page
+    ✓ should have the correct title
+    ✓ should display "Hello world!"
 
-  Project
-    ✓ should have correct title (223ms)
-    ✓ should output hello world (42ms)
 
+  2 passing (500ms)
 
-  2 passing (304ms)
+  cleaning up injected code
 
-MBA13 ➜  tests git:(master)
+MBA13 ➜  proiect-mds git:(master)
 ```
 
 Mai multe detalii despre suita de teste pe [wiki](https://github.com/tvararu/proiect-mds/wiki/Suita-de-teste).
