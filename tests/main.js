@@ -6,6 +6,10 @@ describe('Landing page', function() {
     var title = client.evalSync(function() {
       var titleText = $('title').text();
       
+      // Laika test functions don't end with a return call. Instead, they use
+      // emit('return', anything);
+      
+      // You can pass anything, object or whatever you want.
       emit('return', titleText);
     });
     
