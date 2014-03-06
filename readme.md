@@ -57,7 +57,7 @@ De asemenea, trebuie sa instalezi `mongodb`, si sa il rulezi intr-un shell separ
 mongod --smallfiles --noprealloc --nojournal
 ```
 
-Dupa ce ai facut toate astea, poti sa rulezi suita de teste aflata in `tests/` cu comanda `laika`:
+Dupa ce ai facut toate astea, rulezi comanda `laika`:
 
 ```bash
 MBA13 ➜  proiect-mds git:(master) laika
