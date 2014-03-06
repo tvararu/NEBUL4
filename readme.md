@@ -1,6 +1,8 @@
 Proiect MDS
 ===
 
+[![Build Status](https://travis-ci.org/tvararu/proiect-mds.png?branch=master)](https://travis-ci.org/tvararu/proiect-mds)
+
 Acesta este proiectul la MDS al echipei formate din studenții:
 
 * [Bogdan Boamfă](https://github.com/xbogdan)
