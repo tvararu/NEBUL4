@@ -44,6 +44,8 @@ $ meteor
 
 Atat! Ar trebui sa iti poti sa deschizi aplicatia pe `http://localhost:3000`. Meteor o sa refreshuiasca automat browserul atunci cand detecteaza schimbari de fisiere.
 
+Consultati [Styleguide-ul](https://github.com/tvararu/proiect-mds/wiki/Styleguide), si apucati-va de codat.
+
 Cum rulezi suita de teste
 ---
 
