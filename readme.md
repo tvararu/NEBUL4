@@ -1,6 +1,8 @@
 Proiect MDS
 ===
 
+[![Build Status](https://travis-ci.org/tvararu/proiect-mds.png?branch=master)](https://travis-ci.org/tvararu/proiect-mds)
+
 Acesta este proiectul la MDS al echipei formate din studenții:
 
 * [Bogdan Boamfă](https://github.com/xbogdan)
@@ -51,7 +53,7 @@ Mai intai trebuie sa instalezi dependintele pentru teste:
 $ npm install -g laika phantomjs
 ```
 
-De asemenea, trebuie sa instalezi `mongodb`, si sa il rulezi intr-un shell separat cu niste parametrii:
+De asemenea, trebuie sa instalezi `mongodb`, si sa il rulezi intr-un shell separat cu niste parametrii (si probabil `sudo`):
 
 ```bash
 mongod --smallfiles --noprealloc --nojournal
