@@ -55,10 +55,10 @@ Mai intai trebuie sa instalezi dependintele pentru teste:
 $ npm install -g laika phantomjs
 ```
 
-De asemenea, trebuie sa instalezi `mongodb`, si sa il rulezi intr-un shell separat cu niste parametrii (si probabil `sudo`):
+De asemenea, trebuie sa instalezi `mongodb`, si sa il rulezi intr-un shell separat cu niste parametrii):
 
 ```bash
-mongod --smallfiles --noprealloc --nojournal
+sudo mongod --smallfiles --noprealloc --nojournal
 ```
 
 Dupa ce ai facut toate astea, rulezi comanda `laika`:
