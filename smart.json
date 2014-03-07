@@ -1,5 +1,6 @@
 {
   "packages": {
-    "three.js": {}
+    "three.js": {},
+    "bootstrap-3": {}
   }
 }
