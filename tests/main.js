@@ -1,5 +1,3 @@
-var assert = require('assert');
-
 describe('Landing page', function() {
   it('should have the correct title', function(done, server, client) {
     // Get the title with some Laika mumbo jumbo and a dash of jQuery:
@@ -14,7 +12,7 @@ describe('Landing page', function() {
     });
     
     // Check if it's correct.
-    assert.equal(title, 'mds');
+    title.should.equal('mds');
     
     // All tests end with the 'done' callback.
     done();
@@ -25,7 +23,7 @@ describe('Landing page', function() {
       emit('return', $('p').text());
     });
     
-    assert.equal(paragraph, "Hello world!");
+    paragraph.should.equal('Hello world!');
     done();
   });
 });
