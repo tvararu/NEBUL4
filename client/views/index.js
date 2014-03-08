@@ -8,7 +8,7 @@ UI.body.rendered = function() {
   $('#game').append(renderer.domElement);
 
   // Set up a scene and camera.
-  var scene = new THREE.Scene();
+  window.scene = new THREE.Scene();
   var camera = new THREE.PerspectiveCamera(
     45, window.innerWidth / window.innerHeight, 0.01, 1000
   );
