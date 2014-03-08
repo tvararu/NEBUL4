@@ -1,9 +1,16 @@
 language: node_js
 node_js:
-  - "0.10"
+- '0.10'
 before_install:
-  - "curl -L http://git.io/3l-rRA | /bin/sh"
+- curl -L http://git.io/3l-rRA | /bin/sh
 services:
-  - mongodb
-env: 
-  - LAIKA_OPTIONS="-t 5000"
+- mongodb
+env:
+- LAIKA_OPTIONS="-t 5000"
+deploy:
+  provider: heroku
+  app:
+    master: mds-dev
+    production: mds-prod
+  api_key:
+    secure: YeWF+wSfk+KMzmyiD3eZtqOqNNyN0SYeCGDRgs23kmE+t17sprGEmmgx+WAdAy3SxxYWCtrr/Rx6amZj9NlHxQV8K6HxETaT2SQz+oXS6Rfc800tCiQWvGtFFFcZ+sjSxs975bEkkox2QreZX97/1XTncoApNHcgVlfqsiPoW8Y=
