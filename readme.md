@@ -10,7 +10,10 @@ Acesta este proiectul la MDS al echipei formate din studenții:
 * [Alina-Diana Olaru](https://github.com/ciuff)
 * [Theodor Văraru](https://github.com/tvararu)
 
-Aplicatia este disponibila la adresa [http://mds.tvararu.ro](http://mds.tvararu.ro).
+Aplicatia este disponibila la adresele:
+
+* [http://mds.tvararu.ro](http://mds.tvararu.ro), sincronizata cu branchul `production`
+* [http://mds-dev.tvararu.ro/](http://mds-dev.herokuapp.com/), sincronizata cu branchul `master`
 
 Cum poti contribui
 ---
