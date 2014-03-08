@@ -9,6 +9,7 @@ env:
 - LAIKA_OPTIONS="-t 5000"
 deploy:
   provider: heroku
+  strategy: git
   app:
     master: mds-dev
     production: mds-prod
