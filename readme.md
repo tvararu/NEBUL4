@@ -13,7 +13,7 @@ Acesta este proiectul la MDS al echipei formate din studenții:
 Aplicatia este disponibila la adresele:
 
 * [http://mds.tvararu.ro](http://mds.tvararu.ro), sincronizata cu branchul `production`
-* [http://mds-dev.herokuapp.com/](http://mds-dev.herokuapp.com/), sincronizata cu branchul `master`
+* [http://mds-dev.tvararu.ro/](http://mds-dev.herokuapp.com/), sincronizata cu branchul `master`
 
 Cum poti contribui
 ---
