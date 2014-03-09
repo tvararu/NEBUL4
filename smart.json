@@ -1,6 +1,7 @@
 {
   "packages": {
     "three.js": {},
-    "bootstrap-3": {}
+    "bootstrap-3": {},
+    "fast-render": {}
   }
 }
