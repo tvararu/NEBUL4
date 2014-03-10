@@ -65,7 +65,21 @@ Mai intai trebuie sa instalezi dependintele pentru teste:
 $ npm install -g laika phantomjs
 ```
 
-De asemenea, trebuie sa instalezi `mongodb`, si sa il rulezi intr-un shell separat cu niste parametrii):
+De asemenea, trebuie sa instalezi `mongodb`:
+
+```bash
+# OSX:
+$ brew install mongodb
+
+# Ubuntu:
+$ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+$ echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
+$ sudo apt-get update
+$ sudo apt-get install mongodb-10gen
+$ sudo mongod --config /etc/mongodb.conf
+```
+
+Dupa care sa il rulezi intr-un shell separat cu niste parametri:
 
 ```bash
 sudo mongod --smallfiles --noprealloc --nojournal
