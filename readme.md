@@ -3,8 +3,8 @@
 </p>
 
 <p align="center">
-  <a href="https://travis-ci.org/tvararu/proiect-mds" target="_blank">
-    <img src="https://travis-ci.org/tvararu/proiect-mds.png?branch=master" title="Build Status" />
+  <a href="https://travis-ci.org/tvararu/NEBUL4" target="_blank">
+    <img src="https://travis-ci.org/tvararu/NEBUL4.png?branch=master" title="Build Status" />
   </a>
 </p>
 
@@ -17,8 +17,8 @@
 
 Aplicatia este disponibila la adresele:
 
-* [http://nebula.tvararu.ro](http://nebula.tvararu.ro), sincronizata cu branchul `production`
-* [http://nebula-dev.tvararu.ro/](http://nebula-dev.herokuapp.com/), sincronizata cu branchul `master`
+* [http://nebula.vararu.org/](http://nebula.vararu.org/), sincronizata cu branchul `production`
+* [http://nebula-dev.vararu.org/](http://nebula-dev.vararu.org/), sincronizata cu branchul `master`
 
 Cum poti contribui
 ---
