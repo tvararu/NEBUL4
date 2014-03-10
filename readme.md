@@ -47,7 +47,7 @@ Cam asa:
 
 ```bash
 $ git clone https://github.com/tvararu/NEBUL4.git
-$ cd proiect-mds
+$ cd NEBUL4
 $ mrt install
 $ meteor
 ```
@@ -74,7 +74,7 @@ sudo mongod --smallfiles --noprealloc --nojournal
 Dupa ce ai facut toate astea, rulezi comanda `laika`:
 
 ```bash
-MBA13 ➜  proiect-mds git:(master) laika
+MBA13 ➜  NEBUL4 git:(master) laika
 
   injecting laika...
   loading phantomjs...
@@ -90,7 +90,7 @@ MBA13 ➜  proiect-mds git:(master) laika
 
   cleaning up injected code
 
-MBA13 ➜  proiect-mds git:(master)
+MBA13 ➜  NEBUL4 git:(master)
 ```
 
 Mai multe detalii despre suita de teste pe [wiki](https://github.com/tvararu/proiect-mds/wiki/Suita-de-teste).
