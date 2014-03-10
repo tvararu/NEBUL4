@@ -1,3 +1,7 @@
+.meteor
+.DS_Store
+Packages
+
 lib-cov
 *.seed
 *.log
