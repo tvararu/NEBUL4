@@ -56,23 +56,6 @@ body
     .letter-four
       margin-left: 0.05em
       margin-right: 0.05em
-
-  firstAnimDuration = 1s
-  firstAnimDelay = 1s
-
-  secondAnimDuration = 1s
-  secondAnimDelay = (firstAnimDelay + firstAnimDuration)
-  
-  cubicEasing = cubic-bezier(.10, .70, .20, 1)
-  
-  h1:nth-child(1), h1:nth-child(3), h1:nth-child(4)
-    // h1s 1, 3 and 4 get shown and then hidden again while moving.
-    -webkit-animation: show firstAnimDuration firstAnimDelay ease forwards, fold secondAnimDuration secondAnimDelay cubicEasing forwards, hide secondAnimDuration secondAnimDelay cubicEasing forwards
-    animation: show firstAnimDuration firstAnimDelay ease forwards, fold secondAnimDuration secondAnimDelay cubicEasing forwards, hide secondAnimDuration secondAnimDelay cubicEasing forwards
-  h1:nth-child(2)
-    // The second h1 doesn't get hidden.
-    -webkit-animation: show firstAnimDuration firstAnimDelay ease forwards, fold secondAnimDuration secondAnimDelay cubicEasing forwards
-    animation: show firstAnimDuration firstAnimDelay ease forwards, fold secondAnimDuration secondAnimDelay cubicEasing forwards
   
   .subtitle a
     width: 100%
@@ -81,7 +64,7 @@ body
     width: 100%
     display: block
     text-align: center
-    
+
     // Align it correctly.
     position: absolute
     top: 8em
@@ -90,10 +73,29 @@ body
     // Reset default link styling.
     &:focus, &:hover
       color: #ccc
-    
-    subtitleAnimDelay = (secondAnimDelay + secondAnimDuration)
-    -webkit-animation: show firstAnimDuration subtitleAnimDelay ease forwards
-    animation: show firstAnimDuration subtitleAnimDelay ease forwards
+  
+  &.animate
+    firstAnimDuration = 1s
+    firstAnimDelay = 1s
+
+    secondAnimDuration = 1s
+    secondAnimDelay = (firstAnimDelay + firstAnimDuration)
+  
+    cubicEasing = cubic-bezier(.10, .70, .20, 1)
+  
+    h1:nth-child(1), h1:nth-child(3), h1:nth-child(4)
+      // h1s 1, 3 and 4 get shown and then hidden again while moving.
+      -webkit-animation: show firstAnimDuration firstAnimDelay ease forwards, fold secondAnimDuration secondAnimDelay cubicEasing forwards, hide secondAnimDuration secondAnimDelay cubicEasing forwards
+      animation: show firstAnimDuration firstAnimDelay ease forwards, fold secondAnimDuration secondAnimDelay cubicEasing forwards, hide secondAnimDuration secondAnimDelay cubicEasing forwards
+    h1:nth-child(2)
+      // The second h1 doesn't get hidden.
+      -webkit-animation: show firstAnimDuration firstAnimDelay ease forwards, fold secondAnimDuration secondAnimDelay cubicEasing forwards
+      animation: show firstAnimDuration firstAnimDelay ease forwards, fold secondAnimDuration secondAnimDelay cubicEasing forwards
+  
+    .subtitle a
+      subtitleAnimDelay = (secondAnimDelay + secondAnimDuration)
+      -webkit-animation: show firstAnimDuration subtitleAnimDelay ease forwards
+      animation: show firstAnimDuration subtitleAnimDelay ease forwards
 
 // Animation declarations.
 @keyframes show

@@ -1,3 +1,7 @@
+UI.body.rendered = function() {
+  $('.title-block').addClass('animate');
+};
+
 // UI.body.rendered = function() {
 //   // Mostly taken from Jerome Etienne's generator-threejs-boilerplate:
 //   // https://www.npmjs.org/package/generator-threejs-boilerplate
