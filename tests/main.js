@@ -20,8 +20,6 @@ describe('Landing page', function() {
     
     h1s.should.be.exactly(4);
     
-    // title.should.equal('NEBUL4');
-    
     done();
   });
 });
