@@ -40,13 +40,15 @@ Ca sa dezvolti:
 
 1. Clonezi proiectul
 2. Navighezi in folderul lui
-3. Pornesti serverul
+3. Instalezi pachetele externe cu Meteorite
+4. Pornesti serverul
 
 Cam asa:
 
 ```bash
 $ git clone https://github.com/tvararu/NEBUL4.git
 $ cd proiect-mds
+$ mrt install
 $ meteor
 ```
 
