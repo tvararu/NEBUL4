@@ -1,7 +1,12 @@
-NEBUL4
-===
+<p align="center">
+  <img src='http://tvararu.github.com/NEBUL4/img/nebula-title.png' />
+</p>
 
-[![Build Status](https://travis-ci.org/tvararu/proiect-mds.png?branch=master)](https://travis-ci.org/tvararu/proiect-mds)
+<p align="center">
+  <a href="https://travis-ci.org/tvararu/proiect-mds" target="_blank">
+    <img src="https://travis-ci.org/tvararu/proiect-mds.png?branch=master" title="Build Status" />
+  </a>
+</p>
 
 **Nebula 4** (stilizat ca **NEBUL4**) ~~este~~ va fi un joc multiplayer cu nave spatiale, si mai este si proiectul la MDS al echipei formate din studenții:
 
@@ -12,8 +17,8 @@ NEBUL4
 
 Aplicatia este disponibila la adresele:
 
-* [http://mds.tvararu.ro](http://mds.tvararu.ro), sincronizata cu branchul `production`
-* [http://mds-dev.tvararu.ro/](http://mds-dev.herokuapp.com/), sincronizata cu branchul `master`
+* [http://nebula.tvararu.ro](http://mds.tvararu.ro), sincronizata cu branchul `production`
+* [http://nebula-dev.tvararu.ro/](http://mds-dev.herokuapp.com/), sincronizata cu branchul `master`
 
 Cum poti contribui
 ---
@@ -40,7 +45,7 @@ Ca sa dezvolti:
 Cam asa:
 
 ```bash
-$ git clone https://github.com/tvararu/proiect-mds.git
+$ git clone https://github.com/tvararu/NEBUL4.git
 $ cd proiect-mds
 $ meteor
 ```
