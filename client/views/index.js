@@ -1,5 +1,5 @@
 UI.body.rendered = function() {
-  $(window).load(function() {
+  $('body').waitForImages(function() {
     $('.title-block').addClass('animate');
   });
 };
