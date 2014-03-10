@@ -3,7 +3,7 @@ NEBUL4
 
 [![Build Status](https://travis-ci.org/tvararu/proiect-mds.png?branch=master)](https://travis-ci.org/tvararu/proiect-mds)
 
-**Nebula 4* (stilizat ca NEBUL4) ~~este~~ va fi un joc multiplayer cu nave spatiale, si mai este si proiectul la MDS al echipei formate din studenții:
+**Nebula 4** (stilizat ca NEBUL4) ~~este~~ va fi un joc multiplayer cu nave spatiale, si mai este si proiectul la MDS al echipei formate din studenții:
 
 * [Bogdan Boamfă](https://github.com/xbogdan)
 * [Radu Constantin Cancel](https://github.com/raducc)
