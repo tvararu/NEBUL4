@@ -17,8 +17,8 @@
 
 Aplicatia este disponibila la adresele:
 
-* [http://nebula.tvararu.ro](http://mds.tvararu.ro), sincronizata cu branchul `production`
-* [http://nebula-dev.tvararu.ro/](http://mds-dev.herokuapp.com/), sincronizata cu branchul `master`
+* [http://nebula.tvararu.ro](http://nebula.tvararu.ro), sincronizata cu branchul `production`
+* [http://nebula-dev.tvararu.ro/](http://nebula-dev.herokuapp.com/), sincronizata cu branchul `master`
 
 Cum poti contribui
 ---
