@@ -32,7 +32,7 @@ UI.body.rendered = function() {
   var camera = App.three.camera = new THREE.PerspectiveCamera(
     45, window.innerWidth / window.innerHeight, 0.01, 1000
   );
-  // Align the camera to view our spaceship from perspective.
+  // Align the camera to view our spaceship from roughly isometric perspective.
   camera.position.x = 2;
   camera.position.y = 2;
   camera.position.z = 2;
@@ -87,39 +87,39 @@ UI.body.rendered = function() {
   //   camera.lookAt(scene.position);
   // });
   
-  Posts.find().observe({
+  Ships.find().observe({
     added: function(ship) {
-      window.ship = ship;
       THREEx.SpaceShips.loadSpaceFighter03(function(object3d) {
-        window.spaceship = object3d;
-        spaceship.position.x = ship.position.x;
-        spaceship.position.y = ship.position.y;
-        spaceship.position.z = ship.position.z;
-        scene.add(spaceship);
+        App.three.spaceship = object3d;
+        
+        App.three.spaceship._id = ship._id;
+        App.three.spaceship.position = ship.position;
+        scene.add(App.three.spaceship);
       });
     },
     changed: function(ship) {
-      ship = ship;
-      spaceship.position.x = ship.position.x;
-      spaceship.position.y = ship.position.y;
-      spaceship.position.z = ship.position.z;
+      App.three.spaceship.position = ship.position;
     }
   });
   
   $(document).keydown(function(e) {
-    console.log(e.keyCode);
-    if (e.keyCode === 37) { // left
-      window.ship.position.x += 0.1;
+    var spaceship = _.pick(App.three.spaceship, '_id', 'position');
+    
+    switch(e.keyCode) {
+    case 37: // left
+      spaceship.position.x += 0.1;
+      break;
+    case 39: // right
+      spaceship.position.x -= 0.1;
+      break;
+    case 38: // up
+      spaceship.position.z += 0.1;
+      break;
+    case 40: // down
+      spaceship.position.z -= 0.1;
+      break;
     }
-    if (e.keyCode === 39) { // right
-      window.ship.position.x -= 0.1;
-    }
-    if (e.keyCode === 38) { // up
-      window.ship.position.z += 0.1;
-    }
-    if (e.keyCode === 40) { // down
-      window.ship.position.z -= 0.1;
-    }
-    Posts.update(ship._id, window.ship);
+    
+    Ships.update(spaceship._id, spaceship);
   });
 };
