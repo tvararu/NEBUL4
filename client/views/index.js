@@ -1,6 +1,8 @@
 UI.body.rendered = function() {
+  var start = new Date().getTime();
+  
   // The global application namespace.
-  var App = window.App || {};
+  window.App = window.App || {};
   App.three = App.three || {};
   
   // Initialize rendering engine.
@@ -8,49 +10,49 @@ UI.body.rendered = function() {
   // most phones and older browsers.
   // CanvasRenderer() - much wider support, but much slower.
   // SVGRenderer()    - generally terrible in my own experience.
-  var renderer = App.three.renderer = null;
+  App.three.renderer = null;
   if (!!window.WebGLRenderingContext) {
     // TODO: this ends up being a false positive on my Galaxy Nexus.
     // Need a better conditional.
-    renderer = new THREE.WebGLRenderer();
+    App.three.renderer = new THREE.WebGLRenderer();
   } else {
-    renderer = new THREE.CanvasRenderer();
+    App.three.renderer = new THREE.CanvasRenderer();
   }
   
   // Set the renderer size to the entire available width and height.
-  renderer.setSize(
+  App.three.renderer.setSize(
     window.innerWidth,
     window.innerHeight
   );
-  $('#game').append(renderer.domElement);
+  $('#game').append(App.three.renderer.domElement);
   
   // Create a new scene.
-  var scene = App.three.scene = new THREE.Scene();
+  App.three.scene = new THREE.Scene();
   
   // Create a new PerspectiveCamera:
   // http://threejs.org/docs/#Reference/Cameras/PerspectiveCamera
-  var camera = App.three.camera = new THREE.PerspectiveCamera(
+  App.three.camera = new THREE.PerspectiveCamera(
     45, window.innerWidth / window.innerHeight, 0.01, 1000
   );
   // Align the camera to view our spaceship from roughly isometric perspective.
-  camera.position.x = 2;
-  camera.position.y = 2;
-  camera.position.z = 2;
+  App.three.camera.position.x = 2;
+  App.three.camera.position.y = 2;
+  App.three.camera.position.z = 2;
   
-  camera.rotation.x = -1.0;
-  camera.rotation.y = 0.7;
-  camera.rotation.z = 0.5;
+  App.three.camera.rotation.x = -1.0;
+  App.three.camera.rotation.y = 0.7;
+  App.three.camera.rotation.z = 0.5;
   
   // Automagically resize the renderer and update the camera on window resize:
   // http://learningthreejs.com/blog/2011/08/30/window-resize-for-your-demos/
-  THREEx.WindowResize(renderer, camera);
+  THREEx.WindowResize(App.three.renderer, App.three.camera);
   
   // A vector of functions to execute each time the render loop is executed.
-  var onRenderFcts = App.three.onRenderFcts = [];
+  App.three.onRenderFcts = [];
   
   // The main render function.
-  onRenderFcts.push(function() {
-    renderer.render(scene, camera);
+  App.three.onRenderFcts.push(function() {
+    App.three.renderer.render(App.three.scene, App.three.camera);
   });
   
   // The render loop.
@@ -65,7 +67,7 @@ UI.body.rendered = function() {
     lastTimeMsec = nowMsec;
     
     // Call each update function.
-    onRenderFcts.forEach(function(onRenderFct) {
+    App.three.onRenderFcts.forEach(function(onRenderFct) {
       onRenderFct(deltaMsec / 1000, nowMsec / 1000);
     });
   });
@@ -94,7 +96,9 @@ UI.body.rendered = function() {
         
         App.three.spaceship._id = ship._id;
         App.three.spaceship.position = ship.position;
-        scene.add(App.three.spaceship);
+        App.three.scene.add(App.three.spaceship);
+        
+        // $('#game').append('<div id="ready"></div>');
       });
     },
     changed: function(ship) {
@@ -122,4 +126,11 @@ UI.body.rendered = function() {
     
     Ships.update(spaceship._id, spaceship);
   });
+
+  var end = new Date().getTime();
+  var time = end - start;
+  App.three.execTime = time;
+  console.log(App.three.execTime);
+  
+  $('#game').append('<div id="ready"></div>');
 };

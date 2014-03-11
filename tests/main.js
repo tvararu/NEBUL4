@@ -11,15 +11,22 @@ describe('Landing page', function() {
     done();
   });
   
-  // it('should display four <h1> tags', function(done, server, client) {
-  //   var h1s = client.evalSync(function() {
-  //     var h1s = $('h1').length;
-  //     
-  //     emit('return', h1s);
-  //   });
-  //   
-  //   h1s.should.be.exactly(4);
-  //   
-  //   done();
-  // });
+  it('should CHANGEME', function(done, server, c1, c2) {
+    var game1 = c1.evalSync(function() {
+      waitForDOM($('#game #ready'), function() {
+        // var spaceship = window.App.three.spaceship;
+        
+        emit('return', window.App.three.execTime);
+      });
+    });
+    
+    var game2 = c2.evalSync(function() {
+      emit('return', 'lel');
+    });
+    
+    console.log(game1);
+    console.log(game2);
+    
+    done();
+  });
 });
