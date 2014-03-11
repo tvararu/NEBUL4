@@ -11,15 +11,15 @@ describe('Landing page', function() {
     done();
   });
   
-  it('should display four <h1> tags', function(done, server, client) {
-    var h1s = client.evalSync(function() {
-      var h1s = $('h1').length;
-      
-      emit('return', h1s);
-    });
-    
-    h1s.should.be.exactly(4);
-    
-    done();
-  });
+  // it('should display four <h1> tags', function(done, server, client) {
+  //   var h1s = client.evalSync(function() {
+  //     var h1s = $('h1').length;
+  //     
+  //     emit('return', h1s);
+  //   });
+  //   
+  //   h1s.should.be.exactly(4);
+  //   
+  //   done();
+  // });
 });
