@@ -9,14 +9,28 @@ UI.body.rendered = function() {
 
   var onRenderFcts = [];
   var scene = new THREE.Scene();
-  var camera = new THREE.PerspectiveCamera(
+  window.camera = new THREE.PerspectiveCamera(
     45, window.innerWidth / window.innerHeight, 0.01, 1000
   );
   camera.position.z = 2;
   
-  THREEx.SpaceShips.loadSpaceFighter03(function(object3d) {
-    window.spaceship = object3d;
-    scene.add(spaceship);
+  Posts.find().observe({
+    added: function(ship) {
+      window.ship = ship;
+      THREEx.SpaceShips.loadSpaceFighter03(function(object3d) {
+        window.spaceship = object3d;
+        spaceship.position.x = ship.position.x;
+        spaceship.position.y = ship.position.y;
+        spaceship.position.z = ship.position.z;
+        scene.add(spaceship);
+      });
+    },
+    changed: function(ship) {
+      ship = ship;
+      spaceship.position.x = ship.position.x;
+      spaceship.position.y = ship.position.y;
+      spaceship.position.z = ship.position.z;
+    }
   });
 
   // Camera Controls.
@@ -59,16 +73,17 @@ UI.body.rendered = function() {
   $(document).keydown(function(e) {
     console.log(e.keyCode);
     if (e.keyCode === 37) { // left
-      window.spaceship.position.x += 0.1;
+      window.ship.position.x += 0.1;
     }
     if (e.keyCode === 39) { // right
-      window.spaceship.position.x -= 0.1;
+      window.ship.position.x -= 0.1;
     }
     if (e.keyCode === 38) { // up
-      window.spaceship.position.z += 0.1;
+      window.ship.position.z += 0.1;
     }
     if (e.keyCode === 40) { // down
-      window.spaceship.position.z -= 0.1;
+      window.ship.position.z -= 0.1;
     }
+    Posts.update(ship._id, window.ship);
   });
 };
