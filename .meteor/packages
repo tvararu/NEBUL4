@@ -8,6 +8,6 @@ autopublish
 insecure
 preserve-inputs
 stylus
-three.js
 bootstrap-3
 fast-render
+threejs-custom

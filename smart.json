@@ -1,7 +1,9 @@
 {
   "packages": {
-    "three.js": {},
     "bootstrap-3": {},
-    "fast-render": {}
+    "fast-render": {},
+    "threejs-custom": {
+      "path": "packages/threejs-custom"
+    }
   }
 }
