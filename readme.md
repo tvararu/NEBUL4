@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="http://nebula.vararu.org/">
+  <a href="http://nebula.vararu.org/" target="_blank">
     <img src='https://tvararu.github.com/NEBUL4/img/nebula-title.png' />
   </a>
 </p>
