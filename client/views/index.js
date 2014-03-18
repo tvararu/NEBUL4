@@ -126,16 +126,20 @@ UI.body.rendered = function() {
     var spaceship = _.pick(App.three.spaceship, '_id', 'position');
 
     switch(e.keyCode) {
-    case 37: // left
+    case App.key.left:
+    case App.key.a:
       spaceship.position.x += 0.1;
       break;
-    case 39: // right
+    case App.key.right:
+    case App.key.d:
       spaceship.position.x -= 0.1;
       break;
-    case 38: // up
+    case App.key.up:
+    case App.key.w:
       spaceship.position.z += 0.1;
       break;
-    case 40: // down
+    case App.key.down:
+    case App.key.s:
       spaceship.position.z -= 0.1;
       break;
     }
