@@ -10,7 +10,7 @@ UI.body.rendered = function() {
 
   App.pushKey = function(keycode) {
     var e = $.Event('keydown');
-    e.which = e.keyCode = keycode;
+    e.which = e.keyCode = App.key[keycode];
     App.container.trigger(e);
   };
 

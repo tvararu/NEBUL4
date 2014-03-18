@@ -20,7 +20,7 @@ describe('Gameplay', function() {
       App.container.on('shipLoaded', function() {
         initial = App.three.spaceship.position.z;
 
-        App.pushKey(38);
+        App.pushKey('up');
       });
 
       App.container.on('shipChanged', function() {
