@@ -114,12 +114,20 @@ UI.body.rendered = function() {
       });
 
       App.triggerEvent('shipAdded', ship);
-    },
-    changed: function(ship) {
-      App.three.spaceship.position = ship.position;
-
-      App.triggerEvent('shipChanged', ship);
     }
+  });
+  
+  updateShip = function(ship) {
+    App.three.spaceship.position = ship.position;
+    shipStream.emit('updateShip', ship);
+    
+    App.triggerEvent('shipChanged', ship);
+  };
+
+  shipStream.on('updateShip', function(ship) {
+    App.three.spaceship.position = ship.position;
+
+    App.triggerEvent('shipChanged', ship);
   });
 
   App.container.keydown(function(e) {
@@ -144,6 +152,7 @@ UI.body.rendered = function() {
       break;
     }
 
+    updateShip(spaceship);
     Ships.update(spaceship._id, spaceship);
   });
 };
