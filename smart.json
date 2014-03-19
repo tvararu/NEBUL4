@@ -4,6 +4,7 @@
     "fast-render": {},
     "threejs-custom": {
       "path": "packages/threejs-custom"
-    }
+    },
+    "streams": {}
   }
 }

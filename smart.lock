@@ -6,7 +6,8 @@
       "fast-render": {},
       "threejs-custom": {
         "path": "packages/threejs-custom"
-      }
+      },
+      "streams": {}
     },
     "packages": {
       "bootstrap-3": {
@@ -16,11 +17,16 @@
       },
       "fast-render": {
         "git": "https://github.com/arunoda/meteor-fast-render.git",
-        "tag": "v0.1.18",
-        "commit": "dbfc8178594e5f696a39541278aac5dd25d458a0"
+        "tag": "v0.1.19",
+        "commit": "9e9a34e51885474c0dd9ed7a64dbff7ee9d4315c"
       },
       "threejs-custom": {
         "path": "packages/threejs-custom"
+      },
+      "streams": {
+        "git": "https://github.com/arunoda/meteor-streams.git",
+        "tag": "v0.1.17",
+        "commit": "9fcbbc9b7bf542827babc92089c19e730892a22f"
       }
     }
   }
