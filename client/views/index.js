@@ -111,6 +111,11 @@ UI.body.rendered = function() {
         scene.add(App.three.spaceship);
 
         App.triggerEvent('shipLoaded', ship);
+        
+        setInterval(function() {
+          var spaceship = _.pick(App.three.spaceship, '_id', 'position');
+          Ships.update(spaceship._id, spaceship);
+        }, 1000);
       });
 
       App.triggerEvent('shipAdded', ship);
@@ -153,6 +158,5 @@ UI.body.rendered = function() {
     }
 
     updateShip(spaceship);
-    Ships.update(spaceship._id, spaceship);
   });
 };
