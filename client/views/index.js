@@ -47,10 +47,10 @@ UI.body.rendered = function() {
     45, window.innerWidth / window.innerHeight, 0.01, 1000
   );
   camera.position.x = 0;
-  camera.position.y = 2.0;
-  camera.position.z = -2.5;
+  camera.position.y = 2.5;
+  camera.position.z = -3.5;
 
-  camera.rotation.x = 0.5;
+  camera.rotation.x = 0.4;
   camera.rotation.y = 3.15;
   camera.rotation.z = 0.0;
 
