@@ -46,14 +46,13 @@ UI.body.rendered = function() {
   var camera = three.camera = new THREE.PerspectiveCamera(
     45, window.innerWidth / window.innerHeight, 0.01, 1000
   );
-  // Align the camera to view our spaceship from roughly isometric perspective.
-  camera.position.x = 2;
-  camera.position.y = 2;
-  camera.position.z = 2;
+  camera.position.x = 0;
+  camera.position.y = 2.0;
+  camera.position.z = -2.5;
 
-  camera.rotation.x = -1.0;
-  camera.rotation.y = 0.7;
-  camera.rotation.z = 0.5;
+  camera.rotation.x = 0.5;
+  camera.rotation.y = 3.15;
+  camera.rotation.z = 0.0;
 
   // Automagically resize the renderer and update the camera on window resize:
   // http://learningthreejs.com/blog/2011/08/30/window-resize-for-your-demos/
@@ -84,21 +83,21 @@ UI.body.rendered = function() {
     });
   });
 
-  // // Camera Controls.
-  // var mouse = {
-  //   x: 0,
-  //   y: 0
-  // };
-  //
-  // document.addEventListener('mousemove', function(event) {
-  //   mouse.x = (event.clientX / window.innerWidth) - 0.5;
-  //   mouse.y = (event.clientY / window.innerHeight) - 0.5;
-  // }, false);
-  //
+  // Camera Controls.
+  var mouse = {
+    x: 0,
+    y: 0
+  };
+  
+  document.addEventListener('mousemove', function(event) {
+    mouse.x = (event.clientX / window.innerWidth) - 0.5;
+    mouse.y = (event.clientY / window.innerHeight) - 0.5;
+  }, false);
+  
   // onRenderFcts.push(function(delta, now) {
-  //   camera.position.x += (mouse.x * 5 - camera.position.x) * (delta * 3);
-  //   camera.position.y += (mouse.y * 5 - camera.position.y) * (delta * 3);
-  //   camera.lookAt(scene.position);
+  //   // camera.position.x += (mouse.x * 5 - camera.position.x) * (delta * 3);
+  //   // camera.position.y += (mouse.y * 5 - camera.position.y) * (delta * 3);
+  //   camera.lookAt(App.three.spaceship.position);
   // });
 
   Ships.find().observe({
@@ -137,23 +136,28 @@ UI.body.rendered = function() {
 
   App.container.keydown(function(e) {
     var spaceship = _.pick(App.three.spaceship, '_id', 'position');
+    var camera = App.three.camera;
 
     switch(e.keyCode) {
     case App.key.left:
     case App.key.a:
       spaceship.position.x += 0.1;
+      camera.position.x += 0.1;
       break;
     case App.key.right:
     case App.key.d:
       spaceship.position.x -= 0.1;
+      camera.position.x -= 0.1;
       break;
     case App.key.up:
     case App.key.w:
       spaceship.position.z += 0.1;
+      camera.position.z += 0.1;
       break;
     case App.key.down:
     case App.key.s:
       spaceship.position.z -= 0.1;
+      camera.position.z -= 0.1;
       break;
     }
 
