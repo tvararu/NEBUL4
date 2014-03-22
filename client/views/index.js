@@ -56,8 +56,8 @@ UI.body.rendered = function() {
 
   // set up the sphere vars
   var radius = 0.01,
-    segments = 16,
-    rings = 16;
+    segments = 1,
+    rings = 1;
 
   // create the sphere's material
   var sphereMaterial =
@@ -72,10 +72,10 @@ UI.body.rendered = function() {
           segments,
           rings),
         sphereMaterial);
-
+  
       sphere.position.x = i;
       sphere.position.z = j;
-
+  
       // add the sphere to the scene
       scene.add(sphere);
     }
@@ -100,6 +100,25 @@ UI.body.rendered = function() {
   // A vector of functions to execute each time the render loop is executed.
   var onRenderFcts = three.onRenderFcts = [];
 
+  // Camera Controls.
+  var mouse = {
+    x: 0,
+    y: 0
+  };
+
+  document.addEventListener('mousemove', function(event) {
+    mouse.x = (event.clientX / window.innerWidth) - 0.5;
+    mouse.y = (event.clientY / window.innerHeight) - 0.5;
+  }, false);
+
+  onRenderFcts.push(function(delta) {
+    camera.position.x += (mouse.x * 5 - camera.position.x) * (delta * 3);
+    camera.position.y += (mouse.y * 5 - camera.position.y) * (delta * 3);
+    if (App.three.spaceship) {
+      camera.lookAt(App.three.spaceship.position);
+    }
+  });
+
   // The main render function.
   onRenderFcts.push(function() {
     renderer.render(scene, camera);
@@ -120,25 +139,6 @@ UI.body.rendered = function() {
     onRenderFcts.forEach(function(onRenderFct) {
       onRenderFct(deltaMsec / 1000, nowMsec / 1000);
     });
-  });
-
-  // Camera Controls.
-  var mouse = {
-    x: 0,
-    y: 0
-  };
-
-  document.addEventListener('mousemove', function(event) {
-    mouse.x = (event.clientX / window.innerWidth) - 0.5;
-    mouse.y = (event.clientY / window.innerHeight) - 0.5;
-  }, false);
-
-  onRenderFcts.push(function(delta) {
-    camera.position.x += (mouse.x * 5 - camera.position.x) * (delta * 3);
-    camera.position.y += (mouse.y * 5 - camera.position.y) * (delta * 3);
-    if (App.three.spaceship) {
-      camera.lookAt(App.three.spaceship.position);
-    }
   });
 
   Ships.find().observe({
@@ -178,7 +178,7 @@ UI.body.rendered = function() {
   App.container.keydown(function(e) {
     var spaceship = _.pick(App.three.spaceship, '_id', 'position');
     var camera = App.three.camera;
-
+  
     switch (e.keyCode) {
       case App.key.left:
       case App.key.a:
@@ -201,7 +201,7 @@ UI.body.rendered = function() {
         camera.position.z -= 0.1;
         break;
     }
-
+  
     updateShip(spaceship);
   });
 };
