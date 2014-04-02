@@ -117,3 +117,21 @@ App.pushKey = function(keyname) {
   e.which = e.keyCode = App.key[keyname];
   App.container.trigger(e);
 };
+
+// App.keyinit initializes keydown and keyup listeners to update the global keyState
+// object.
+App.keyinit = function() {
+  App.container.on('keydown', function(e) {
+    var key = App.keyCode[e.keyCode];
+    
+    // Mark the key as being held down.
+    App.keyState[key] = true;
+  });
+
+  App.container.on('keyup', function(e) {
+    var key = App.keyCode[e.keyCode];
+    
+    // Mark the key as up.
+    App.keyState[key] = false;
+  });
+};

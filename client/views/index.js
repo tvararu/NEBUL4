@@ -1,8 +1,12 @@
 UI.body.rendered = function() {
   // The global application namespace.
   window.App = window.App || {};
-
+  
+  // Grab the main game container.
   App.container = $(document);
+  
+  // Initialize listeners for keyboard events.
+  App.keyinit();
   
   // Another namespace to hold all the graphics stuff.
   // This one gets initialized if it's not already available.
@@ -29,7 +33,7 @@ UI.body.rendered = function() {
     }
   });
   
-  updateShip = function(ship) {
+  var updateShip = function(ship) {
     App.three.spaceship.position = ship.position;
     shipStream.emit('updateShip', ship);
   
@@ -40,20 +44,6 @@ UI.body.rendered = function() {
     App.three.spaceship.position = ship.position;
   
     App.triggerEvent('shipChanged', ship);
-  });
-  
-  App.container.on('keydown', function(e) {
-    var key = App.keyCode[e.keyCode];
-    
-    // Mark the key as being held down.
-    App.keyState[key] = true;
-  });
-  
-  App.container.on('keyup', function(e) {
-    var key = App.keyCode[e.keyCode];
-    
-    // Mark the key as up.
-    App.keyState[key] = false;
   });
   
   App.three.onRenderFcts.push(function() {
