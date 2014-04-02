@@ -194,22 +194,22 @@ UI.body.rendered = function() {
       var spaceship = _.pick(App.three.spaceship, '_id', 'position');
       var camera = App.three.camera;
       
-      if (App.keyState[App.keyCode[App.key.left]] || App.keyState[App.keyCode[App.key.a]]) {
+      if (App.keyState.left || App.keyState.a) {
         spaceship.position.x += 0.1;
         camera.position.x += 0.1;
       }
       
-      if (App.keyState[App.keyCode[App.key.right]] || App.keyState[App.keyCode[App.key.d]]) {
+      if (App.keyState.right || App.keyState.d) {
         spaceship.position.x -= 0.1;
         camera.position.x -= 0.1;
       }
       
-      if (App.keyState[App.keyCode[App.key.up]] || App.keyState[App.keyCode[App.key.w]]) {
+      if (App.keyState.up || App.keyState.w) {
         spaceship.position.z += 0.1;
         camera.position.z += 0.1;
       }
       
-      if (App.keyState[App.keyCode[App.key.down]] || App.keyState[App.keyCode[App.key.s]]) {
+      if (App.keyState.down || App.keyState.s) {
         spaceship.position.z -= 0.1;
         camera.position.z -= 0.1;
       }
