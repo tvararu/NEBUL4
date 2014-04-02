@@ -1,5 +1,8 @@
 window.App = window.App || {};
 
+// The App.key object is a map that converts human-readable strings to their
+// respective keycodes.
+// i.e., App.key[up] and App.key.up are both 38.
 App.key = {
   'backspace': 8,
   'tab': 9,
@@ -56,16 +59,16 @@ App.key = {
   'x': 88,
   'y': 89,
   'z': 90,
-  '0numpad': 96,
-  '1numpad': 97,
-  '2numpad': 98,
-  '3numpad': 99,
-  '4numpad': 100,
-  '5numpad': 101,
-  '6numpad': 102,
-  '7numpad': 103,
-  '8numpad': 104,
-  '9numpad': 105,
+  'numpad0': 96,
+  'numpad1': 97,
+  'numpad2': 98,
+  'numpad3': 99,
+  'numpad4': 100,
+  'numpad5': 101,
+  'numpad6': 102,
+  'numpad7': 103,
+  'numpad8': 104,
+  'numpad9': 105,
   'multiply': 106,
   'plus': 107,
   'minut': 109,
@@ -88,3 +91,19 @@ App.key = {
   'slash': 191,
   'backslash': 220
 };
+
+// App.keyCode is the reverse map of App.key.
+App.keyCode = {};
+
+// App.keyState tracks which keys are currently held down.
+App.keyState = {};
+
+for (var key in App.key) {
+  if (App.key.hasOwnProperty(key)) {
+    // Define the reverse map. So you can do App.keyCode[38] to get 'up'.
+    App.keyCode[App.key[key]] = key;
+    
+    // Initialize every key as not being pressed initially.
+    App.keyState[key] = false;
+  }
+}

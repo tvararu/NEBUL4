@@ -175,33 +175,51 @@ UI.body.rendered = function() {
     App.triggerEvent('shipChanged', ship);
   });
 
-  App.container.keydown(function(e) {
-    var spaceship = _.pick(App.three.spaceship, '_id', 'position');
-    var camera = App.three.camera;
-  
-    switch (e.keyCode) {
-      case App.key.left:
-      case App.key.a:
-        spaceship.position.x += 0.1;
-        camera.position.x += 0.1;
-        break;
-      case App.key.right:
-      case App.key.d:
-        spaceship.position.x -= 0.1;
-        camera.position.x -= 0.1;
-        break;
-      case App.key.up:
-      case App.key.w:
-        spaceship.position.z += 0.1;
-        camera.position.z += 0.1;
-        break;
-      case App.key.down:
-      case App.key.s:
-        spaceship.position.z -= 0.1;
-        camera.position.z -= 0.1;
-        break;
+  App.container.on('keydown', function(e) {
+    var key = App.keyCode[e.keyCode];
+    
+    // If the key is not already pushed down.
+    if (!App.keyState[key]) {
+      App.keyState[key] = true;
+      console.log('keydown! ' + key);
+      
+      var spaceship = _.pick(App.three.spaceship, '_id', 'position');
+      var camera = App.three.camera;
+      
+      switch (e.keyCode) {
+        case App.key.left:
+        case App.key.a:
+          spaceship.position.x += 0.1;
+          camera.position.x += 0.1;
+          break;
+        case App.key.right:
+        case App.key.d:
+          spaceship.position.x -= 0.1;
+          camera.position.x -= 0.1;
+          break;
+        case App.key.up:
+        case App.key.w:
+          spaceship.position.z += 0.1;
+          camera.position.z += 0.1;
+          break;
+        case App.key.down:
+        case App.key.s:
+          spaceship.position.z -= 0.1;
+          camera.position.z -= 0.1;
+          break;
+      }
+      
+      updateShip(spaceship);
     }
+  });
   
-    updateShip(spaceship);
+  App.container.on('keyup', function(e) {
+    var key = App.keyCode[e.keyCode];
+    
+    // If the key is pushed down (it should be!).
+    if (App.keyState[key]) {
+      console.log('keyup! ' + key);
+      App.keyState[key] = false;
+    }
   });
 };
