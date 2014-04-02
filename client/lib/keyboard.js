@@ -1,8 +1,10 @@
+// keyboard.js - Keyboard management objects and functions.
+
 window.App = window.App || {};
 
 // The App.key object is a map that converts human-readable strings to their
 // respective keycodes.
-// i.e., App.key[up] and App.key.up are both 38.
+// i.e., App.key['up'] and App.key.up are both 38.
 App.key = {
   'backspace': 8,
   'tab': 9,
@@ -104,6 +106,14 @@ for (var key in App.key) {
     App.keyCode[App.key[key]] = key;
     
     // Initialize every key as not being pressed initially.
-    App.keyState['' + key + ''] = false;
+    App.keyState[key] = false;
   }
 }
+
+// App.pushKey is a function that takes a human readable keyname (like 'up') and
+// programatically simulates a keypress on the game container element.
+App.pushKey = function(keyname) {
+  var e = $.Event('keydown');
+  e.which = e.keyCode = App.key[keyname];
+  App.container.trigger(e);
+};
