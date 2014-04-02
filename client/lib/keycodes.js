@@ -104,6 +104,6 @@ for (var key in App.key) {
     App.keyCode[App.key[key]] = key;
     
     // Initialize every key as not being pressed initially.
-    App.keyState[key] = false;
+    App.keyState['' + key + ''] = false;
   }
 }
