@@ -43,9 +43,7 @@ App.THREEinit = function() {
   camera.rotation.z = 0.0;
   
   // set up the sphere vars
-  var radius = 0.01,
-    segments = 1,
-    rings = 1;
+  var radius = 0.01, segments = 1, rings = 1;
   
   // create the sphere's material
   var sphereMaterial =

@@ -9,7 +9,6 @@ UI.body.rendered = function() {
   App.keyinit();
   
   // Another namespace to hold all the graphics stuff.
-  // This one gets initialized if it's not already available.
   App.three = App.three || App.THREEinit();
 
   Ships.find().observe({
