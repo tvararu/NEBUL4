@@ -5,6 +5,7 @@
     "threejs-custom": {
       "path": "packages/threejs-custom"
     },
-    "streams": {}
+    "streams": {},
+    "buzz.js": {}
   }
 }
