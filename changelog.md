@@ -1,3 +1,8 @@
+###v0.1.3
+(released: 08/04/2014)
+
+- Now with jQuery konami code, App.pushKeys method and some additional refactoring.
+
 ###v0.1.2
 (released: 08/04/2014)
 
