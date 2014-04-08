@@ -112,14 +112,61 @@ for (var key in App.key) {
 
 // App.pushKey is a function that takes a human readable keyname (like 'up') and
 // programatically simulates a keypress on the game container element.
-App.pushKey = function(keyname) {
+// Takes optional duration and callback.
+App.pushKey = function(keyname, duration, callback) {
+  duration = duration || 100;
+  
   var e = $.Event('keydown');
   e.which = e.keyCode = App.key[keyname];
-  App.container.trigger(e);
+  $(document).trigger(e);
+  
+  setTimeout(function() {
+    var e = $.Event('keyup');
+    e.which = e.keyCode = App.key[keyname];
+    $(document).trigger(e);
+    
+    if (callback) { callback(); }
+  }, duration);
 };
 
-// App.keyinit initializes keydown and keyup listeners to update the global keyState
-// object.
+// App.pushKeys decomposes a string into pushKey calls.
+// i.e. App.pushKeys('up down left right');
+// Takes optional duration (for all keys) and callback.
+App.pushKeys = function(keys, duration, callback) {
+  duration = duration || 100;
+  
+  if (typeof(keys) === 'string') {
+    // Split by non-words.
+    keys = keys.split(/\W/);
+    
+    // Eliminate empty strings and invalid keys.
+    keys = _.filter(keys, function(str) {
+      return str.length && App.key.hasOwnProperty(key);
+    });
+    
+    var pushEachKey = function(i, len) {
+      if (i < len) {
+        App.pushKey(keys[i], duration, function() {
+          pushEachKey(i + 1, len);
+        });
+      } else {
+        return;
+      }
+    };
+    
+    pushEachKey(0, keys.length);
+  } else {
+    console.error(
+      'App.pushKey only works with string arguments. Got this instead:',
+      keys
+    );
+  }
+  
+  if (callback) { callback(); }
+};
+
+// App.keyinit initializes keydown and keyup listeners to update the
+// global keyState object.
 App.keyinit = function() {
   App.container.on('keydown', function(e) {
     var key = App.keyCode[e.keyCode];

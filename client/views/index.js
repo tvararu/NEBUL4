@@ -10,6 +10,9 @@ UI.body.rendered = function() {
   
   // Another namespace to hold all the graphics stuff.
   App.three = App.three || App.THREEinit();
+  
+  // Initialize easter egg.
+  App.easterEgg.init();
 
   Ships.find().observe({
     added: function(ship) {
