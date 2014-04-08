@@ -46,10 +46,7 @@ App.THREEinit = function() {
   var radius = 0.01, segments = 1, rings = 1;
   
   // create the sphere's material
-  var sphereMaterial =
-    new THREE.MeshLambertMaterial({
-      color: 0xFFFFFF
-    });
+  var sphereMaterial = new THREE.MeshLambertMaterial({ color: 0xFFFFFF });
   
   for (var i = -15; i < 15; i++) {
     for (var j = -15; j < 15; j++) {
