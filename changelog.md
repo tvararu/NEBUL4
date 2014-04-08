@@ -1,3 +1,10 @@
+###v0.1.2
+(released: 08/04/2014)
+
+- Forgot all about the changelog.
+- Add easter-egg.js because easter is coming.
+- Meanwhile, what else has been done: continuous integration and some documentation. Basic ship with streams for speed and regular Meteor publications for persistence. Sound system.
+
 ###v0.1.1
 (released: 10/03/2014)
 
