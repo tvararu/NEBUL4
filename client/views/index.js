@@ -13,6 +13,9 @@ UI.body.rendered = function() {
   
   // Initialize easter egg.
   App.easterEgg.init();
+  
+  // Initialize touchscreen gestures.
+  App.hammerInit();
 
   Ships.find().observe({
     added: function(ship) {
