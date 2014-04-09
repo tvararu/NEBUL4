@@ -24,7 +24,7 @@ App.easterEgg = {
             return Random.choice([-1, 1]);
           };
           
-          App.three.camera.position.z += randomOne();
+          App.three.camera.position.x += randomOne();
           App.three.camera.position.y += randomOne();
           App.three.camera.position.z += randomOne();
           App.three.camera.lookAt(App.three.spaceship.position);
