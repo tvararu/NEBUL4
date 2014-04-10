@@ -165,9 +165,9 @@ App.pushKeys = function(keys, duration, callback) {
   if (callback) { callback(); }
 };
 
-// App.keyinit initializes keydown and keyup listeners to update the
+// App.keyInit initializes keydown and keyup listeners to update the
 // global keyState object.
-App.keyinit = function() {
+App.keyInit = function() {
   App.container.on('keydown', function(e) {
     var key = App.keyCode[e.keyCode];
     

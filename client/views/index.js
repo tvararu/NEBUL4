@@ -6,7 +6,7 @@ UI.body.rendered = function() {
   App.container = $(document);
   
   // Initialize listeners for keyboard events.
-  App.keyinit();
+  App.keyInit();
   
   // Another namespace to hold all the graphics stuff.
   App.three = App.three || App.THREEinit();
