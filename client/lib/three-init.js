@@ -34,16 +34,9 @@ App.THREEinit = function() {
   var camera = three.camera = new THREE.PerspectiveCamera(
     45, window.innerWidth / window.innerHeight, 0.01, 1000
   );
-  camera.position.x = 0;
-  camera.position.y = 2.5;
-  camera.position.z = -3.5;
-  
-  camera.rotation.x = 0.4;
-  camera.rotation.y = 3.15;
-  camera.rotation.z = 0.0;
   
   // set up the sphere vars
-  var radius = 0.01, segments = 1, rings = 1;
+  var radius = 0.02, segments = 1, rings = 1;
   
   // create the sphere's material
   var sphereMaterial = new THREE.MeshLambertMaterial({ color: 0xFFFFFF });
@@ -88,18 +81,18 @@ App.THREEinit = function() {
     y: 0
   };
   
-  document.addEventListener('mousemove', function(event) {
-    mouse.x = (event.clientX / window.innerWidth) - 0.5;
-    mouse.y = (event.clientY / window.innerHeight) - 0.5;
-  }, false);
-  
-  onRenderFcts.push(function(delta) {
-    camera.position.x += (mouse.x * 5 - camera.position.x) * (delta * 3);
-    camera.position.y += (mouse.y * 5 - camera.position.y) * (delta * 3);
-    if (App.three.spaceship) {
-      camera.lookAt(App.three.spaceship.position);
-    }
-  });
+  // document.addEventListener('mousemove', function(event) {
+  //   mouse.x = (event.clientX / window.innerWidth) - 0.5;
+  //   mouse.y = (event.clientY / window.innerHeight) - 0.5;
+  // }, false);
+  // 
+  // onRenderFcts.push(function(delta) {
+  //   camera.position.x += (mouse.x * 5 - camera.position.x) * (delta * 3);
+  //   camera.position.y += (mouse.y * 5 - camera.position.y) * (delta * 3);
+  //   if (App.three.spaceship) {
+  //     camera.lookAt(App.three.spaceship.position);
+  //   }
+  // });
   
   // The main render function.
   onRenderFcts.push(function() {

@@ -18,13 +18,13 @@ describe('Gameplay', function() {
       var initial = 0, after = 0;
   
       App.container.on('shipLoaded', function() {
-        initial = App.three.spaceship.position.z;
+        initial = App.player.ship.position.z;
   
         App.pushKey('up');
       });
   
       App.container.on('shipChanged', function() {
-        after = App.three.spaceship.position.z;
+        after = App.player.ship.position.z;
   
         emit('return', { initial: initial, after: after });
       });
