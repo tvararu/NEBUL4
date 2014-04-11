@@ -1,3 +1,12 @@
+###v0.1.4
+(released: 11/04/2014)
+
+- Update laika timeout.
+- Get camera to update properly with player position.
+- Remove mouse-driven camera, for now.
+- Make spheres more visible for testing purposes.
+- Add a player god object (I think that's what they're called).
+
 ###v0.1.3
 (released: 08/04/2014)
 
