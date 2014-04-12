@@ -35,10 +35,11 @@ App.THREEinit = function() {
     45, window.innerWidth / window.innerHeight, 0.01, 1000
   );
   
-  // set up the sphere vars
+  // Make some spheres for testing purposes.
+  // Set up the sphere vars.
   var radius = 0.02, segments = 1, rings = 1;
   
-  // create the sphere's material
+  // Create the sphere's material.
   var sphereMaterial = new THREE.MeshLambertMaterial({ color: 0xFFFFFF });
   
   for (var i = -15; i < 15; i++) {
@@ -52,20 +53,20 @@ App.THREEinit = function() {
       sphere.position.x = i;
       sphere.position.z = j;
   
-      // add the sphere to the scene
+      // Add the sphere to the scene.
       scene.add(sphere);
     }
   }
   
-  // create a point light
+  // Create a point light.
   var pointLight = new THREE.PointLight(0xFFFFFF);
   
-  // set its position
+  // Set its position.
   pointLight.position.x = 0;
   pointLight.position.y = 50;
   pointLight.position.z = 0;
   
-  // add to the scene
+  // Add it to the scene.
   scene.add(pointLight);
   
   // Automagically resize the renderer and update the camera on window resize:
@@ -74,25 +75,6 @@ App.THREEinit = function() {
   
   // A vector of functions to execute each time the render loop is executed.
   var onRenderFcts = three.onRenderFcts = [];
-  
-  // Camera Controls.
-  var mouse = {
-    x: 0,
-    y: 0
-  };
-  
-  // document.addEventListener('mousemove', function(event) {
-  //   mouse.x = (event.clientX / window.innerWidth) - 0.5;
-  //   mouse.y = (event.clientY / window.innerHeight) - 0.5;
-  // }, false);
-  // 
-  // onRenderFcts.push(function(delta) {
-  //   camera.position.x += (mouse.x * 5 - camera.position.x) * (delta * 3);
-  //   camera.position.y += (mouse.y * 5 - camera.position.y) * (delta * 3);
-  //   if (App.three.spaceship) {
-  //     camera.lookAt(App.three.spaceship.position);
-  //   }
-  // });
   
   // The main render function.
   onRenderFcts.push(function() {

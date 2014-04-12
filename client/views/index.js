@@ -1,6 +1,12 @@
 UI.body.helpers({
   spacebarState: function() {
     return Session.get('spacebarToggleState') ? 'true' : 'false';
+  },
+  mouseXState: function() {
+    return Session.get('mouseX') || '0.0';
+  },
+  mouseYState: function() {
+    return Session.get('mouseY') || '0.0';
   }
 });
 
@@ -101,6 +107,30 @@ UI.body.rendered = function() {
       if (App.keyState('up') || App.keyState('w'))    { App.player.move('up'); }
       
       if (App.keyState('down') || App.keyState('s'))  { App.player.move('down'); }
+    }
+  });
+  
+  // Camera Controls.
+  var mouse = {
+    x: 0,
+    y: 0
+  };
+  
+  document.addEventListener('mousemove', function(event) {
+    mouse.x = (event.clientX / window.innerWidth) - 0.5;
+    Session.set('mouseX', mouse.x);
+    
+    mouse.y = (event.clientY / window.innerHeight) - 0.5;
+    Session.set('mouseY', mouse.y);
+  }, false);
+  
+  App.three.onRenderFcts.push(function(delta) {
+    if (App.player.ship && App.keyToggleState('spacebar')) {
+      
+      // App.player.camera.position.x += (mouse.x * 5 - App.player.camera.position.x) * (delta * 3);
+      // App.player.camera.position.y += (mouse.y * 5 - App.player.camera.position.y) * (delta * 3);
+      
+      App.player.camera.lookAt(App.player.ship.position);
     }
   });
 };
