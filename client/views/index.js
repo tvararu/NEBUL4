@@ -1,6 +1,6 @@
 UI.body.helpers({
   spacebarState: function() {
-    return Session.get('spacebarState') ? 'true' : 'false';
+    return Session.get('spacebarToggleState') ? 'true' : 'false';
   }
 });
 

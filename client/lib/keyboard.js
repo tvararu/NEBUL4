@@ -105,6 +105,7 @@ for (var key in App.key) {
     
     // Initialize every key as not being pressed initially.
     Session.set(key + 'State', false);
+    Session.set(key + 'ToggleState', false);
   }
 }
 
@@ -113,6 +114,11 @@ for (var key in App.key) {
 // But it's not a reactive data source.
 App.keyState = function(key) {
   return Session.get(key + 'State');
+};
+
+// App.keyToggleState is more of the same, but for the toggleState.
+App.keyToggleState = function(key) {
+  return Session.get(key + 'ToggleState');
 };
 
 // App.pushKey is a function that takes a human readable keyname (like 'up') and
@@ -178,6 +184,10 @@ App.keyInit = function() {
     
     // Mark the key as being held down.
     Session.set(key + 'State', true);
+    
+    // Flip the toggleState.
+    var flipState = !Session.get(key + 'ToggleState');
+    Session.set(key + 'ToggleState', flipState);
   });
 
   App.container.on('keyup', function(e) {
