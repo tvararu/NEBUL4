@@ -1,3 +1,9 @@
+UI.body.helpers({
+  spacebarState: function() {
+    return Session.get('spacebarState') ? 'true' : 'false';
+  }
+});
+
 UI.body.rendered = function() {
   // The global application namespace.
   window.App = window.App || {};
@@ -67,7 +73,7 @@ UI.body.rendered = function() {
         setInterval(function() {
           var spaceship = _.pick(App.player.ship, '_id', 'position');
           Ships.update(spaceship._id, spaceship);
-        }, 1000);
+        }, 500);
       });
   
       App.triggerEvent('shipAdded', ship);
@@ -88,13 +94,13 @@ UI.body.rendered = function() {
   
   App.three.onRenderFcts.push(function() {
     if (App.player.ship) {
-      if (App.keyState.left || App.keyState.a)  { App.player.move('left'); }
+      if (App.keyState('left') || App.keyState('a'))  { App.player.move('left'); }
       
-      if (App.keyState.right || App.keyState.d) { App.player.move('right'); }
+      if (App.keyState('right') || App.keyState('d')) { App.player.move('right'); }
       
-      if (App.keyState.up || App.keyState.w)    { App.player.move('up'); }
+      if (App.keyState('up') || App.keyState('w'))    { App.player.move('up'); }
       
-      if (App.keyState.down || App.keyState.s)  { App.player.move('down'); }
+      if (App.keyState('down') || App.keyState('s'))  { App.player.move('down'); }
     }
   });
 };

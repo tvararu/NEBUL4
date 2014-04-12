@@ -15,6 +15,7 @@ App.key = {
   'pause': 19,
   'capslock': 20,
   'esc': 27,
+  'spacebar': 32,
   'pageup': 33,
   'pagedown': 34,
   'end': 35,
@@ -97,18 +98,22 @@ App.key = {
 // App.keyCode is the reverse map of App.key.
 App.keyCode = {};
 
-// App.keyState tracks which keys are currently held down.
-App.keyState = {};
-
 for (var key in App.key) {
   if (App.key.hasOwnProperty(key)) {
     // Define the reverse map. So you can do App.keyCode[38] to get 'up'.
     App.keyCode[App.key[key]] = key;
     
     // Initialize every key as not being pressed initially.
-    App.keyState[key] = false;
+    Session.set(key + 'State', false);
   }
 }
+
+// App.keyState is a function that makes getting the current state of a key
+// easier than fooling with the Session object.
+// But it's not a reactive data source.
+App.keyState = function(key) {
+  return Session.get(key + 'State');
+};
 
 // App.pushKey is a function that takes a human readable keyname (like 'up') and
 // programatically simulates a keypress on the game container element.
@@ -172,13 +177,13 @@ App.keyInit = function() {
     var key = App.keyCode[e.keyCode];
     
     // Mark the key as being held down.
-    App.keyState[key] = true;
+    Session.set(key + 'State', true);
   });
 
   App.container.on('keyup', function(e) {
     var key = App.keyCode[e.keyCode];
     
     // Mark the key as up.
-    App.keyState[key] = false;
+    Session.set(key + 'State', false);
   });
 };
