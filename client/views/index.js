@@ -7,6 +7,9 @@ UI.body.helpers({
   },
   mouseYState: function() {
     return Session.get('mouseY') || '0.0';
+  },
+  reticleState: function() {
+    return Session.get('spacebarToggleState') ? 'active' : '';
   }
 });
 
@@ -130,7 +133,7 @@ UI.body.rendered = function() {
       // App.player.camera.position.x += (mouse.x * 5 - App.player.camera.position.x) * (delta * 3);
       // App.player.camera.position.y += (mouse.y * 5 - App.player.camera.position.y) * (delta * 3);
       
-      App.player.camera.lookAt(App.player.ship.position);
+      // App.player.camera.lookAt(App.player.ship.position);
     }
   });
 };

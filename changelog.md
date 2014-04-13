@@ -1,4 +1,13 @@
 ###v0.1.4
+(released: 13/04/2014)
+
+- Move keyState to Session. No apparent reduction in performance, looks good.
+- Implement toggleState session variables.
+- Add reactive view templates for mouse variables
+- Make spacebar toggle actually do something.
+- Make spacebar show a circle (targeting reticle maybe) in the middle of the screen.
+
+###v0.1.4
 (released: 11/04/2014)
 
 - Update laika timeout.
