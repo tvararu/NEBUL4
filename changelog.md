@@ -1,3 +1,8 @@
+###v0.1.5
+(released: 27/04/2014)
+
+- Bump Meteor version.
+
 ###v0.1.4
 (released: 13/04/2014)
 
