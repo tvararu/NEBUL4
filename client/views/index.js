@@ -33,22 +33,47 @@ UI.body.rendered = function() {
       switch(direction) {
       case 'left':
         this.ship.position.x += 0.1;
+        if (this.ship.rotation.z > -0.7) {
+          this.ship.rotation.z -= 0.06 ;
+        }
         this.camera.position.x += 0.1;
         break;
       case 'right':
         this.ship.position.x -= 0.1;
+        if (this.ship.rotation.z < 0.7) {
+          this.ship.rotation.z += 0.06 ;
+        }
         this.camera.position.x -= 0.1;
         break;
       case 'up':
         this.ship.position.z += 0.1;
+        if (this.ship.rotation.x < 0.3) {
+          this.ship.rotation.x += 0.06 ;
+        }
         this.camera.position.z += 0.1;
         break;
       case 'down':
         this.ship.position.z -= 0.1;
+        if (this.ship.rotation.x > -0.2) {
+          this.ship.rotation.x -= 0.06 ;
+        }
         this.camera.position.z -= 0.1;
         break;
+      case 'default':
+          var shipX = this.ship.rotation.x;
+          var tween = new TWEEN.Tween({x : shipX})
+            .to({x : 0}, 2000)
+            .easing(TWEEN.Easing.Quadratic.EaseOut)
+            .onUpdate(function() {
+              shipX = this.x;
+            })
+            .start();
+          // this.ship.rotation.x = 0 ;
+          // this.ship.rotation.y = 0 ;
+          // this.ship.rotation.z = 0 ;
+        break;
       }
-      
+
       updateShip(this.ship.position);
     }
   };
@@ -103,6 +128,8 @@ UI.body.rendered = function() {
   
   App.three.onRenderFcts.push(function() {
     if (App.player.ship) {
+      if (!App.keyState('down') && !App.keyState('left') && !App.keyState('right') && !App.keyState('up')) { App.player.move('default'); }
+
       if (App.keyState('left') || App.keyState('a'))  { App.player.move('left'); }
       
       if (App.keyState('right') || App.keyState('d')) { App.player.move('right'); }

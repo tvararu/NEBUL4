@@ -37,17 +37,16 @@ App.THREEinit = function() {
   
   // Make some spheres for testing purposes.
   // Set up the sphere vars.
-  var radius = 0.02, segments = 1, rings = 1;
+  var radius = 0.05, segments = 10, rings = 10;
   
   // Create the sphere's material.
-  var sphereMaterial = new THREE.MeshLambertMaterial({ color: 0xFFFFFF });
-  
+  var sphereMaterial = new THREE.MeshLambertMaterial({ color: 0xff0000 });
   for (var i = -15; i < 15; i++) {
     for (var j = -15; j < 15; j++) {
       var sphere = new THREE.Mesh(new THREE.SphereGeometry(
           radius,
           segments,
-          rings),
+          rings), 
         sphereMaterial);
   
       sphere.position.x = i;
@@ -60,15 +59,33 @@ App.THREEinit = function() {
   
   // Create a point light.
   var pointLight = new THREE.PointLight(0xFFFFFF);
+  var pointLight2 = new THREE.PointLight(0xFFFFFF);
+  var pointLight3 = new THREE.PointLight(0xFFFFFF);
+  var pointLight4 = new THREE.PointLight(0xFFFFFF);
   
   // Set its position.
   pointLight.position.x = 0;
   pointLight.position.y = 50;
   pointLight.position.z = 0;
-  
+
+  pointLight2.position.x = 0;
+  pointLight2.position.y = -50;
+  pointLight2.position.z = 0;
+
+  pointLight3.position.x = 50;
+  pointLight3.position.y = 0;
+  pointLight3.position.z = 0;
+
+  pointLight4.position.x = -50;
+  pointLight4.position.y = 0;
+  pointLight4.position.z = 0;
+
   // Add it to the scene.
   scene.add(pointLight);
-  
+  scene.add(pointLight2);
+  // scene.add(pointLight3);
+  // scene.add(pointLight4);
+
   // Automagically resize the renderer and update the camera on window resize:
   // http://learningthreejs.com/blog/2011/08/30/window-resize-for-your-demos/
   THREEx.WindowResize(renderer, camera);
@@ -79,6 +96,10 @@ App.THREEinit = function() {
   // The main render function.
   onRenderFcts.push(function() {
     renderer.render(scene, camera);
+  });
+
+  onRenderFcts.push(function() {
+    // TWEEN.update();
   });
   
   // The render loop.
