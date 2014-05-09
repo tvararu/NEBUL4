@@ -37,7 +37,7 @@ App.THREEinit = function() {
   
   // Make some spheres for testing purposes.
   // Set up the sphere vars.
-  var radius = 0.02, segments = 1, rings = 1;
+  var radius = 0.01, segments = 1, rings = 1;
   
   // Create the sphere's material.
   var sphereMaterial = new THREE.MeshLambertMaterial({ color: 0xFFFFFF });

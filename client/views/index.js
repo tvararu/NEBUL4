@@ -3,10 +3,10 @@ UI.body.helpers({
     return Session.get('spacebarToggleState') ? 'true' : 'false';
   },
   mouseXState: function() {
-    return Session.get('mouseX') || '0.0';
+    return Session.get('mouseX') * 10 || '0';
   },
   mouseYState: function() {
-    return Session.get('mouseY') || '0.0';
+    return Session.get('mouseY') * 10 || '0';
   },
   reticleState: function() {
     return Session.get('spacebarToggleState') ? 'active' : '';
@@ -50,6 +50,34 @@ UI.body.rendered = function() {
       }
       
       updateShip(this.ship.position);
+    },
+    rotate: function(direction, magnitude) {
+      if (magnitude) {
+        magnitude = Math.abs(magnitude) / 100;
+      } else {
+        magnitude = 0.01;
+      }
+      
+      switch(direction) {
+      case 'left':
+        this.ship.rotation.y += magnitude;
+        this.camera.rotation.y += magnitude;
+        break;
+      case 'right':
+        this.ship.rotation.y -= magnitude;
+        this.camera.rotation.y -= magnitude;
+        break;
+      case 'up':
+        this.ship.rotation.x += magnitude;
+        this.camera.rotation.x += magnitude;
+        break;
+      case 'down':
+        this.ship.rotation.x -= magnitude;
+        this.camera.rotation.x -= magnitude;
+        break;
+      }
+      
+      updateShip(this.ship.position);
     }
   };
   
@@ -69,11 +97,11 @@ UI.body.rendered = function() {
         App.three.scene.add(App.player.ship);
         
         // Align camera correctly.
-        App.player.camera.position.x = spaceship.position.x + 0;
-        App.player.camera.position.y = spaceship.position.y + 2.3;
+        App.player.camera.position.x = spaceship.position.x + 0.0;
+        // App.player.camera.position.y = spaceship.position.y + 2.3;
         App.player.camera.position.z = spaceship.position.z - 3.5;
   
-        App.player.camera.rotation.x = spaceship.rotation.x + 0.4;
+        // App.player.camera.rotation.x = spaceship.rotation.x + 0.4;
         App.player.camera.rotation.y = spaceship.rotation.y + 3.15;
         App.player.camera.rotation.z = spaceship.rotation.z + 0.0;
   
@@ -129,6 +157,25 @@ UI.body.rendered = function() {
   
   App.three.onRenderFcts.push(function(delta) {
     if (App.player.ship && App.keyToggleState('spacebar')) {
+      // var x = Session.get('mouseX');
+      // 
+      // if (Math.abs(x * 10) > 0.5) {
+      //   if (x < 0) {
+      //     App.player.rotate('left', x);
+      //   } else {
+      //     App.player.rotate('right', x);
+      //   }
+      // }
+      
+      var y = Session.get('mouseY');
+      
+      if (Math.abs(y * 10) > 0.5) {
+        if (y < 0) {
+          App.player.rotate('down');
+        } else {
+          App.player.rotate('up');
+        }
+      }
       
       // App.player.camera.position.x += (mouse.x * 5 - App.player.camera.position.x) * (delta * 3);
       // App.player.camera.position.y += (mouse.y * 5 - App.player.camera.position.y) * (delta * 3);
