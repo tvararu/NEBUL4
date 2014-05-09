@@ -49,6 +49,8 @@ UI.body.rendered = function() {
         break;
       }
       
+      App.three.camera.controls.syncTo(App.player.ship);
+      
       updateShip(this.ship.position);
     },
     rotate: function(direction, magnitude) {
@@ -95,15 +97,6 @@ UI.body.rendered = function() {
         spaceship._id = ship._id;
         spaceship.position = ship.position;
         App.three.scene.add(App.player.ship);
-        
-        // Align camera correctly.
-        App.player.camera.position.x = spaceship.position.x + 0.0;
-        // App.player.camera.position.y = spaceship.position.y + 2.3;
-        App.player.camera.position.z = spaceship.position.z - 3.5;
-  
-        // App.player.camera.rotation.x = spaceship.rotation.x + 0.4;
-        App.player.camera.rotation.y = spaceship.rotation.y + 3.15;
-        App.player.camera.rotation.z = spaceship.rotation.z + 0.0;
   
         App.triggerEvent('shipLoaded', ship);
   
@@ -142,45 +135,63 @@ UI.body.rendered = function() {
   });
   
   // Camera Controls.
-  var mouse = {
-    x: 0,
-    y: 0
-  };
+  // var mouse = {
+  //   x: 0,
+  //   y: 0
+  // };
+  // 
+  // document.addEventListener('mousemove', function(event) {
+  //   mouse.x = (event.clientX / window.innerWidth) - 0.5;
+  //   Session.set('mouseX', mouse.x);
+  //   
+  //   mouse.y = (event.clientY / window.innerHeight) - 0.5;
+  //   Session.set('mouseY', mouse.y);
+  // }, false);
   
-  document.addEventListener('mousemove', function(event) {
-    mouse.x = (event.clientX / window.innerWidth) - 0.5;
-    Session.set('mouseX', mouse.x);
+  // App.three.onRenderFcts.push(function(delta) {
+  //   if (App.player.ship && App.keyToggleState('spacebar')) {
+  //     // var x = Session.get('mouseX');
+  //     // 
+  //     // if (Math.abs(x * 10) > 0.5) {
+  //     //   if (x < 0) {
+  //     //     App.player.rotate('left', x);
+  //     //   } else {
+  //     //     App.player.rotate('right', x);
+  //     //   }
+  //     // }
+  //     
+  //     // var y = Session.get('mouseY');
+  //     // 
+  //     // if (Math.abs(y * 10) > 0.5) {
+  //     //   if (y < 0) {
+  //     //     App.player.rotate('down');
+  //     //   } else {
+  //     //     App.player.rotate('up');
+  //     //   }
+  //     // }
+  //     
+  //     // App.player.camera.position.x += (mouse.x * 5 - App.player.camera.position.x) * (delta * 3);
+  //     // App.player.camera.position.y += (mouse.y * 5 - App.player.camera.position.y) * (delta * 3);
+  //     
+  //     // App.player.camera.lookAt(App.player.ship.position);
+  //   }
+  // });
+  
+  App.container.on('shipLoaded', function (ship) {
+    App.three.camera.controls = new THREE.OrbitControls(App.three.camera);
+    // Disable directional keys for OrbitControls.
+    App.three.camera.controls.noKeys = true;
     
-    mouse.y = (event.clientY / window.innerHeight) - 0.5;
-    Session.set('mouseY', mouse.y);
-  }, false);
-  
-  App.three.onRenderFcts.push(function(delta) {
-    if (App.player.ship && App.keyToggleState('spacebar')) {
-      // var x = Session.get('mouseX');
-      // 
-      // if (Math.abs(x * 10) > 0.5) {
-      //   if (x < 0) {
-      //     App.player.rotate('left', x);
-      //   } else {
-      //     App.player.rotate('right', x);
-      //   }
-      // }
-      
-      var y = Session.get('mouseY');
-      
-      if (Math.abs(y * 10) > 0.5) {
-        if (y < 0) {
-          App.player.rotate('down');
-        } else {
-          App.player.rotate('up');
-        }
-      }
-      
-      // App.player.camera.position.x += (mouse.x * 5 - App.player.camera.position.x) * (delta * 3);
-      // App.player.camera.position.y += (mouse.y * 5 - App.player.camera.position.y) * (delta * 3);
-      
-      // App.player.camera.lookAt(App.player.ship.position);
+    App.three.camera.controls.syncTo = function(obj) {
+      App.three.camera.controls.target.x = obj.position.x;
+      App.three.camera.controls.target.y = obj.position.y;
+      App.three.camera.controls.target.z = obj.position.z;
     }
+    
+    App.three.camera.controls.syncTo(App.player.ship);
+    
+    App.three.onRenderFcts.push(function () {
+      App.three.camera.controls.update();
+    });
   });
 };

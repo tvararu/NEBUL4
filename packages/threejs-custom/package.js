@@ -11,6 +11,9 @@ Package.on_use(function(api) {
   api.add_files('lib/OBJLoader.js', 'client');
   api.add_files('lib/OBJMTLLoader.js', 'client');
   
+  // Specialized controls.
+  api.add_files('lib/OrbitControls.js', 'client');
+  
   // THREEx plugins.
   api.add_files('lib/threex.spaceships.js', 'client');
   api.add_files('lib/threex.windowresize.js', 'client');
