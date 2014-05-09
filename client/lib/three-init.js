@@ -14,7 +14,7 @@ App.THREEinit = function() {
   if ( !! window.WebGLRenderingContext) {
     // TODO: this ends up being a false positive on my Galaxy Nexus.
     // Needs a better conditional.
-    renderer = new THREE.WebGLRenderer();
+    renderer = new THREE.WebGLRenderer({antialias: false});
   } else {
     renderer = new THREE.CanvasRenderer();
   }
@@ -40,23 +40,43 @@ App.THREEinit = function() {
   var radius = 0.05, segments = 10, rings = 10;
   
   // Create the sphere's material.
-  var sphereMaterial = new THREE.MeshLambertMaterial({ color: 0xff0000 });
-  for (var i = -15; i < 15; i++) {
-    for (var j = -15; j < 15; j++) {
-      var sphere = new THREE.Mesh(new THREE.SphereGeometry(
-          radius,
-          segments,
-          rings), 
-        sphereMaterial);
+  // var sphereMaterial = new THREE.MeshLambertMaterial({ color: 0xff0000 });
+  // for (var i = -5; i < 5; i++) {
+  //   for (var j = -5; j < 5; j++) {
+  //     for (var k = -5; k < 5; k++) {
+  //       var sphere = new THREE.Mesh(new THREE.SphereGeometry(
+  //           radius,
+  //           segments,
+  //           rings), 
+  //         sphereMaterial);
+    
+  //       sphere.position.x = i;
+  //       sphere.position.z = j;
+  //       sphere.position.y = k;
+    
+  //       // Add the sphere to the scene.
+  //       scene.add(sphere);
+  //     }
+  //   }
+  // }
   
-      sphere.position.x = i;
-      sphere.position.z = j;
-  
-      // Add the sphere to the scene.
-      scene.add(sphere);
-    }
-  }
-  
+  // Create mesh
+  // var geomtry = new THREE.CylinderGeometry(0.1, 0.1, 1, 10, 0);
+  var random_between = Math.floor(Math.random() * 20) + 1;
+  var geomtry = new THREE.SphereGeometry(random_between, 10, 10);
+  var material = new THREE.MeshLambertMaterial({ color: 0xFFFFFF, shading: THREE.FlatShading});
+  var group = new THREE.Object3D();
+  for (var i = -500; i < 500; i ++) {
+    var mesh = new THREE.Mesh(geomtry, material);
+    mesh.position.x = ( Math.random() - 0.5 ) * 2000;
+    mesh.position.y = ( Math.random() - 0.5 ) * 2000;
+    mesh.position.z = ( Math.random() - 0.5 ) * 2000;
+    mesh.updateMatrix();
+    mesh.matrixAutoUpdate = false;
+    group.add(mesh);
+  };
+  scene.add(group);
+
   // Create a point light.
   var pointLight = new THREE.PointLight(0xFFFFFF);
   var pointLight2 = new THREE.PointLight(0xFFFFFF);
