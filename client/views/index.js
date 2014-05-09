@@ -60,17 +60,18 @@ UI.body.rendered = function() {
         this.camera.position.z -= 0.1;
         break;
       case 'default':
-          var shipX = this.ship.rotation.x;
-          var tween = new TWEEN.Tween({x : shipX})
-            .to({x : 0}, 2000)
-            .easing(TWEEN.Easing.Quadratic.EaseOut)
-            .onUpdate(function() {
-              shipX = this.x;
-            })
-            .start();
-          // this.ship.rotation.x = 0 ;
-          // this.ship.rotation.y = 0 ;
-          // this.ship.rotation.z = 0 ;
+          // var shipX = this.ship.rotation.x;
+          // var tween = new TWEEN.Tween({x : shipX})
+          //   .to({x : 0}, 2000)
+          //   .easing(TWEEN.Easing.Quadratic.EaseOut)
+          //   .onUpdate(function() {
+          //     shipX = this.x;
+          //   })
+          //   .start();
+          // TWEEN.update();
+          this.ship.rotation.x = 0 ;
+          this.ship.rotation.y = 0 ;
+          this.ship.rotation.z = 0 ;
         break;
       }
 
