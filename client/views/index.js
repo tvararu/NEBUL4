@@ -55,7 +55,7 @@ UI.body.rendered = function() {
     },
     rotate: function(direction, magnitude) {
       if (magnitude) {
-        magnitude = Math.abs(magnitude) / 100;
+        magnitude = Math.abs(magnitude) / 10;
       } else {
         magnitude = 0.01;
       }
@@ -63,19 +63,15 @@ UI.body.rendered = function() {
       switch(direction) {
       case 'left':
         this.ship.rotation.y += magnitude;
-        this.camera.rotation.y += magnitude;
         break;
       case 'right':
         this.ship.rotation.y -= magnitude;
-        this.camera.rotation.y -= magnitude;
         break;
       case 'up':
         this.ship.rotation.x += magnitude;
-        this.camera.rotation.x += magnitude;
         break;
       case 'down':
         this.ship.rotation.x -= magnitude;
-        this.camera.rotation.x -= magnitude;
         break;
       }
       
@@ -131,6 +127,48 @@ UI.body.rendered = function() {
       if (App.keyState('up') || App.keyState('w'))    { App.player.move('up'); }
       
       if (App.keyState('down') || App.keyState('s'))  { App.player.move('down'); }
+    }
+  });
+  
+  // Camera Controls.
+  var mouse = {
+    x: 0,
+    y: 0
+  };
+  
+  document.addEventListener('mousemove', function(event) {
+    mouse.x = (event.clientX / window.innerWidth) - 0.5;
+    Session.set('mouseX', mouse.x);
+    
+    mouse.y = (event.clientY / window.innerHeight) - 0.5;
+    Session.set('mouseY', mouse.y);
+  }, false);
+  
+  App.three.onRenderFcts.push(function(delta) {
+    if (App.player.ship && App.keyToggleState('spacebar')) {
+      var x = Session.get('mouseX');
+      
+      if (Math.abs(x * 10) > 0.5) {
+        if (x < 0) {
+          App.player.rotate('left', x);
+          App.three.camera.controls.rotateLeft(-1 * (Math.PI / 180));
+        } else {
+          App.player.rotate('right', x);
+          App.three.camera.controls.rotateLeft(Math.PI / 180);
+        }
+      }
+      
+      var y = Session.get('mouseY');
+      
+      if (Math.abs(y * 10) > 0.5) {
+        if (y < 0) {
+          App.player.rotate('down', x);
+          App.three.camera.controls.rotateUp(-1 * (Math.PI / 180));
+        } else {
+          App.player.rotate('up', x);
+          App.three.camera.controls.rotateUp(Math.PI / 180);
+        }
+      }
     }
   });
   
