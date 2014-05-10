@@ -46,7 +46,7 @@
     this.zoomSpeed = 1.0;
     // Limits to how far you can dolly in and out
     this.minDistance = 0;
-    this.maxDistance = Infinity;
+    this.maxDistance = 4.0;
 
     // Set to true to disable this control
     this.noRotate = false;
@@ -130,6 +130,10 @@
       thetaDelta -= angle;
 
     };
+    
+    this.rotateRight = function(angle) {
+      return scope.rotateLeft(-1 * angle);
+    };
 
     this.rotateUp = function(angle) {
 
@@ -141,6 +145,10 @@
 
       phiDelta -= angle;
 
+    };
+    
+    this.rotateDown = function(angle) {
+      return scope.rotateUp(-1 * angle);
     };
 
     // pass in distance in world space to move left

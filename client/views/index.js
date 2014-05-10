@@ -53,25 +53,19 @@ UI.body.rendered = function() {
       
       updateShip(this.ship.position);
     },
-    rotate: function(direction, magnitude) {
-      if (magnitude) {
-        magnitude = Math.abs(magnitude) / 10;
-      } else {
-        magnitude = 0.01;
-      }
-      
+    rotate: function(direction, angle) {
       switch(direction) {
       case 'left':
-        this.ship.rotation.y += magnitude;
+        this.ship.rotation.y += angle;
         break;
       case 'right':
-        this.ship.rotation.y -= magnitude;
+        this.ship.rotation.y -= angle;
         break;
       case 'up':
-        this.ship.rotation.x += magnitude;
+        this.ship.rotation.x += angle;
         break;
       case 'down':
-        this.ship.rotation.x -= magnitude;
+        this.ship.rotation.x -= angle;
         break;
       }
       
@@ -93,6 +87,10 @@ UI.body.rendered = function() {
         spaceship._id = ship._id;
         spaceship.position = ship.position;
         App.three.scene.add(App.player.ship);
+  
+        App.player.camera.position.x = spaceship.position.x + 0;
+        App.player.camera.position.y = spaceship.position.y + 2.3;
+        App.player.camera.position.z = spaceship.position.z - 3.5;
   
         App.triggerEvent('shipLoaded', ship);
   
@@ -149,24 +147,28 @@ UI.body.rendered = function() {
       var x = Session.get('mouseX');
       
       if (Math.abs(x * 10) > 0.5) {
+        var angle = Math.PI / (180 / Math.abs(x) / 2);
+        
         if (x < 0) {
-          App.player.rotate('left', x);
-          App.three.camera.controls.rotateLeft(-1 * (Math.PI / 180));
+          App.player.rotate('left', angle);
+          App.three.camera.controls.rotateRight(angle);
         } else {
-          App.player.rotate('right', x);
-          App.three.camera.controls.rotateLeft(Math.PI / 180);
+          App.player.rotate('right', angle);
+          App.three.camera.controls.rotateLeft(angle);
         }
       }
       
       var y = Session.get('mouseY');
       
       if (Math.abs(y * 10) > 0.5) {
+        var angle = Math.PI / (180 / Math.abs(y) / 2);
+        
         if (y < 0) {
-          App.player.rotate('down', x);
-          App.three.camera.controls.rotateUp(-1 * (Math.PI / 180));
+          App.player.rotate('down', angle);
+          App.three.camera.controls.rotateDown(angle);
         } else {
-          App.player.rotate('up', x);
-          App.three.camera.controls.rotateUp(Math.PI / 180);
+          App.player.rotate('up', angle);
+          App.three.camera.controls.rotateUp(angle);
         }
       }
     }
@@ -176,6 +178,7 @@ UI.body.rendered = function() {
     App.three.camera.controls = new THREE.OrbitControls(App.three.camera);
     // Disable directional keys for OrbitControls.
     App.three.camera.controls.noKeys = true;
+    App.three.camera.controls.noZoom = true;
     
     App.three.camera.controls.syncTo = function(obj) {
       App.three.camera.controls.target.x = obj.position.x;
