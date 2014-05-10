@@ -26,50 +26,47 @@ UI.body.rendered = function() {
   // Another namespace to hold all the graphics stuff.
   App.three = App.three || App.THREEinit();
   
-  App.player = {
-    camera: App.three.camera,
-    ship: null,
-    move: function(direction) {
-      switch(direction) {
-      case 'left':
-        this.ship.position.x += 0.1;
-        this.camera.position.x += 0.1;
-        break;
-      case 'right':
-        this.ship.position.x -= 0.1;
-        this.camera.position.x -= 0.1;
-        break;
-      case 'up':
-        this.ship.position.z += 0.1;
-        this.camera.position.z += 0.1;
-        break;
-      case 'down':
-        this.ship.position.z -= 0.1;
-        this.camera.position.z -= 0.1;
-        break;
-      }
-      
-      App.three.camera.controls.syncTo(App.player.ship);
-      
-      updateShip(this.ship.position);
-    },
-    rotate: function(direction, angle) {
-      switch(direction) {
-      case 'left':
-        this.ship.rotation.y += angle;
-        break;
-      case 'right':
-        this.ship.rotation.y -= angle;
-        break;
-      case 'up':
-        this.ship.rotation.x += angle;
-        break;
-      case 'down':
-        this.ship.rotation.x -= angle;
-        break;
-      }
-      
-      updateShip(this.ship.position);
+  // App.player is a THREE group containing the ship, the reticle,
+  // and the camera.
+  App.player = new THREE.Object3D();
+  App.player.camera = App.three.camera;
+  App.player.add(App.player.camera);
+  
+  App.player.move = function(direction) {
+    switch(direction) {
+    case 'left':
+      this.position.x += 0.1;
+      break;
+    case 'right':
+      this.position.x -= 0.1;
+      break;
+    case 'up':
+      this.position.z += 0.1;
+      break;
+    case 'down':
+      this.position.z -= 0.1;
+      break;
+    }
+    
+    updateShip(this.position);
+  };
+  
+  App.player.rotate = function(direction, angle) {
+    angle = angle || Math.PI / 180;
+    
+    switch(direction) {
+    case 'left':
+      this.rotation.y += angle;
+      break;
+    case 'right':
+      this.rotation.y -= angle;
+      break;
+    case 'up':
+      this.rotation.x -= angle;
+      break;
+    case 'down':
+      this.rotation.x += angle;
+      break;
     }
   };
   
@@ -86,11 +83,34 @@ UI.body.rendered = function() {
   
         spaceship._id = ship._id;
         spaceship.position = ship.position;
-        App.three.scene.add(App.player.ship);
+        
+        App.player.add(App.player.ship);
   
         App.player.camera.position.x = spaceship.position.x + 0;
         App.player.camera.position.y = spaceship.position.y + 2.3;
         App.player.camera.position.z = spaceship.position.z - 3.5;
+  
+        App.player.camera.rotation.x = spaceship.rotation.x + 0.4;
+        App.player.camera.rotation.y = spaceship.rotation.y + 3.15;
+        App.player.camera.rotation.z = spaceship.rotation.z + 0.0;
+        
+        App.player.reticle = new THREE.Mesh(
+          new THREE.RingGeometry(0.1, 0.12, 20),
+          new THREE.MeshBasicMaterial({
+            color: 0xffffff,
+            side: THREE.DoubleSide
+          })
+        );
+        
+        App.player.reticle.position.x = spaceship.position.x;
+        App.player.reticle.position.y = spaceship.position.y;
+        App.player.reticle.position.z = spaceship.position.z + 2.0;
+        
+        App.player.reticle.lookAt(App.player.camera.position);
+        
+        App.player.add(App.player.reticle);
+        
+        App.three.scene.add(App.player);
   
         App.triggerEvent('shipLoaded', ship);
   
@@ -118,13 +138,21 @@ UI.body.rendered = function() {
   
   App.three.onRenderFcts.push(function() {
     if (App.player.ship) {
-      if (App.keyState('left') || App.keyState('a'))  { App.player.move('left'); }
+      if (App.keyState('left') || App.keyState('a')) {
+        App.player.move('left');
+      }
       
-      if (App.keyState('right') || App.keyState('d')) { App.player.move('right'); }
+      if (App.keyState('right') || App.keyState('d')) {
+        App.player.move('right');
+      }
       
-      if (App.keyState('up') || App.keyState('w'))    { App.player.move('up'); }
+      if (App.keyState('up') || App.keyState('w')) {
+        App.player.move('up');
+      }
       
-      if (App.keyState('down') || App.keyState('s'))  { App.player.move('down'); }
+      if (App.keyState('down') || App.keyState('s')) {
+        App.player.move('down');
+      }
     }
   });
   
@@ -151,10 +179,8 @@ UI.body.rendered = function() {
         
         if (x < 0) {
           App.player.rotate('left', angle);
-          App.three.camera.controls.rotateRight(angle);
         } else {
           App.player.rotate('right', angle);
-          App.three.camera.controls.rotateLeft(angle);
         }
       }
       
@@ -164,32 +190,30 @@ UI.body.rendered = function() {
         var angle = Math.PI / (180 / Math.abs(y) / 2);
         
         if (y < 0) {
-          App.player.rotate('down', angle);
-          App.three.camera.controls.rotateDown(angle);
-        } else {
           App.player.rotate('up', angle);
-          App.three.camera.controls.rotateUp(angle);
+        } else {
+          App.player.rotate('down', angle);
         }
       }
     }
   });
   
-  App.container.on('shipLoaded', function (ship) {
-    App.three.camera.controls = new THREE.OrbitControls(App.three.camera);
-    // Disable directional keys for OrbitControls.
-    App.three.camera.controls.noKeys = true;
-    App.three.camera.controls.noZoom = true;
-    
-    App.three.camera.controls.syncTo = function(obj) {
-      App.three.camera.controls.target.x = obj.position.x;
-      App.three.camera.controls.target.y = obj.position.y;
-      App.three.camera.controls.target.z = obj.position.z;
-    }
-    
-    App.three.camera.controls.syncTo(App.player.ship);
-    
-    App.three.onRenderFcts.push(function () {
-      App.three.camera.controls.update();
-    });
-  });
+  // App.container.on('shipLoaded', function (ship) {
+  //   App.three.camera.controls = new THREE.OrbitControls(App.three.camera);
+  //   // Disable directional keys for OrbitControls.
+  //   App.three.camera.controls.noKeys = true;
+  //   App.three.camera.controls.noZoom = true;
+  //   
+  //   App.three.camera.controls.syncTo = function(obj) {
+  //     App.three.camera.controls.target.x = obj.position.x;
+  //     App.three.camera.controls.target.y = obj.position.y;
+  //     App.three.camera.controls.target.z = obj.position.z;
+  //   }
+  //   
+  //   App.three.camera.controls.syncTo(App.player.ship);
+  //   
+  //   App.three.onRenderFcts.push(function () {
+  //     App.three.camera.controls.update();
+  //   });
+  // });
 };
