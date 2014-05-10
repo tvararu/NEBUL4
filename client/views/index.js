@@ -134,49 +134,6 @@ UI.body.rendered = function() {
     }
   });
   
-  // Camera Controls.
-  // var mouse = {
-  //   x: 0,
-  //   y: 0
-  // };
-  // 
-  // document.addEventListener('mousemove', function(event) {
-  //   mouse.x = (event.clientX / window.innerWidth) - 0.5;
-  //   Session.set('mouseX', mouse.x);
-  //   
-  //   mouse.y = (event.clientY / window.innerHeight) - 0.5;
-  //   Session.set('mouseY', mouse.y);
-  // }, false);
-  
-  // App.three.onRenderFcts.push(function(delta) {
-  //   if (App.player.ship && App.keyToggleState('spacebar')) {
-  //     // var x = Session.get('mouseX');
-  //     // 
-  //     // if (Math.abs(x * 10) > 0.5) {
-  //     //   if (x < 0) {
-  //     //     App.player.rotate('left', x);
-  //     //   } else {
-  //     //     App.player.rotate('right', x);
-  //     //   }
-  //     // }
-  //     
-  //     // var y = Session.get('mouseY');
-  //     // 
-  //     // if (Math.abs(y * 10) > 0.5) {
-  //     //   if (y < 0) {
-  //     //     App.player.rotate('down');
-  //     //   } else {
-  //     //     App.player.rotate('up');
-  //     //   }
-  //     // }
-  //     
-  //     // App.player.camera.position.x += (mouse.x * 5 - App.player.camera.position.x) * (delta * 3);
-  //     // App.player.camera.position.y += (mouse.y * 5 - App.player.camera.position.y) * (delta * 3);
-  //     
-  //     // App.player.camera.lookAt(App.player.ship.position);
-  //   }
-  // });
-  
   App.container.on('shipLoaded', function (ship) {
     App.three.camera.controls = new THREE.OrbitControls(App.three.camera);
     // Disable directional keys for OrbitControls.
