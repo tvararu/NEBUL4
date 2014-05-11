@@ -32,6 +32,8 @@ UI.body.rendered = function() {
   App.player.camera = App.three.camera;
   App.player.add(App.player.camera);
   
+  App.three.scene.add(new THREE.AxisHelper(20));
+  
   App.player.move = function(direction) {
     switch(direction) {
     case 'left':
@@ -48,7 +50,7 @@ UI.body.rendered = function() {
       break;
     }
     
-    updateShip(this.position);
+    updatePlayer(this);
   };
   
   App.player.rotate = function(direction, angle) {
@@ -76,23 +78,22 @@ UI.body.rendered = function() {
   // Initialize touchscreen gestures.
   App.hammerInit();
 
-  Ships.find().observe({
-    added: function(ship) {
+  Players.find().observe({
+    added: function(player) {
+      App.player._id = player._id;
+      App.player.position = player.position;
+      
+      App.triggerEvent('playerAdded', App.player);
+      
       THREEx.SpaceShips.loadSpaceFighter03(function(object3d) {
-        var spaceship = App.player.ship = object3d;
-  
-        spaceship._id = ship._id;
-        spaceship.position = ship.position;
+        var ship = object3d;
+          
+        App.player.ship = ship;
+        App.player.add(ship);
         
-        App.player.add(App.player.ship);
-  
-        App.player.camera.position.x = spaceship.position.x + 0;
-        App.player.camera.position.y = spaceship.position.y + 2.3;
-        App.player.camera.position.z = spaceship.position.z - 3.5;
-  
-        App.player.camera.rotation.x = spaceship.rotation.x + 0.4;
-        App.player.camera.rotation.y = spaceship.rotation.y + 3.15;
-        App.player.camera.rotation.z = spaceship.rotation.z + 0.0;
+        App.player.camera.position.x = ship.position.x + 0;
+        App.player.camera.position.y = ship.position.y + 2.3;
+        App.player.camera.position.z = ship.position.z - 3.5;
         
         App.player.reticle = new THREE.Mesh(
           new THREE.RingGeometry(0.1, 0.12, 20),
@@ -102,38 +103,37 @@ UI.body.rendered = function() {
           })
         );
         
-        App.player.reticle.position.x = spaceship.position.x;
-        App.player.reticle.position.y = spaceship.position.y;
-        App.player.reticle.position.z = spaceship.position.z + 2.0;
+        App.player.reticle.position.x = ship.position.x;
+        App.player.reticle.position.y = ship.position.y;
+        App.player.reticle.position.z = ship.position.z + 2.0;
         
         App.player.reticle.lookAt(App.player.camera.position);
+        App.player.camera.lookAt(App.player.reticle.position);
         
         App.player.add(App.player.reticle);
         
         App.three.scene.add(App.player);
-  
-        App.triggerEvent('shipLoaded', ship);
-  
+        
+        App.triggerEvent('playerLoaded', App.player);
+        
         setInterval(function() {
-          var spaceship = _.pick(App.player.ship, '_id', 'position');
-          Ships.update(spaceship._id, spaceship);
+          var player = _.pick(App.player, '_id', 'position');
+          Players.update(player._id, player);
         }, 500);
       });
-  
-      App.triggerEvent('shipAdded', ship);
     }
   });
   
-  var updateShip = function(position) {
-    shipStream.emit('updateShip', position);
-  
-    App.triggerEvent('shipChanged', position);
+  var updatePlayer = function(player) {
+    playerStream.emit('updatePlayer', player);
+    // TODO: check if this is necessary.
+    App.triggerEvent('playerChanged', player);
   };
   
-  shipStream.on('updateShip', function(position) {
-    App.player.ship.position = position;
+  playerStream.on('updatePlayer', function(player) {
+    App.player.position = player.position;
   
-    App.triggerEvent('shipChanged', position);
+    App.triggerEvent('playerChanged', player);
   });
   
   App.three.onRenderFcts.push(function() {
@@ -174,8 +174,8 @@ UI.body.rendered = function() {
     if (App.player.ship && App.keyToggleState('spacebar')) {
       var x = Session.get('mouseX');
       
-      if (Math.abs(x * 10) > 0.5) {
-        var angle = Math.PI / (180 / Math.abs(x) / 2);
+      if (Math.abs(x * 10) > 0.2) {
+        var angle = (Math.PI / 180) * (Math.abs(x) * 5);
         
         if (x < 0) {
           App.player.rotate('left', angle);
@@ -186,8 +186,8 @@ UI.body.rendered = function() {
       
       var y = Session.get('mouseY');
       
-      if (Math.abs(y * 10) > 0.5) {
-        var angle = Math.PI / (180 / Math.abs(y) / 2);
+      if (Math.abs(y * 10) > 0.2) {
+        var angle = (Math.PI / 180) * (Math.abs(y) * 5);
         
         if (y < 0) {
           App.player.rotate('up', angle);

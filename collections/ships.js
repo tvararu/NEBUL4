@@ -1,2 +1,2 @@
-Ships = new Meteor.Collection('ships');
-shipStream = new Meteor.Stream('ships');
+Players = new Meteor.Collection('players');
+playerStream = new Meteor.Stream('players');

@@ -46,7 +46,7 @@
     this.zoomSpeed = 1.0;
     // Limits to how far you can dolly in and out
     this.minDistance = 0;
-    this.maxDistance = 4.0;
+    this.maxDistance = 20.0;
 
     // Set to true to disable this control
     this.noRotate = false;
