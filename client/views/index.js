@@ -68,7 +68,7 @@ UI.body.rendered = function() {
   };
   
   App.player.update = function() {
-    playerStream.emit('updatePlayer', this.position);
+    playerStream.emit('updatePlayerPosition', this.position);
     // TODO: check if this is necessary.
     App.triggerEvent('playerChanged', this.position);
   };
@@ -77,10 +77,14 @@ UI.body.rendered = function() {
     this.position = new THREE.Vector3();
   };
   
-  playerStream.on('updatePlayer', function(position) {
+  playerStream.on('updatePlayerPosition', function(position) {
     App.player.position = position;
   
     App.triggerEvent('playerChanged', position);
+  });
+  
+  playerStream.on('updatePlayerRotation', function(cacat) {
+    App.player.rotate(cacat.direction, cacat.angle);
   });
   
   App.player.rotate = function(direction, angle) {
@@ -197,8 +201,10 @@ UI.body.rendered = function() {
         
         if (x < 0) {
           App.player.rotate('left', angle);
+          playerStream.emit('updatePlayerRotation', { angle: angle, direction: 'left' });
         } else {
           App.player.rotate('right', angle);
+          playerStream.emit('updatePlayerRotation', { angle: angle, direction: 'right' });
         }
       }
       
@@ -209,8 +215,10 @@ UI.body.rendered = function() {
         
         if (y < 0) {
           App.player.rotate('up', angle);
+          playerStream.emit('updatePlayerRotation', { angle: angle, direction: 'up' });
         } else {
           App.player.rotate('down', angle);
+          playerStream.emit('updatePlayerRotation', { angle: angle, direction: 'down' });
         }
       }
     }
