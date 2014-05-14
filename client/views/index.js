@@ -35,21 +35,35 @@ UI.body.rendered = function() {
   App.three.scene.add(new THREE.AxisHelper(20));
   
   App.player.move = function(direction) {
+    var distance = 0.1;
+
+    var dir;
+
     switch(direction) {
     case 'left':
-      this.position.x += 0.1;
+      dir = new THREE.Vector3(distance, 0, 0);
       break;
     case 'right':
-      this.position.x -= 0.1;
+      dir = new THREE.Vector3(-distance, 0, 0);
       break;
     case 'up':
-      this.position.z += 0.1;
+      dir = new THREE.Vector3(0, 0, distance);
       break;
     case 'down':
-      this.position.z -= 0.1;
+      dir = new THREE.Vector3(0, 0, -distance);
       break;
     }
+
+    var matrix = new THREE.Matrix4();
+    matrix.extractRotation(this.matrix);
     
+    dir = dir.applyProjection(matrix);
+    
+
+    this.position.x += dir.x;
+    this.position.y += dir.y;
+    this.position.z += dir.z;
+
     this.update();
   };
   
@@ -57,6 +71,10 @@ UI.body.rendered = function() {
     playerStream.emit('updatePlayer', this.position);
     // TODO: check if this is necessary.
     App.triggerEvent('playerChanged', this.position);
+  };
+  
+  App.player.reset = function() {
+    this.position = new THREE.Vector3();
   };
   
   playerStream.on('updatePlayer', function(position) {
