@@ -17,14 +17,14 @@ describe('Gameplay', function() {
     var position = client.evalSync(function() {
       var initial = 0, after = 0;
   
-      App.container.on('shipLoaded', function() {
-        initial = App.player.ship.position.z;
+      App.container.on('playerLoaded', function() {
+        initial = App.player.position.z;
   
         App.pushKey('up');
       });
   
-      App.container.on('shipChanged', function() {
-        after = App.player.ship.position.z;
+      App.container.on('playerChanged', function() {
+        after = App.player.position.z;
   
         emit('return', { initial: initial, after: after });
       });
@@ -39,7 +39,7 @@ describe('Gameplay', function() {
   it('konami code should work', function(done, server, client) {
     var codeDidTrigger = client.evalSync(function() {
 
-      App.container.on('shipLoaded', function() {
+      App.container.on('playerLoaded', function() {
         App.pushKeys('up up down down left right left right b a', 1);
       });
 
