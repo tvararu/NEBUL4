@@ -50,8 +50,20 @@ UI.body.rendered = function() {
       break;
     }
     
-    updatePlayer(this);
+    this.update();
   };
+  
+  App.player.update = function() {
+    playerStream.emit('updatePlayer', this.position);
+    // TODO: check if this is necessary.
+    App.triggerEvent('playerChanged', this.position);
+  };
+  
+  playerStream.on('updatePlayer', function(position) {
+    App.player.position = position;
+  
+    App.triggerEvent('playerChanged', position);
+  });
   
   App.player.rotate = function(direction, angle) {
     angle = angle || Math.PI / 180;
@@ -122,18 +134,6 @@ UI.body.rendered = function() {
         }, 500);
       });
     }
-  });
-  
-  var updatePlayer = function(player) {
-    playerStream.emit('updatePlayer', player);
-    // TODO: check if this is necessary.
-    App.triggerEvent('playerChanged', player);
-  };
-  
-  playerStream.on('updatePlayer', function(player) {
-    App.player.position = player.position;
-  
-    App.triggerEvent('playerChanged', player);
   });
   
   App.three.onRenderFcts.push(function() {
