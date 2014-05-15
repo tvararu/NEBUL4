@@ -69,7 +69,6 @@ UI.body.rendered = function() {
   
   App.player.update = function() {
     playerStream.emit('updatePlayerPosition', this.position);
-    // TODO: check if this is necessary.
     App.triggerEvent('playerChanged', this.position);
   };
   
@@ -88,22 +87,20 @@ UI.body.rendered = function() {
   });
   
   App.player.rotate = function(direction, angle) {
-    angle = angle || Math.PI / 180;
+    var axis;
     
     switch(direction) {
     case 'left':
-      this.rotation.y += angle;
-      break;
     case 'right':
-      this.rotation.y -= angle;
+      axis = new THREE.Vector3(0, 1, 0);
       break;
     case 'up':
-      this.rotation.x -= angle;
-      break;
     case 'down':
-      this.rotation.x += angle;
+      axis = new THREE.Vector3(1, 0, 0);
       break;
     }
+    
+    this.rotateOnAxis(axis, angle);
   };
   
   // Initialize easter egg.
@@ -192,54 +189,48 @@ UI.body.rendered = function() {
     Session.set('mouseY', mouse.y);
   }, false);
   
-  App.three.onRenderFcts.push(function(delta) {
-    if (App.player.ship && App.keyToggleState('spacebar')) {
-      var x = Session.get('mouseX');
+  App.three.onRenderFcts.push(function() {
+    if (App.player.ship) {
+      if (App.keyToggleState('spacebar')) {
+        var x = Session.get('mouseX');
       
-      if (Math.abs(x * 10) > 0.2) {
         var angle = (Math.PI / 180) * (Math.abs(x) * 5);
-        
+      
         if (x < 0) {
           App.player.rotate('left', angle);
-          playerStream.emit('updatePlayerRotation', { angle: angle, direction: 'left' });
+          playerStream.emit(
+            'updatePlayerRotation',
+            { angle: angle, direction: 'left' }
+          );
         } else {
-          App.player.rotate('right', angle);
-          playerStream.emit('updatePlayerRotation', { angle: angle, direction: 'right' });
+          App.player.rotate('right', -angle);
+          playerStream.emit(
+            'updatePlayerRotation',
+            { angle: angle, direction: 'right' }
+          );
         }
-      }
       
-      var y = Session.get('mouseY');
+        var y = Session.get('mouseY');
       
-      if (Math.abs(y * 10) > 0.2) {
-        var angle = (Math.PI / 180) * (Math.abs(y) * 5);
-        
+        angle = (Math.PI / 180) * (Math.abs(y) * 5);
+      
         if (y < 0) {
-          App.player.rotate('up', angle);
-          playerStream.emit('updatePlayerRotation', { angle: angle, direction: 'up' });
+          App.player.rotate('up', -angle);
+          playerStream.emit(
+            'updatePlayerRotation',
+            { angle: angle, direction: 'up' }
+          );
         } else {
           App.player.rotate('down', angle);
-          playerStream.emit('updatePlayerRotation', { angle: angle, direction: 'down' });
+          playerStream.emit(
+            'updatePlayerRotation',
+            { angle: angle, direction: 'down' }
+          );
         }
+      } else {
+        // TODO: While the space key is not held down, slowly transition
+        // the ship back to horizontal orientation.
       }
     }
   });
-  
-  // App.container.on('shipLoaded', function (ship) {
-  //   App.three.camera.controls = new THREE.OrbitControls(App.three.camera);
-  //   // Disable directional keys for OrbitControls.
-  //   App.three.camera.controls.noKeys = true;
-  //   App.three.camera.controls.noZoom = true;
-  //   
-  //   App.three.camera.controls.syncTo = function(obj) {
-  //     App.three.camera.controls.target.x = obj.position.x;
-  //     App.three.camera.controls.target.y = obj.position.y;
-  //     App.three.camera.controls.target.z = obj.position.z;
-  //   }
-  //   
-  //   App.three.camera.controls.syncTo(App.player.ship);
-  //   
-  //   App.three.onRenderFcts.push(function () {
-  //     App.three.camera.controls.update();
-  //   });
-  // });
 };
