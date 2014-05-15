@@ -206,7 +206,7 @@ UI.body.rendered = function() {
           App.player.rotate('right', -angle);
           playerStream.emit(
             'updatePlayerRotation',
-            { angle: angle, direction: 'right' }
+            { angle: -angle, direction: 'right' }
           );
         }
       
@@ -218,7 +218,7 @@ UI.body.rendered = function() {
           App.player.rotate('up', -angle);
           playerStream.emit(
             'updatePlayerRotation',
-            { angle: angle, direction: 'up' }
+            { angle: -angle, direction: 'up' }
           );
         } else {
           App.player.rotate('down', angle);
