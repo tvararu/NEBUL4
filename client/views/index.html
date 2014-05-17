@@ -4,8 +4,23 @@
 </head>
 
 <body>
+  {{#if currentUser}}
+    {{> game}}
+  {{else}}
+    <div id="interface">
+      <div class="login-items">
+        {{> loginButtons}}
+      </div>
+    </div>
+  {{/if}}
+</body>
+
+<template name="game">
   <div id="game"></div>
   <div id="interface">
+    <div class="login-items">
+      {{> loginButtons}}
+    </div>
     <div class="toggle-states">
       <div class="spacebar">spacebar: {{ spacebarState }}</div>
       <div class="mousex">mouse.x: {{ mouseXState }}</div>
@@ -13,4 +28,4 @@
     </div>
     <div class="reticle {{ reticleState }}"></div>
   </div>
-</body>
+</template>

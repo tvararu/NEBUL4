@@ -9,7 +9,8 @@
       },
       "streams": {},
       "buzz.js": {},
-      "hammer": {}
+      "hammer": {},
+      "accounts-ui-bootstrap-3": {}
     },
     "packages": {
       "bootstrap-3": {
@@ -19,8 +20,8 @@
       },
       "fast-render": {
         "git": "https://github.com/arunoda/meteor-fast-render.git",
-        "tag": "v0.1.25",
-        "commit": "010c4ee25b48ab6a7373000be48f9cd4a8535880"
+        "tag": "v0.2.5",
+        "commit": "93e2fb334e55fbe9b5ebb2a2e65964018658f43e"
       },
       "threejs-custom": {
         "path": "packages/threejs-custom"
@@ -39,6 +40,11 @@
         "git": "https://github.com/noorderstorm/meteor-hammer.git",
         "tag": "v0.1.3",
         "commit": "1d37707c251c04c7d9b6023ba959b23c1f257c44"
+      },
+      "accounts-ui-bootstrap-3": {
+        "git": "https://github.com/mangasocial/meteor-accounts-ui-bootstrap-3.git",
+        "tag": "v0.3.0-1",
+        "commit": "93ffa5d0e325dc7026de89f6d90c178fa04bdd3a"
       }
     }
   }

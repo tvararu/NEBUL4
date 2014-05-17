@@ -1,6 +1,6 @@
 Meteor.subscribe('players');
 
-UI.body.helpers({
+Template.game.helpers({
   spacebarState: function() {
     return Session.get('spacebarToggleState') ? 'true' : 'false';
   },
@@ -15,7 +15,7 @@ UI.body.helpers({
   }
 });
 
-UI.body.rendered = function() {
+Template.game.rendered = function() {
   // The global application namespace.
   window.App = window.App || {};
   
@@ -26,7 +26,7 @@ UI.body.rendered = function() {
   App.keyInit();
   
   // Another namespace to hold all the graphics stuff.
-  App.three = App.three || App.THREEinit();
+  App.three = App.THREEinit();
   
   // Initialize easter egg.
   App.easterEgg.init();
@@ -35,5 +35,5 @@ UI.body.rendered = function() {
   App.hammerInit();
   
   // Initialize player and camera.
-  App.player = App.player || App.playerInit();
+  App.player = App.playerInit();
 };
