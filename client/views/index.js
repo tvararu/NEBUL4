@@ -1,4 +1,4 @@
-Meteor.subscribe('players');
+Meteor.subscribe('userStatus');
 
 Template.game.helpers({
   spacebarState: function() {

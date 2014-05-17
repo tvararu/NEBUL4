@@ -1,123 +1,152 @@
 window.App = window.App || {};
 
+var Player = THREE.Object3D;
+
+Player.prototype.move = function(direction) {
+  var distance = 0.1;
+
+  var dir;
+
+  switch(direction) {
+  case 'left':
+    dir = new THREE.Vector3(distance, 0, 0);
+    break;
+  case 'right':
+    dir = new THREE.Vector3(-distance, 0, 0);
+    break;
+  case 'up':
+    dir = new THREE.Vector3(0, 0, distance);
+    break;
+  case 'down':
+    dir = new THREE.Vector3(0, 0, -distance);
+    break;
+  }
+
+  var matrix = new THREE.Matrix4();
+  matrix.extractRotation(this.matrix);
+
+  dir = dir.applyProjection(matrix);
+
+
+  this.position.x += dir.x;
+  this.position.y += dir.y;
+  this.position.z += dir.z;
+
+  this.update();
+};
+
+Player.prototype.update = function() {
+  playerStream.emit('updatePlayerPosition', {
+    name: this.name,
+    position: this.position
+  });
+  // App.triggerEvent('playerChanged', this.position);
+};
+
+Player.prototype.reset = function() {
+  this.position = new THREE.Vector3();
+};
+
+Player.prototype.rotate = function(direction, angle) {
+  var axis;
+
+  switch(direction) {
+  case 'left':
+  case 'right':
+    axis = new THREE.Vector3(0, 1, 0);
+    break;
+  case 'up':
+  case 'down':
+    axis = new THREE.Vector3(1, 0, 0);
+    break;
+  }
+
+  this.rotateOnAxis(axis, angle);
+};
+
 App.playerInit = function() {
   var player = {};
   
   // App.player is a THREE group containing the ship, the reticle,
   // and the camera.
-  player = new THREE.Object3D();
+  player = new Player();
   player.camera = App.three.camera;
   player.add(player.camera);
 
+  playerStream.on('updatePlayerPosition', function(somePlayer) {
+    var p = App.three.scene.getObjectByName(somePlayer.name);
+    p.position = somePlayer.position;
+    // App.triggerEvent('playerChanged', p.position);
+  });
+
+  playerStream.on('updatePlayerRotation', function(somePlayer) {
+    var p = App.three.scene.getObjectByName(somePlayer.name);
+    p.rotate(somePlayer.direction, somePlayer.angle);
+  });
+
   App.three.scene.add(new THREE.AxisHelper(20));
-
-  player.move = function(direction) {
-    var distance = 0.1;
-
-    var dir;
-
-    switch(direction) {
-    case 'left':
-      dir = new THREE.Vector3(distance, 0, 0);
-      break;
-    case 'right':
-      dir = new THREE.Vector3(-distance, 0, 0);
-      break;
-    case 'up':
-      dir = new THREE.Vector3(0, 0, distance);
-      break;
-    case 'down':
-      dir = new THREE.Vector3(0, 0, -distance);
-      break;
-    }
-
-    var matrix = new THREE.Matrix4();
-    matrix.extractRotation(this.matrix);
-  
-    dir = dir.applyProjection(matrix);
-  
-
-    this.position.x += dir.x;
-    this.position.y += dir.y;
-    this.position.z += dir.z;
-
-    this.update();
-  };
-
-  player.update = function() {
-    playerStream.emit('updatePlayerPosition', this.position);
-    App.triggerEvent('playerChanged', this.position);
-  };
-
-  player.reset = function() {
-    this.position = new THREE.Vector3();
-  };
-
-  playerStream.on('updatePlayerPosition', function(position) {
-    player.position = position;
-
-    App.triggerEvent('playerChanged', position);
-  });
-
-  playerStream.on('updatePlayerRotation', function(cacat) {
-    player.rotate(cacat.direction, cacat.angle);
-  });
-
-  player.rotate = function(direction, angle) {
-    var axis;
-  
-    switch(direction) {
-    case 'left':
-    case 'right':
-      axis = new THREE.Vector3(0, 1, 0);
-      break;
-    case 'up':
-    case 'down':
-      axis = new THREE.Vector3(1, 0, 0);
-      break;
-    }
-  
-    this.rotateOnAxis(axis, angle);
-  };
 
   Meteor.users.find().observe({
     added: function(p) {
-      player._id = p._id;
-      player.position = p.profile.position || { x: 0, y: 0, z: 0 };
+      console.log(p._id);
+      
+      if (p._id === Meteor.user()._id) {
+        player.name = p._id;
+        player.position = p.profile.position || { x: 0, y: 0, z: 0 };
     
-      App.triggerEvent('playerAdded', p);
+        App.triggerEvent('playerAdded', p);
     
-      THREEx.SpaceShips.loadSpaceFighter03(function(object3d) {
-        var ship = object3d;
+        THREEx.SpaceShips.loadSpaceFighter03(function(object3d) {
+          var ship = object3d;
         
-        player.ship = ship;
-        player.add(ship);
+          player.ship = ship;
+          player.add(ship);
       
-        player.camera.position.x = ship.position.x + 0;
-        player.camera.position.y = ship.position.y + 2.3;
-        player.camera.position.z = ship.position.z - 3.5;
+          player.camera.position.x = ship.position.x + 0;
+          player.camera.position.y = ship.position.y + 2.3;
+          player.camera.position.z = ship.position.z - 3.5;
       
-        player.reticle = new THREE.Mesh(
-          new THREE.RingGeometry(0.1, 0.12, 20),
-          new THREE.MeshBasicMaterial({
-            color: 0xffffff,
-            side: THREE.DoubleSide
-          })
-        );
+          player.reticle = new THREE.Mesh(
+            new THREE.RingGeometry(0.1, 0.12, 20),
+            new THREE.MeshBasicMaterial({
+              color: 0xffffff,
+              side: THREE.DoubleSide
+            })
+          );
       
-        player.reticle.position.x = ship.position.x;
-        player.reticle.position.y = ship.position.y;
-        player.reticle.position.z = ship.position.z + 2.0;
+          player.reticle.position.x = ship.position.x;
+          player.reticle.position.y = ship.position.y;
+          player.reticle.position.z = ship.position.z + 2.0;
       
-        player.reticle.lookAt(player.camera.position);
-        player.camera.lookAt(player.reticle.position);
+          player.reticle.lookAt(player.camera.position);
+          player.camera.lookAt(player.reticle.position);
       
-        player.add(player.reticle);
+          player.add(player.reticle);
       
-        App.three.scene.add(player);
+          App.three.scene.add(player);
       
-        App.triggerEvent('playerLoaded', player);
-      });
+          App.triggerEvent('playerLoaded', player);
+        });
+      } else {
+        var otherPlayer = new Player();
+        otherPlayer.name = p._id;
+        otherPlayer.position = p.profile.position || { x: 0, y: 0, z: 0 };
+      
+        App.triggerEvent('playerAdded', otherPlayer);
+    
+        THREEx.SpaceShips.loadSpaceFighter03(function(object3d) {
+          var ship = object3d;
+        
+          otherPlayer.ship = ship;
+          otherPlayer.add(ship);
+          
+          App.three.scene.add(otherPlayer);
+        });
+      }
+    },
+    removed: function(p) {
+      var somePlayer = App.three.scene.getObjectByName(p._id);
+      App.three.scene.remove(somePlayer);
     }
   });
 
@@ -166,13 +195,13 @@ App.playerInit = function() {
           player.rotate('left', angle);
           playerStream.emit(
             'updatePlayerRotation',
-            { angle: angle, direction: 'left' }
+            { name: player.name, angle: angle, direction: 'left' }
           );
         } else {
           player.rotate('right', -angle);
           playerStream.emit(
             'updatePlayerRotation',
-            { angle: -angle, direction: 'right' }
+            { name: player.name, angle: -angle, direction: 'right' }
           );
         }
     
@@ -184,13 +213,13 @@ App.playerInit = function() {
           player.rotate('up', -angle);
           playerStream.emit(
             'updatePlayerRotation',
-            { angle: -angle, direction: 'up' }
+            { name: player.name, angle: -angle, direction: 'up' }
           );
         } else {
           player.rotate('down', angle);
           playerStream.emit(
             'updatePlayerRotation',
-            { angle: angle, direction: 'down' }
+            { name: player.name, angle: angle, direction: 'down' }
           );
         }
       } else {
@@ -199,12 +228,11 @@ App.playerInit = function() {
       }
     }
   });
-  
 
   App.container.on('playerLoaded', function() {
     Meteor.setInterval(function() {
-      var p = _.pick(player, '_id', 'position');
-      Meteor.users.update(p._id, {
+      var p = _.pick(player, 'name', 'position');
+      Meteor.users.update(p.name, {
         $set: {
           profile: {
             position: p.position
