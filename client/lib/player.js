@@ -80,10 +80,10 @@ App.playerInit = function() {
     this.rotateOnAxis(axis, angle);
   };
 
-  Players.find().observe({
+  Meteor.users.find().observe({
     added: function(p) {
       player._id = p._id;
-      player.position = p.position;
+      player.position = p.profile.position || { x: 0, y: 0, z: 0 };
     
       App.triggerEvent('playerAdded', p);
     
@@ -204,7 +204,13 @@ App.playerInit = function() {
   App.container.on('playerLoaded', function() {
     Meteor.setInterval(function() {
       var p = _.pick(player, '_id', 'position');
-      Players.update(p._id, p);
+      Meteor.users.update(p._id, {
+        $set: {
+          profile: {
+            position: p.position
+          }
+        }
+      });
     }, 500);
   });
   
