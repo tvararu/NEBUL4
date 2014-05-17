@@ -131,7 +131,7 @@ App.pushKey = function(keyname, duration, callback) {
   e.which = e.keyCode = App.key[keyname];
   $(document).trigger(e);
   
-  setTimeout(function() {
+  Meteor.setTimeout(function() {
     var e = $.Event('keyup');
     e.which = e.keyCode = App.key[keyname];
     $(document).trigger(e);
