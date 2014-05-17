@@ -8,6 +8,7 @@
     "streams": {},
     "buzz.js": {},
     "hammer": {},
-    "accounts-ui-bootstrap-3": {}
+    "accounts-ui-bootstrap-3": {},
+    "user-status": {}
   }
 }
