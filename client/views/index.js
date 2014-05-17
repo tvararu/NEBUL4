@@ -32,5 +32,6 @@ UI.body.rendered = function() {
   // Initialize touchscreen gestures.
   App.hammerInit();
   
+  // Initialize player and camera.
   App.player = App.player || App.playerInit();
 };
