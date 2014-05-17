@@ -1,3 +1,5 @@
+Meteor.subscribe('players');
+
 UI.body.helpers({
   spacebarState: function() {
     return Session.get('spacebarToggleState') ? 'true' : 'false';
