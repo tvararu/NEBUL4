@@ -4,6 +4,7 @@ var Player = THREE.Object3D;
 
 Player.prototype.MAXSPEED = 0.1;
 Player.prototype.BLINDSPOT = 0.02;
+Player.prototype.ACCEL = 0.004;
 
 Player.prototype.acceleration = {
   x: 0,
@@ -12,7 +13,7 @@ Player.prototype.acceleration = {
 };
 
 Player.prototype.move = function(direction) {
-  var speed = 0.004;
+  var speed = this.ACCEL;
 
   switch(direction) {
   case 'up':
