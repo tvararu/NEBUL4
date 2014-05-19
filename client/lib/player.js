@@ -2,40 +2,56 @@ window.App = window.App || {};
 
 var Player = THREE.Object3D;
 
-Player.prototype.move = function(direction) {
-  var distance = 0.1;
+Player.prototype.MAXSPEED = 0.1;
+Player.prototype.BLINDSPOT = 0.02;
 
-  var dir;
+Player.prototype.acceleration = {
+  x: 0,
+  y: 0,
+  z: 0
+};
+
+Player.prototype.move = function(direction) {
+  var speed = 0.01;
 
   switch(direction) {
-  case 'left':
-    dir = new THREE.Vector3(distance, 0, 0);
-    break;
-  case 'right':
-    dir = new THREE.Vector3(-distance, 0, 0);
-    break;
   case 'up':
-    dir = new THREE.Vector3(0, 0, distance);
+    if (this.acceleration.z < this.MAXSPEED) {
+      this.acceleration.z += speed;
+    }
     break;
   case 'down':
-    dir = new THREE.Vector3(0, 0, -distance);
+    if (this.acceleration.z > 0) {
+      this.acceleration.z -= speed;
+    }
+    break;
+  case 'left':
+    this.acceleration.x = (speed * 5);
+    break;
+  case 'right':
+    this.acceleration.x = -(speed * 5); 
     break;
   }
+};
 
+Player.prototype.update = function() {
+  var dir = new THREE.Vector3(
+    this.acceleration.x,
+    this.acceleration.y,
+    this.acceleration.z
+  );
+  
   var matrix = new THREE.Matrix4();
   matrix.extractRotation(this.matrix);
 
   dir = dir.applyProjection(matrix);
 
-
   this.position.x += dir.x;
   this.position.y += dir.y;
   this.position.z += dir.z;
-
-  this.update();
-};
-
-Player.prototype.update = function() {
+  
+  this.acceleration.x = 0;
+  
   playerStream.emit('updatePlayerPosition', {
     name: this.name,
     position: this.position
@@ -168,6 +184,8 @@ App.playerInit = function() {
         player.move('down');
       }
     }
+    
+    App.player.update();
   });
 
   // Camera Controls.
@@ -191,36 +209,40 @@ App.playerInit = function() {
     
         var angle = (Math.PI / 180) * (Math.abs(x) * 5);
     
-        if (x < 0) {
-          player.rotate('left', angle);
-          playerStream.emit(
-            'updatePlayerRotation',
-            { name: player.name, angle: angle, direction: 'left' }
-          );
-        } else {
-          player.rotate('right', -angle);
-          playerStream.emit(
-            'updatePlayerRotation',
-            { name: player.name, angle: -angle, direction: 'right' }
-          );
+        if (Math.abs(x) > player.BLINDSPOT) {
+          if (x < 0) {
+            player.rotate('left', angle);
+            playerStream.emit(
+              'updatePlayerRotation',
+              { name: player.name, angle: angle, direction: 'left' }
+            );
+          } else {
+            player.rotate('right', -angle);
+            playerStream.emit(
+              'updatePlayerRotation',
+              { name: player.name, angle: -angle, direction: 'right' }
+            );
+          }
         }
     
         var y = Session.get('mouseY');
     
         angle = (Math.PI / 180) * (Math.abs(y) * 5);
-    
-        if (y < 0) {
-          player.rotate('up', -angle);
-          playerStream.emit(
-            'updatePlayerRotation',
-            { name: player.name, angle: -angle, direction: 'up' }
-          );
-        } else {
-          player.rotate('down', angle);
-          playerStream.emit(
-            'updatePlayerRotation',
-            { name: player.name, angle: angle, direction: 'down' }
-          );
+        
+        if (Math.abs(y) > player.BLINDSPOT) {
+          if (y < 0) {
+            player.rotate('up', -angle);
+            playerStream.emit(
+              'updatePlayerRotation',
+              { name: player.name, angle: -angle, direction: 'up' }
+            );
+          } else {
+            player.rotate('down', angle);
+            playerStream.emit(
+              'updatePlayerRotation',
+              { name: player.name, angle: angle, direction: 'down' }
+            );
+          }
         }
       } else {
         // TODO: While the space key is not held down, slowly transition
