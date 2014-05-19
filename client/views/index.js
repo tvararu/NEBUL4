@@ -36,4 +36,8 @@ Template.game.rendered = function() {
   
   // Initialize player and camera.
   App.player = App.playerInit();
+
+  // Initialize stars.
+  App.enviromentInit();
+
 };

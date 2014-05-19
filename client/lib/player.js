@@ -88,7 +88,7 @@ App.playerInit = function() {
 
   Meteor.users.find().observe({
     added: function(p) {
-      console.log(p._id);
+      // console.log(p._id);
       
       if (p._id === Meteor.user()._id) {
         player.name = p._id;

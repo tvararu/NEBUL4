@@ -35,29 +35,6 @@ App.THREEinit = function() {
     45, window.innerWidth / window.innerHeight, 0.01, 1000
   );
   
-  // Make some spheres for testing purposes.
-  // Set up the sphere vars.
-  var radius = 0.01, segments = 1, rings = 1;
-  
-  // Create the sphere's material.
-  var sphereMaterial = new THREE.MeshLambertMaterial({ color: 0xFFFFFF });
-  
-  for (var i = -15; i < 15; i++) {
-    for (var j = -15; j < 15; j++) {
-      var sphere = new THREE.Mesh(new THREE.SphereGeometry(
-          radius,
-          segments,
-          rings),
-        sphereMaterial);
-  
-      sphere.position.x = i;
-      sphere.position.z = j;
-  
-      // Add the sphere to the scene.
-      scene.add(sphere);
-    }
-  }
-  
   // Create a point light.
   var pointLight = new THREE.PointLight(0xFFFFFF);
   
