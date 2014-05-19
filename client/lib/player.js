@@ -12,7 +12,7 @@ Player.prototype.acceleration = {
 };
 
 Player.prototype.move = function(direction) {
-  var speed = 0.01;
+  var speed = 0.004;
 
   switch(direction) {
   case 'up':
@@ -32,6 +32,8 @@ Player.prototype.move = function(direction) {
     this.acceleration.x = -(speed * 5); 
     break;
   }
+  
+  Session.set('acceleration', this.acceleration.z);
 };
 
 Player.prototype.update = function() {
@@ -83,6 +85,8 @@ Player.prototype.rotate = function(direction, angle) {
 App.playerInit = function() {
   var player = {};
   
+  Session.set('acceleration', 0);
+  
   // App.player is a THREE group containing the ship, the reticle,
   // and the camera.
   player = new Player();
@@ -100,7 +104,7 @@ App.playerInit = function() {
     p.rotate(somePlayer.direction, somePlayer.angle);
   });
 
-  App.three.scene.add(new THREE.AxisHelper(20));
+  App.three.scene.add(new THREE.AxisHelper(100));
 
   Meteor.users.find().observe({
     added: function(p) {

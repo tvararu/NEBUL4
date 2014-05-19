@@ -12,6 +12,10 @@ Template.game.helpers({
   },
   reticleState: function() {
     return Session.get('spacebarToggleState') ? 'active' : '';
+  },
+  acceleration: function() {
+    var accel = parseFloat(Session.get('acceleration'));
+    return (accel < 0) ? 0.00 : parseInt(accel * 1000);
   }
 });
 
