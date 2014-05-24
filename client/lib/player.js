@@ -4,14 +4,14 @@ var Player = THREE.Object3D;
 
 // Array which contains vectors for each corner of a cube
 var rayDirections = [
-  new THREE.Vector3(1, 1, 1),
-  new THREE.Vector3(-1, 1, 1),
-  new THREE.Vector3(1, 1, -1),
-  new THREE.Vector3(-1, 1, -1),
-  new THREE.Vector3(1, -1, 1),
-  new THREE.Vector3(-1, -1, 1),
-  new THREE.Vector3(1, -1, -1),
-  new THREE.Vector3(-1, -1, -1)
+  new THREE.Vector3(0.5, 0.5, 0.5),
+  new THREE.Vector3(-0.5, 0.5, 0.5),
+  new THREE.Vector3(0.5, 0.5, -0.5),
+  new THREE.Vector3(-0.5, 0.5, -0.5),
+  new THREE.Vector3(0.5, -0.5, 0.5),
+  new THREE.Vector3(-0.5, -0.5, 0.5),
+  new THREE.Vector3(0.5, -0.5, -0.5),
+  new THREE.Vector3(-0.5, -0.5, -0.5)
 ];
 
 var computeDirection = function(object, dir) {
@@ -85,15 +85,37 @@ Player.prototype.shoot = function() {
       laserBeam.object3d.position.y,
       laserBeam.object3d.position.z
     );
-    dir = computeDirection(App.player, new THREE.Vector3(0, 0, 20));
+    dir = computeDirection(App.player, new THREE.Vector3(0, 0, 35));
     endPosition.x += dir.x;
     endPosition.y += dir.y;
     endPosition.z += dir.z;
 
-    var dir = computeDirection(App.player, new THREE.Vector3(0, 0, 1));
-    dir.x += App.player.acceleration.x;
-    dir.y += App.player.acceleration.y;
-    dir.z += App.player.acceleration.z;
+    dir = computeDirection(App.player, new THREE.Vector3(0, 0, 1));
+    
+    playerStream.emit('addBullet', {
+      position: {
+        x: laserBeam.object3d.position.x,
+        y: laserBeam.object3d.position.y,
+        z: laserBeam.object3d.position.z
+      },
+      rotation: {
+        x: laserBeam.object3d.rotation.x,
+        y: laserBeam.object3d.rotation.y,
+        z: laserBeam.object3d.rotation.z
+      },
+      dir: {
+        x: dir.x,
+        y: dir.y,
+        z: dir.z
+      },
+      endPosition: {
+        x: endPosition.x,
+        y: endPosition.y,
+        z: endPosition.z
+      }
+    });
+    
+    App.coli.push(laserBeam.object3d);
 
     App.three.onRenderFcts.push(function() {
       if (laserBeam.object3d.position.distanceTo(endPosition) > 1) {
@@ -102,10 +124,13 @@ Player.prototype.shoot = function() {
         laserBeam.object3d.position.z += dir.z;
       } else {
         App.three.scene.remove(laserBeam.object3d);
+      
+        // var index = App.coli.indexOf(laserBeam.object3d);
+        // App.coli.splice(index, 1);
       }
     });
   }
-}
+};
 
 Player.prototype.update = function() {
   var dir = new THREE.Vector3(
@@ -246,7 +271,51 @@ App.playerInit = function() {
     }
   });
 
-  App.players = [];
+  playerStream.on('addBullet', function(bullet) {
+    var laserBeam = new THREEx.LaserBeam({color: 'magenta', len: 0.5, radius: 0.05});
+    laserBeam.object3d.position = new THREE.Vector3(
+      bullet.position.x,
+      bullet.position.y,
+      bullet.position.z
+    );
+    
+    laserBeam.object3d.rotateOnAxis(
+      new THREE.Vector3(1, 0, 0),
+      bullet.rotation.x
+    );
+    laserBeam.object3d.rotateOnAxis(
+      new THREE.Vector3(0, 1, 0),
+      bullet.rotation.y
+    );
+    laserBeam.object3d.rotateOnAxis(
+      new THREE.Vector3(0, 0, 1),
+      bullet.rotation.z
+    );
+    
+    bullet.endPosition = new THREE.Vector3(
+      bullet.endPosition.x,
+      bullet.endPosition.y,
+      bullet.endPosition.z
+    );
+    
+    App.three.scene.add(laserBeam.object3d);
+    App.coli.push(laserBeam.object3d);
+    
+    App.three.onRenderFcts.push(function() {
+      if (laserBeam.object3d.position.distanceTo(bullet.endPosition) > 1) {
+        laserBeam.object3d.position.x += bullet.dir.x;
+        laserBeam.object3d.position.y += bullet.dir.y;
+        laserBeam.object3d.position.z += bullet.dir.z;
+      } else {
+        App.three.scene.remove(laserBeam.object3d);        // 
+        //       
+        // var index = App.coli.indexOf(laserBeam.object3d);
+        // App.coli.splice(index, 1);
+      }
+    });
+  });
+
+  App.coli = [];
   App.three.scene.add(new THREE.AxisHelper(100));
 
   Meteor.users.find().observe({
@@ -307,8 +376,6 @@ App.playerInit = function() {
           App.three.scene.add(player);
               
           App.triggerEvent('playerLoaded', player);
-              
-          App.players.push(player);
         });
       } else {
         var otherPlayer = new Player();
@@ -326,7 +393,7 @@ App.playerInit = function() {
               
           App.three.scene.add(otherPlayer);
               
-          App.players.push(otherPlayer);
+          App.coli.push(otherPlayer);
         });
       }
     },
@@ -334,8 +401,8 @@ App.playerInit = function() {
       var somePlayer = App.three.scene.getObjectByName(p.username);
       App.three.scene.remove(somePlayer);
       
-      var index = App.players.indexOf(somePlayer);
-      App.players.splice(index, 1);
+      var index = App.coli.indexOf(somePlayer);
+      App.coli.splice(index, 1);
     }
   });
 
@@ -480,24 +547,22 @@ App.playerInit = function() {
   });
 
   App.three.onRenderFcts.push(function() {
+    var playerPos = new THREE.Vector3(
+      App.player.position.x,
+      App.player.position.y,
+      App.player.position.z
+    );
     for (var j = 0; j < rayDirections.length; j++) {
-      var playerPos = new THREE.Vector3(
-        player.position.x,
-        player.position.y,
-        player.position.z
-      );
       var ray = new THREE.Ray(playerPos, rayDirections[j]);
-      for (var i = 0; i < App.players.length; i++) {
-        if (App.players[i] !== player) {
-          var otherPlayer = new THREE.Vector3(
-            App.players[i].position.x,
-            App.players[i].position.y,
-            App.players[i].position.z
-          );
-          var coll = ray.distanceToPoint(otherPlayer);
-          if (coll.toFixed(0) === 0) {
-            console.log('-------MANELE-------');
-          }
+      for (var i = 0; i < App.coli.length; i++) {
+        var otherObject = new THREE.Vector3(
+          App.coli[i].position.x,
+          App.coli[i].position.y,
+          App.coli[i].position.z
+        );
+        var dist = ray.distanceToPoint(otherObject);
+        if (dist.toFixed(1) < 0.3) {
+          console.log('-------MANELE-------');
         }
       }
     }
