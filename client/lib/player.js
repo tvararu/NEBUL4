@@ -14,9 +14,9 @@ var rayDirections = [
   new THREE.Vector3(-1, -1, -1)
 ];
 
-Player.prototype.MAXSPEED = 0.1;
+Player.prototype.MAXSPEED = 0.256;
 Player.prototype.BLINDSPOT = 0.02;
-Player.prototype.ACCEL = 0.004;
+Player.prototype.ACCEL = 0.001;
 
 Player.prototype.acceleration = {
   x: 0,

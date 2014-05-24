@@ -49,7 +49,7 @@ App.easterEgg = {
         App.key['t']
       ],
       cheat: function() {
-        alert('Speed of light on.');
+        alert('Speed of light on. \n (not exactly speed of light...)');
         App.player.MAXSPEED = 1.0;
         App.player.ACCEL = 0.008;
       }
