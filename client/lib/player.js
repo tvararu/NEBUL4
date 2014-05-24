@@ -15,25 +15,25 @@ Player.prototype.acceleration = {
 Player.prototype.move = function(direction) {
   var speed = this.ACCEL;
 
-  switch(direction) {
-  case 'up':
-    if (this.acceleration.z < this.MAXSPEED) {
-      this.acceleration.z += speed;
-    }
-    break;
-  case 'down':
-    if (this.acceleration.z > 0) {
-      this.acceleration.z -= speed;
-    }
-    break;
-  case 'left':
-    this.acceleration.x = (speed * 5);
-    break;
-  case 'right':
-    this.acceleration.x = -(speed * 5); 
-    break;
+  switch (direction) {
+    case 'up':
+      if (this.acceleration.z < this.MAXSPEED) {
+        this.acceleration.z += speed;
+      }
+      break;
+    case 'down':
+      if (this.acceleration.z > 0) {
+        this.acceleration.z -= speed;
+      }
+      break;
+    case 'left':
+      this.acceleration.x = (speed * 5);
+      break;
+    case 'right':
+      this.acceleration.x = -(speed * 5);
+      break;
   }
-  
+
   Session.set('acceleration', this.acceleration.z);
 };
 
@@ -43,7 +43,7 @@ Player.prototype.update = function() {
     this.acceleration.y,
     this.acceleration.z
   );
-  
+
   var matrix = new THREE.Matrix4();
   matrix.extractRotation(this.matrix);
 
@@ -52,9 +52,9 @@ Player.prototype.update = function() {
   this.position.x += dir.x;
   this.position.y += dir.y;
   this.position.z += dir.z;
-  
+
   this.acceleration.x = 0;
-  
+
   playerStream.emit('updatePlayerPosition', {
     name: this.name,
     position: this.position
@@ -69,25 +69,94 @@ Player.prototype.reset = function() {
 Player.prototype.rotate = function(direction, angle) {
   var axis;
 
-  switch(direction) {
-  case 'left':
-  case 'right':
-    axis = new THREE.Vector3(0, 1, 0);
-    break;
-  case 'up':
-  case 'down':
-    axis = new THREE.Vector3(1, 0, 0);
-    break;
+  switch (direction) {
+    case 'left':
+    case 'right':
+      axis = new THREE.Vector3(0, 1, 0);
+      break;
+    case 'up':
+    case 'down':
+      axis = new THREE.Vector3(1, 0, 0);
+      break;
   }
 
   this.rotateOnAxis(axis, angle);
 };
 
+window.createText = function(text) {
+  var group = new THREE.Object3D();
+
+  var text = text,
+    height = 0.01,
+    size = 0.1,
+    hover = 0,
+
+    curveSegments = 4,
+
+    bevelThickness = 0.5,
+    bevelSize = 1.0,
+    bevelEnabled = false,
+
+    font = 'droid sans', // helvetiker, optimer, gentilis, droid sans, droid serif
+    weight = 'normal', // normal bold
+    style = 'normal'; // normal italic
+
+  var material = new THREE.MeshFaceMaterial([
+    new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      shading: THREE.SmoothShading
+    }), // front
+    new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      shading: THREE.SmoothShading
+    }) // side
+  ]);
+
+  var textGeo = new THREE.TextGeometry(text, {
+
+    size: size,
+    height: height,
+    curveSegments: curveSegments,
+
+    font: font,
+    weight: weight,
+    style: style,
+
+    bevelThickness: bevelThickness,
+    bevelSize: bevelSize,
+    bevelEnabled: bevelEnabled,
+
+    material: 0,
+    extrudeMaterial: 1
+
+  });
+
+  textGeo.computeBoundingBox();
+  textGeo.computeVertexNormals();
+
+  var centerOffset = -0.5 * (
+    textGeo.boundingBox.max.x - textGeo.boundingBox.min.x
+  );
+
+  textMesh1 = new THREE.Mesh(textGeo, material);
+
+  textMesh1.position.x = centerOffset;
+  textMesh1.position.y = hover;
+  textMesh1.position.z = 0;
+
+  textMesh1.rotation.x = 0;
+  textMesh1.rotation.y = Math.PI * 2;
+
+  group.add(textMesh1);
+
+  return group;
+};
+
 App.playerInit = function() {
   var player = {};
-  
+
   Session.set('acceleration', 0);
-  
+
   // App.player is a THREE group containing the ship, the reticle,
   // and the camera.
   player = new Player();
@@ -109,24 +178,27 @@ App.playerInit = function() {
 
   Meteor.users.find().observe({
     added: function(p) {
-      // console.log(p._id);
-      
       if (p._id === Meteor.user()._id) {
-        player.name = p._id;
-        player.position = p.profile.position || { x: 0, y: 0, z: 0 };
-    
+        player._id = p._id;
+        player.name = p.username;
+        player.position = p.profile.position || {
+          x: 0,
+          y: 0,
+          z: 0
+        };
+
         App.triggerEvent('playerAdded', p);
-    
+
         THREEx.SpaceShips.loadSpaceFighter03(function(object3d) {
           var ship = object3d;
-        
+
           player.ship = ship;
           player.add(ship);
-      
+
           player.camera.position.x = ship.position.x + 0;
           player.camera.position.y = ship.position.y + 2.3;
           player.camera.position.z = ship.position.z - 3.5;
-      
+
           player.reticle = new THREE.Mesh(
             new THREE.RingGeometry(0.1, 0.12, 20),
             new THREE.MeshBasicMaterial({
@@ -134,39 +206,44 @@ App.playerInit = function() {
               side: THREE.DoubleSide
             })
           );
-      
+
           player.reticle.position.x = ship.position.x;
           player.reticle.position.y = ship.position.y;
           player.reticle.position.z = ship.position.z + 2.0;
-      
+
           player.reticle.lookAt(player.camera.position);
           player.camera.lookAt(player.reticle.position);
-      
+
           player.add(player.reticle);
-      
+
           App.three.scene.add(player);
-      
+
           App.triggerEvent('playerLoaded', player);
         });
       } else {
         var otherPlayer = new Player();
-        otherPlayer.name = p._id;
-        otherPlayer.position = p.profile.position || { x: 0, y: 0, z: 0 };
-      
+        otherPlayer._id = p._id;
+        otherPlayer.name = p.username;
+        otherPlayer.position = p.profile.position || {
+          x: 0,
+          y: 0,
+          z: 0
+        };
+
         App.triggerEvent('playerAdded', otherPlayer);
-    
+
         THREEx.SpaceShips.loadSpaceFighter03(function(object3d) {
           var ship = object3d;
-        
+
           otherPlayer.ship = ship;
           otherPlayer.add(ship);
-          
+
           App.three.scene.add(otherPlayer);
         });
       }
     },
     removed: function(p) {
-      var somePlayer = App.three.scene.getObjectByName(p._id);
+      var somePlayer = App.three.scene.getObjectByName(p.username);
       App.three.scene.remove(somePlayer);
     }
   });
@@ -176,20 +253,20 @@ App.playerInit = function() {
       if (App.keyState('left') || App.keyState('a')) {
         player.move('left');
       }
-    
+
       if (App.keyState('right') || App.keyState('d')) {
         player.move('right');
       }
-    
+
       if (App.keyState('up') || App.keyState('w')) {
         player.move('up');
       }
-    
+
       if (App.keyState('down') || App.keyState('s')) {
         player.move('down');
       }
     }
-    
+
     App.player.update();
   });
 
@@ -202,7 +279,7 @@ App.playerInit = function() {
   document.addEventListener('mousemove', function(event) {
     mouse.x = (event.clientX / window.innerWidth) - 0.5;
     Session.set('mouseX', mouse.x);
-  
+
     mouse.y = (event.clientY / window.innerHeight) - 0.5;
     Session.set('mouseY', mouse.y);
   }, false);
@@ -211,41 +288,53 @@ App.playerInit = function() {
     if (player.ship) {
       if (App.keyToggleState('spacebar')) {
         var x = Session.get('mouseX');
-    
+
         var angle = (Math.PI / 180) * (Math.abs(x) * 5);
-    
+
         if (Math.abs(x) > player.BLINDSPOT) {
           if (x < 0) {
             player.rotate('left', angle);
             playerStream.emit(
-              'updatePlayerRotation',
-              { name: player.name, angle: angle, direction: 'left' }
+              'updatePlayerRotation', {
+                name: player.name,
+                angle: angle,
+                direction: 'left'
+              }
             );
           } else {
             player.rotate('right', -angle);
             playerStream.emit(
-              'updatePlayerRotation',
-              { name: player.name, angle: -angle, direction: 'right' }
+              'updatePlayerRotation', {
+                name: player.name,
+                angle: -angle,
+                direction: 'right'
+              }
             );
           }
         }
-    
+
         var y = Session.get('mouseY');
-    
+
         angle = (Math.PI / 180) * (Math.abs(y) * 5);
-        
+
         if (Math.abs(y) > player.BLINDSPOT) {
           if (y < 0) {
             player.rotate('up', -angle);
             playerStream.emit(
-              'updatePlayerRotation',
-              { name: player.name, angle: -angle, direction: 'up' }
+              'updatePlayerRotation', {
+                name: player.name,
+                angle: -angle,
+                direction: 'up'
+              }
             );
           } else {
             player.rotate('down', angle);
             playerStream.emit(
-              'updatePlayerRotation',
-              { name: player.name, angle: angle, direction: 'down' }
+              'updatePlayerRotation', {
+                name: player.name,
+                angle: angle,
+                direction: 'down'
+              }
             );
           }
         }
@@ -258,8 +347,8 @@ App.playerInit = function() {
 
   App.container.on('playerLoaded', function() {
     Meteor.setInterval(function() {
-      var p = _.pick(player, 'name', 'position');
-      Meteor.users.update(p.name, {
+      var p = _.pick(player, '_id', 'position');
+      Meteor.users.update(p._id, {
         $set: {
           profile: {
             position: p.position
@@ -268,6 +357,37 @@ App.playerInit = function() {
       });
     }, 500);
   });
-  
+
+  App.container.on('playerAdded', function(event, p) {
+    var text = createText(p.name);
+    text.position.y = 0.3;
+    p.add(text);
+    
+    App.three.onRenderFcts.push(function() {
+      var pos = {
+        x: App.player.position.x,
+        y: App.player.position.y,
+        z: App.player.position.z
+      };
+    
+      var dir = new THREE.Vector3(
+        App.player.camera.position.x,
+        App.player.camera.position.y,
+        App.player.camera.position.z
+      );
+    
+      var matrix = new THREE.Matrix4();
+      matrix.extractRotation(player.matrix);
+    
+      dir = dir.applyProjection(matrix);
+    
+      pos.x += dir.x;
+      pos.y += dir.y;
+      pos.z += dir.z;
+    
+      text.lookAt(pos);
+    });
+  });
+
   return player;
 };
