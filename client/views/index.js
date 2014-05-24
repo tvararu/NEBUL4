@@ -16,6 +16,30 @@ Template.game.helpers({
   acceleration: function() {
     var accel = parseFloat(Session.get('acceleration'));
     return (accel < 0) ? 0.00 : parseInt(accel * 1000);
+  },
+  players: function() {
+    return Meteor.users.find();
+  }
+});
+
+Template.player.helpers({
+  positionX: function() {
+    if (this.profile.position) {
+      return this.profile.position.x.toFixed(2);
+    }
+    return 0;
+  },
+  positionY: function() {
+    if (this.profile.position) {
+      return this.profile.position.y.toFixed(2);
+    }
+    return 0;
+  },
+  positionZ: function() {
+    if (this.profile.position) {
+      return this.profile.position.z.toFixed(2);
+    }
+    return 0;
   }
 });
 
@@ -43,5 +67,4 @@ Template.game.rendered = function() {
 
   // Initialize stars.
   App.enviromentInit();
-
 };

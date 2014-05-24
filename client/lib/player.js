@@ -2,6 +2,18 @@ window.App = window.App || {};
 
 var Player = THREE.Object3D;
 
+// Array which contains vectors for each corner of a cube
+var rayDirections = [
+  new THREE.Vector3(1, 1, 1),
+  new THREE.Vector3(-1, 1, 1),
+  new THREE.Vector3(1, 1, -1),
+  new THREE.Vector3(-1, 1, -1),
+  new THREE.Vector3(1, -1, 1),
+  new THREE.Vector3(-1, -1, 1),
+  new THREE.Vector3(1, -1, -1),
+  new THREE.Vector3(-1, -1, -1)
+];
+
 Player.prototype.MAXSPEED = 0.1;
 Player.prototype.BLINDSPOT = 0.02;
 Player.prototype.ACCEL = 0.004;
@@ -32,8 +44,8 @@ Player.prototype.move = function(direction) {
   case 'right':
     this.acceleration.x = -(speed * 5); 
     break;
-  }
-  
+  }       
+
   Session.set('acceleration', this.acceleration.z);
 };
 
@@ -78,6 +90,13 @@ Player.prototype.rotate = function(direction, angle) {
   case 'down':
     axis = new THREE.Vector3(1, 0, 0);
     break;
+  case 'rollLeft':
+  case 'rollRight':
+    axis = new THREE.Vector3(0, 0, 1);
+    this.ship.rotateOnAxis(axis, angle);
+    // this.camera.rotateOnAxis(axis, angle);
+    return;
+    break;
   }
 
   this.rotateOnAxis(axis, angle);
@@ -105,12 +124,11 @@ App.playerInit = function() {
     p.rotate(somePlayer.direction, somePlayer.angle);
   });
 
+  App.players = [];
   App.three.scene.add(new THREE.AxisHelper(100));
 
   Meteor.users.find().observe({
-    added: function(p) {
-      // console.log(p._id);
-      
+    added: function(p) {      
       if (p._id === Meteor.user()._id) {
         player.name = p._id;
         player.position = p.profile.position || { x: 0, y: 0, z: 0 };
@@ -138,15 +156,22 @@ App.playerInit = function() {
           player.reticle.position.x = ship.position.x;
           player.reticle.position.y = ship.position.y;
           player.reticle.position.z = ship.position.z + 2.0;
-      
+
           player.reticle.lookAt(player.camera.position);
           player.camera.lookAt(player.reticle.position);
-      
+
           player.add(player.reticle);
-      
+
           App.three.scene.add(player);
-      
+
           App.triggerEvent('playerLoaded', player);
+
+          App.players.push(player);
+          var buff = "";
+          for (var i = App.players.length - 1; i >= 0; i--) {
+            buff += App.players[i].name + ' : ' + App.players[i].position.x.toFixed(2) + ' ' + App.players[i].position.y.toFixed(2) + ' ' + App.players[i].position.z.toFixed(2);
+          };
+          Session.set('players', buff);
         });
       } else {
         var otherPlayer = new Player();
@@ -162,12 +187,25 @@ App.playerInit = function() {
           otherPlayer.add(ship);
           
           App.three.scene.add(otherPlayer);
+      
+          App.players.push(otherPlayer);
+          var buff = "";
+          for (var i = App.players.length - 1; i >= 0; i--) {
+            buff += App.players[i].name + ' : ' + App.players[i].position.x.toFixed(2) + ' ' + App.players[i].position.y.toFixed(2) + ' ' + App.players[i].position.z.toFixed(2);
+          };
+          Session.set('players', buff);
         });
       }
     },
     removed: function(p) {
       var somePlayer = App.three.scene.getObjectByName(p._id);
       App.three.scene.remove(somePlayer);
+      App.players.remove(somePlayer);
+      var buff = "";
+      for (var i = App.players.length - 1; i >= 0; i--) {
+        buff += App.players[i].name + ' : ' + App.players[i].position.x.toFixed(2) + ' ' + App.players[i].position.y.toFixed(2) + ' ' + App.players[i].position.z.toFixed(2);
+      };
+      Session.set('players', buff);
     }
   });
 
@@ -187,6 +225,14 @@ App.playerInit = function() {
     
       if (App.keyState('down') || App.keyState('s')) {
         player.move('down');
+      }
+
+      if (App.keyState('q')) {
+        player.rotate('rollLeft', -(Math.PI / 180));
+      }
+
+      if (App.keyState('e')) {
+        player.rotate('rollRight', Math.PI / 180);
       }
     }
     
@@ -269,5 +315,21 @@ App.playerInit = function() {
     }, 500);
   });
   
+  App.three.onRenderFcts.push(function() {
+    for(var j = 0; j < rayDirections.length; j++) {
+      var playerPos = new THREE.Vector3(player.position.x, player.position.y, player.position.z);
+      var ray = new THREE.Ray(playerPos, rayDirections[j]);
+      for (var i = 0; i < App.players.length; i++) {
+        if (App.players[i] !== player) {
+          var otherPlayer = new THREE.Vector3(App.players[i].position.x, App.players[i].position.y, App.players[i].position.z);
+          var coll = ray.distanceToPoint(otherPlayer);
+          if (coll.toFixed(0) == 0) {
+            console.log('-------MANELE-------');
+          }
+        }
+      }
+    } 
+  });
+
   return player;
 };
