@@ -176,13 +176,16 @@ App.playerInit = function() {
 
   playerStream.on('updatePlayerPosition', function(somePlayer) {
     var p = App.three.scene.getObjectByName(somePlayer.name);
-    p.position = somePlayer.position;
-    // App.triggerEvent('playerChanged', p.position);
+    if (p) {
+      p.position = somePlayer.position;
+    }
   });
 
   playerStream.on('updatePlayerRotation', function(somePlayer) {
     var p = App.three.scene.getObjectByName(somePlayer.name);
-    p.rotate(somePlayer.direction, somePlayer.angle);
+    if (p) {
+      p.rotate(somePlayer.direction, somePlayer.angle);
+    }
   });
 
   App.players = [];
@@ -208,7 +211,6 @@ App.playerInit = function() {
           shipFunc = THREEx.SpaceShips.loadSpaceFighter05;
           break;
       }
-      console.log(p.profile.shipType);
       
       if (p._id === Meteor.user()._id) {
         player._id = p._id;
