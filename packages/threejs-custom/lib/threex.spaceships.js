@@ -65,6 +65,46 @@
   	loader.load(objUrl, mtlUrl);		
   }
 
+  THREEx.SpaceShips.loadSpaceFighter04  = function(onLoad){
+    var loader  = new THREE.OBJMTLLoader();
+    loader.addEventListener('load', function( event ){
+      var object3d  = event.content
+      object3d.scale.multiplyScalar(1/10)
+      // change emissive color of all object3d material - they are too dark
+      object3d.traverse(function(object3d){
+        if( object3d.material ){
+          object3d.material.emissive.set('white')
+        }
+      })
+      // notify the callback
+      onLoad  && onLoad(object3d)
+    });
+    var baseUrl = THREEx.SpaceShips.baseUrl 
+    var objUrl  = baseUrl + 'models/SpaceFighter04/SpaceFighter03.obj';
+    var mtlUrl  = baseUrl + 'models/SpaceFighter04/SpaceFighter03.mtl';
+    loader.load(objUrl, mtlUrl);    
+  }
+
+  THREEx.SpaceShips.loadSpaceFighter05  = function(onLoad){
+    var loader  = new THREE.OBJMTLLoader();
+    loader.addEventListener('load', function( event ){
+      var object3d  = event.content
+      object3d.scale.multiplyScalar(1/10)
+      // change emissive color of all object3d material - they are too dark
+      object3d.traverse(function(object3d){
+        if( object3d.material ){
+          object3d.material.emissive.set('white')
+        }
+      })
+      // notify the callback
+      onLoad  && onLoad(object3d)
+    });
+    var baseUrl = THREEx.SpaceShips.baseUrl 
+    var objUrl  = baseUrl + 'models/SpaceFighter05/SpaceFighter03.obj';
+    var mtlUrl  = baseUrl + 'models/SpaceFighter05/SpaceFighter03.mtl';
+    loader.load(objUrl, mtlUrl);    
+  }
+
   THREEx.SpaceShips.loadShuttle01	= function(onLoad){
   	var loader	= new THREE.OBJMTLLoader();
   	loader.addEventListener('load', function( event ){

@@ -107,17 +107,33 @@ App.playerInit = function() {
 
   App.three.scene.add(new THREE.AxisHelper(100));
 
+  var getRandomShip = function(){
+    var random = Math.floor(Math.random()*4 +1);
+    return random;
+  };
+
   Meteor.users.find().observe({
     added: function(p) {
       // console.log(p._id);
-      
+
+
+      p.profile.shipType = p.profile.shipType || (getRandomShip());
+      var shipFunc = null;
+      switch(p.profile.shipType){
+        case 1: shipFunc = THREEx.SpaceShips.loadSpaceFighter01; break;
+        case 2: shipFunc = THREEx.SpaceShips.loadSpaceFighter02; break;
+        case 3: shipFunc = THREEx.SpaceShips.loadSpaceFighter03; break;
+        case 4: shipFunc = THREEx.SpaceShips.loadSpaceFighter04; break;
+        case 5: shipFunc = THREEx.SpaceShips.loadSpaceFighter05; break;
+      }
       if (p._id === Meteor.user()._id) {
         player.name = p._id;
+        player.shipType = p.profile.shipType;
         player.position = p.profile.position || { x: 0, y: 0, z: 0 };
     
         App.triggerEvent('playerAdded', p);
     
-        THREEx.SpaceShips.loadSpaceFighter03(function(object3d) {
+        shipFunc(function(object3d) {
           var ship = object3d;
         
           player.ship = ship;
@@ -155,7 +171,7 @@ App.playerInit = function() {
       
         App.triggerEvent('playerAdded', otherPlayer);
     
-        THREEx.SpaceShips.loadSpaceFighter03(function(object3d) {
+        shipFunc(function(object3d) {
           var ship = object3d;
         
           otherPlayer.ship = ship;
@@ -258,11 +274,13 @@ App.playerInit = function() {
 
   App.container.on('playerLoaded', function() {
     Meteor.setInterval(function() {
-      var p = _.pick(player, 'name', 'position');
+      var p = _.pick(player, 'name', 'position','shipType');
+      // console.log(p);
       Meteor.users.update(p.name, {
         $set: {
           profile: {
-            position: p.position
+            position: p.position,
+            shipType: p.shipType
           }
         }
       });
