@@ -24,13 +24,22 @@ Template.game.helpers({
 
 Template.player.helpers({
   positionX: function() {
-    return this.profile.position.x.toFixed(2);
+    if (this.profile.position) {
+      return this.profile.position.x.toFixed(2);
+    }
+    return 0;
   },
   positionY: function() {
-    return this.profile.position.y.toFixed(2);
+    if (this.profile.position) {
+      return this.profile.position.y.toFixed(2);
+    }
+    return 0;
   },
   positionZ: function() {
-    return this.profile.position.z.toFixed(2);
+    if (this.profile.position) {
+      return this.profile.position.z.toFixed(2);
+    }
+    return 0;
   }
 });
 

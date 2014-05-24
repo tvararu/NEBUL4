@@ -2,6 +2,18 @@ window.App = window.App || {};
 
 var Player = THREE.Object3D;
 
+// Array which contains vectors for each corner of a cube
+var rayDirections = [
+  new THREE.Vector3(1, 1, 1),
+  new THREE.Vector3(-1, 1, 1),
+  new THREE.Vector3(1, 1, -1),
+  new THREE.Vector3(-1, 1, -1),
+  new THREE.Vector3(1, -1, 1),
+  new THREE.Vector3(-1, -1, 1),
+  new THREE.Vector3(1, -1, -1),
+  new THREE.Vector3(-1, -1, -1)
+];
+
 Player.prototype.MAXSPEED = 0.1;
 Player.prototype.BLINDSPOT = 0.02;
 Player.prototype.ACCEL = 0.004;
@@ -32,40 +44,7 @@ Player.prototype.move = function(direction) {
   case 'right':
     this.acceleration.x = -(speed * 5); 
     break;
-  }
-
-
-  // Update player position
-  for (var m in App.players) {
-    if (App.players[m] === this)
-      App.players[m].position = this.position;
-      break;
-  }
-
-  // Create vectors in each corner of the cube
-  var rayDirections = [
-    new THREE.Vector3(1, 1, 1),
-    new THREE.Vector3(-1, 1, 1),
-    new THREE.Vector3(1, 1, -1),
-    new THREE.Vector3(-1, 1, -1),
-    new THREE.Vector3(1, -1, 1),
-    new THREE.Vector3(-1, -1, 1),
-    new THREE.Vector3(1, -1, -1),
-    new THREE.Vector3(-1, -1, -1)
-  ];
-
-  // 
-  for(var r in rayDirections) {
-    var ray = new THREE.Ray( this.position, rayDirections[r] );
-    for (var m in App.players) {
-      if (App.players[m] !== this) {
-        var intersects = ray.distanceToPoint( App.players[m].position );
-        if (intersects == 0) {
-          console.log(111);
-        }
-      }
-    }
-  }        
+  }       
 
   Session.set('acceleration', this.acceleration.z);
 };
@@ -336,5 +315,21 @@ App.playerInit = function() {
     }, 500);
   });
   
+  App.three.onRenderFcts.push(function() {
+    for(var j = 0; j < rayDirections.length; j++) {
+      var playerPos = new THREE.Vector3(player.position.x, player.position.y, player.position.z);
+      var ray = new THREE.Ray(playerPos, rayDirections[j]);
+      for (var i = 0; i < App.players.length; i++) {
+        if (App.players[i] !== player) {
+          var otherPlayer = new THREE.Vector3(App.players[i].position.x, App.players[i].position.y, App.players[i].position.z);
+          var coll = ray.distanceToPoint(otherPlayer);
+          if (coll.toFixed(0) == 0) {
+            console.log('-------MANELE-------');
+          }
+        }
+      }
+    } 
+  });
+
   return player;
 };
