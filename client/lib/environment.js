@@ -128,6 +128,9 @@ App.starsInit = function () {
 App.enviromentInit = function() {
   App.planetsInit();
   App.starsInit();
-  var laserBeam = new THREEx.LaserBeam();
+  window.laserBeam = new THREEx.LaserBeam({color: 'red', len: 1, radius: 0.05});
+  laserBeam.object3d.position.x = 2;
+  laserBeam.object3d.position.y = 2;
+  laserBeam.object3d.position.z = 2;
   App.three.scene.add(laserBeam.object3d);
 }

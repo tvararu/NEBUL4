@@ -5,7 +5,12 @@
 
   // THREEx.LaserBeam.baseUrl = '/  '
 
-  THREEx.LaserBeam    = function() {
+  THREEx.LaserBeam    = function(options) {
+    options.color  = options.color  || 0x4444aa;
+    options.planes = options.planes || 16;
+    options.len = options.len || 1;
+    options.radius = options.radius || 0.1;
+
     var object3d    = new THREE.Object3D()
     this.object3d   = object3d
     // generate the texture
@@ -14,15 +19,15 @@
     texture.needsUpdate = true;
     // do the material  
     var material    = new THREE.MeshBasicMaterial({
-      map     : texture,
+      map         : texture,
       blending    : THREE.AdditiveBlending,
-      color       : 0x4444aa,
+      color       : options.color,
       side        : THREE.DoubleSide,
       depthWrite  : false,
       transparent : true
     })
-    var geometry    = new THREE.PlaneGeometry(1, 0.1)
-    var nPlanes = 16;
+    var geometry    = new THREE.PlaneGeometry(options.len, options.radius)
+    var nPlanes = options.planes;
     for(var i = 0; i < nPlanes; i++){
       var mesh    = new THREE.Mesh(geometry, material)
       mesh.position.x = 1/2
