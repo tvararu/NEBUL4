@@ -31,5 +31,28 @@ App.easterEgg = {
         }, 100);
       }
     });
+    
+    // Speed of light cheat code.
+    App.container.konami({
+      code: [
+        App.key['s'],
+        App.key['p'],
+        App.key['e'],
+        App.key['e'],
+        App.key['d'],
+        App.key['o'],
+        App.key['f'],
+        App.key['l'],
+        App.key['i'],
+        App.key['g'],
+        App.key['h'],
+        App.key['t']
+      ],
+      cheat: function() {
+        alert('Speed of light on.');
+        App.player.MAXSPEED = 1.0;
+        App.player.ACCEL = 0.008;
+      }
+    });
   }
 };
