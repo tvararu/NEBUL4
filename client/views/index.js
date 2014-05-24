@@ -39,5 +39,4 @@ Template.game.rendered = function() {
 
   // Initialize stars.
   App.enviromentInit();
-
 };

@@ -32,6 +32,38 @@ Player.prototype.move = function(direction) {
     this.acceleration.x = -(speed * 5); 
     break;
   }
+
+  // Update player position
+  for (var m in App.players) {
+    if (App.players[m] === this)
+      App.players[m].position = this.position;
+      break;
+  }
+
+  // Create vectors in each corner of the cube
+  var rayDirections = [
+    new THREE.Vector3(1, 1, 1),
+    new THREE.Vector3(-1, 1, 1),
+    new THREE.Vector3(1, 1, -1),
+    new THREE.Vector3(-1, 1, -1),
+    new THREE.Vector3(1, -1, 1),
+    new THREE.Vector3(-1, -1, 1),
+    new THREE.Vector3(1, -1, -1),
+    new THREE.Vector3(-1, -1, -1)
+  ];
+
+  // 
+  for(var r in rayDirections) {
+    var ray = new THREE.Ray( this.position, rayDirections[r] );
+    for (var m in App.players) {
+      if (App.players[m] !== this) {
+        var intersects = ray.distanceToPoint( App.players[m].position );
+        if (intersects == 0) {
+          console.log(111);
+        }
+      }
+    }
+  }        
 };
 
 Player.prototype.update = function() {
@@ -75,6 +107,13 @@ Player.prototype.rotate = function(direction, angle) {
   case 'down':
     axis = new THREE.Vector3(1, 0, 0);
     break;
+  case 'rollLeft':
+  case 'rollRight':
+    axis = new THREE.Vector3(0, 0, 1);
+    this.ship.rotateOnAxis(axis, angle);
+    // this.camera.rotateOnAxis(axis, angle);
+    return;
+    break;
   }
 
   this.rotateOnAxis(axis, angle);
@@ -101,6 +140,7 @@ App.playerInit = function() {
   });
 
   App.three.scene.add(new THREE.AxisHelper(20));
+  App.players = [];
 
   Meteor.users.find().observe({
     added: function(p) {
@@ -142,6 +182,8 @@ App.playerInit = function() {
           App.three.scene.add(player);
       
           App.triggerEvent('playerLoaded', player);
+            
+          App.players.push(player);
         });
       } else {
         var otherPlayer = new Player();
@@ -157,6 +199,8 @@ App.playerInit = function() {
           otherPlayer.add(ship);
           
           App.three.scene.add(otherPlayer);
+      
+          App.players.push(otherPlayer);
         });
       }
     },
@@ -182,6 +226,14 @@ App.playerInit = function() {
     
       if (App.keyState('down') || App.keyState('s')) {
         player.move('down');
+      }
+
+      if (App.keyState('q')) {
+        player.rotate('rollLeft', -(Math.PI / 180));
+      }
+
+      if (App.keyState('e')) {
+        player.rotate('rollRight', Math.PI / 180);
       }
     }
     
