@@ -128,9 +128,20 @@ App.starsInit = function () {
 App.enviromentInit = function() {
   App.planetsInit();
   App.starsInit();
-  window.laserBeam = new THREEx.LaserBeam({color: 'red', len: 1, radius: 0.05});
-  laserBeam.object3d.position.x = 2;
-  laserBeam.object3d.position.y = 2;
-  laserBeam.object3d.position.z = 2;
-  App.three.scene.add(laserBeam.object3d);
+
+  setInterval(function() {
+    var laserBeam = new THREEx.LaserBeam({color: 'magenta', len: 1.5, radius: 0.05});
+    laserBeam.object3d.position.x = 2;
+    laserBeam.object3d.position.y = 2;
+    laserBeam.object3d.position.z = 2;
+    App.three.scene.add(laserBeam.object3d);
+
+    App.three.onRenderFcts.push(function() {
+      if (laserBeam.object3d.position.x < 30) {
+        laserBeam.object3d.position.x += 1;
+      } else {
+        App.three.scene.remove(laserBeam.object3d);
+      }
+    });
+  }, 300);
 }
