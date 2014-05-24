@@ -8,7 +8,7 @@
   THREEx.LaserBeam    = function(options) {
     options.color  = options.color  || 0x4444aa;
     options.planes = options.planes || 16;
-    options.len = options.len || 1;
+    options.len    = options.len    || 1;
     options.radius = options.radius || 0.1;
 
     var object3d    = new THREE.Object3D()
