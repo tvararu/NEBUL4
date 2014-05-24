@@ -90,12 +90,16 @@ Player.prototype.shoot = function() {
     endPosition.y += dir.y;
     endPosition.z += dir.z;
 
+    var dir = computeDirection(App.player, new THREE.Vector3(0, 0, 1));
+    dir.x += App.player.acceleration.x;
+    dir.y += App.player.acceleration.y;
+    dir.z += App.player.acceleration.z;
+
     App.three.onRenderFcts.push(function() {
       if (laserBeam.object3d.position.distanceTo(endPosition) > 1) {
-        var dir = computeDirection(App.player, new THREE.Vector3(0, 0, 1));
-        laserBeam.object3d.position.x += dir.x + App.player.acceleration.x;
-        laserBeam.object3d.position.y += dir.y + App.player.acceleration.y;
-        laserBeam.object3d.position.z += dir.z + App.player.acceleration.z;
+        laserBeam.object3d.position.x += dir.x;
+        laserBeam.object3d.position.y += dir.y;
+        laserBeam.object3d.position.z += dir.z;
       } else {
         App.three.scene.remove(laserBeam.object3d);
       }
