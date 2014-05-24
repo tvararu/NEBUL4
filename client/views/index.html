@@ -26,7 +26,23 @@
       <div class="mousex">mouse.x: {{ mouseXState }}</div>
       <div class="mousey">mouse.y: {{ mouseYState }}</div>
       <div class="acceleration">{{ acceleration }}<span> KM/s</span></div>
+
+      <div class="players">
+        {{#each players}}
+          {{> player}}
+        {{/each}}
+      </div>
     </div>
     <div class="reticle {{ reticleState }}"></div>
+  </div>
+</template>
+
+
+<template name="player"> 
+  <div>
+    {{_id}}
+    {{positionX}}
+    {{positionY}}
+    {{positionZ}}
   </div>
 </template>

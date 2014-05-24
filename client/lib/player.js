@@ -2,6 +2,18 @@ window.App = window.App || {};
 
 var Player = THREE.Object3D;
 
+// Array which contains vectors for each corner of a cube
+var rayDirections = [
+  new THREE.Vector3(1, 1, 1),
+  new THREE.Vector3(-1, 1, 1),
+  new THREE.Vector3(1, 1, -1),
+  new THREE.Vector3(-1, 1, -1),
+  new THREE.Vector3(1, -1, 1),
+  new THREE.Vector3(-1, -1, 1),
+  new THREE.Vector3(1, -1, -1),
+  new THREE.Vector3(-1, -1, -1)
+];
+
 Player.prototype.MAXSPEED = 0.1;
 Player.prototype.BLINDSPOT = 0.02;
 Player.prototype.ACCEL = 0.004;
@@ -86,8 +98,7 @@ Player.prototype.rotate = function(direction, angle) {
 window.createText = function(text) {
   var group = new THREE.Object3D();
 
-  var text = text,
-    height = 0.01,
+  var height = 0.01,
     size = 0.1,
     hover = 0,
 
@@ -97,9 +108,9 @@ window.createText = function(text) {
     bevelSize = 1.0,
     bevelEnabled = false,
 
-    font = 'droid sans', // helvetiker, optimer, gentilis, droid sans, droid serif
-    weight = 'normal', // normal bold
-    style = 'normal'; // normal italic
+    font = 'droid sans',
+    weight = 'normal',
+    style = 'normal';
 
   var material = new THREE.MeshFaceMaterial([
     new THREE.MeshBasicMaterial({
@@ -174,6 +185,7 @@ App.playerInit = function() {
     p.rotate(somePlayer.direction, somePlayer.angle);
   });
 
+  App.players = [];
   App.three.scene.add(new THREE.AxisHelper(100));
 
   Meteor.users.find().observe({
@@ -219,6 +231,8 @@ App.playerInit = function() {
           App.three.scene.add(player);
 
           App.triggerEvent('playerLoaded', player);
+
+          App.players.push(player);
         });
       } else {
         var otherPlayer = new Player();
@@ -239,12 +253,15 @@ App.playerInit = function() {
           otherPlayer.add(ship);
 
           App.three.scene.add(otherPlayer);
+
+          App.players.push(otherPlayer);
         });
       }
     },
     removed: function(p) {
       var somePlayer = App.three.scene.getObjectByName(p.username);
       App.three.scene.remove(somePlayer);
+      App.players.remove(somePlayer);
     }
   });
 
@@ -338,9 +355,6 @@ App.playerInit = function() {
             );
           }
         }
-      } else {
-        // TODO: While the space key is not held down, slowly transition
-        // the ship back to horizontal orientation.
       }
     }
   });
@@ -362,31 +376,55 @@ App.playerInit = function() {
     var text = createText(p.name);
     text.position.y = 0.3;
     p.add(text);
-    
+
     App.three.onRenderFcts.push(function() {
       var pos = {
         x: App.player.position.x,
         y: App.player.position.y,
         z: App.player.position.z
       };
-    
+
       var dir = new THREE.Vector3(
         App.player.camera.position.x,
         App.player.camera.position.y,
         App.player.camera.position.z
       );
-    
+
       var matrix = new THREE.Matrix4();
       matrix.extractRotation(player.matrix);
-    
+
       dir = dir.applyProjection(matrix);
-    
+
       pos.x += dir.x;
       pos.y += dir.y;
       pos.z += dir.z;
-    
+
       text.lookAt(pos);
     });
+  });
+
+  App.three.onRenderFcts.push(function() {
+    for (var j = 0; j < rayDirections.length; j++) {
+      var playerPos = new THREE.Vector3(
+        player.position.x,
+        player.position.y,
+        player.position.z
+      );
+      var ray = new THREE.Ray(playerPos, rayDirections[j]);
+      for (var i = 0; i < App.players.length; i++) {
+        if (App.players[i] !== player) {
+          var otherPlayer = new THREE.Vector3(
+            App.players[i].position.x,
+            App.players[i].position.y,
+            App.players[i].position.z
+          );
+          var coll = ray.distanceToPoint(otherPlayer);
+          if (coll.toFixed(0) == 0) {
+            console.log('-------MANELE-------');
+          }
+        }
+      }
+    }
   });
 
   return player;
