@@ -16,6 +16,21 @@ Template.game.helpers({
   acceleration: function() {
     var accel = parseFloat(Session.get('acceleration'));
     return (accel < 0) ? 0.00 : parseInt(accel * 1000);
+  },
+  players: function() {
+    return Meteor.users.find();
+  }
+});
+
+Template.player.helpers({
+  positionX: function() {
+    return this.profile.position.x.toFixed(2);
+  },
+  positionY: function() {
+    return this.profile.position.y.toFixed(2);
+  },
+  positionZ: function() {
+    return this.profile.position.z.toFixed(2);
   }
 });
 

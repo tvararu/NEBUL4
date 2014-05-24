@@ -149,9 +149,7 @@ App.playerInit = function() {
   App.three.scene.add(new THREE.AxisHelper(100));
 
   Meteor.users.find().observe({
-    added: function(p) {
-      // console.log(p._id);
-      
+    added: function(p) {      
       if (p._id === Meteor.user()._id) {
         player.name = p._id;
         player.position = p.profile.position || { x: 0, y: 0, z: 0 };
@@ -179,17 +177,22 @@ App.playerInit = function() {
           player.reticle.position.x = ship.position.x;
           player.reticle.position.y = ship.position.y;
           player.reticle.position.z = ship.position.z + 2.0;
-      
+
           player.reticle.lookAt(player.camera.position);
           player.camera.lookAt(player.reticle.position);
-      
+
           player.add(player.reticle);
-      
+
           App.three.scene.add(player);
-      
+
           App.triggerEvent('playerLoaded', player);
-            
+
           App.players.push(player);
+          var buff = "";
+          for (var i = App.players.length - 1; i >= 0; i--) {
+            buff += App.players[i].name + ' : ' + App.players[i].position.x.toFixed(2) + ' ' + App.players[i].position.y.toFixed(2) + ' ' + App.players[i].position.z.toFixed(2);
+          };
+          Session.set('players', buff);
         });
       } else {
         var otherPlayer = new Player();
@@ -207,12 +210,23 @@ App.playerInit = function() {
           App.three.scene.add(otherPlayer);
       
           App.players.push(otherPlayer);
+          var buff = "";
+          for (var i = App.players.length - 1; i >= 0; i--) {
+            buff += App.players[i].name + ' : ' + App.players[i].position.x.toFixed(2) + ' ' + App.players[i].position.y.toFixed(2) + ' ' + App.players[i].position.z.toFixed(2);
+          };
+          Session.set('players', buff);
         });
       }
     },
     removed: function(p) {
       var somePlayer = App.three.scene.getObjectByName(p._id);
       App.three.scene.remove(somePlayer);
+      App.players.remove(somePlayer);
+      var buff = "";
+      for (var i = App.players.length - 1; i >= 0; i--) {
+        buff += App.players[i].name + ' : ' + App.players[i].position.x.toFixed(2) + ' ' + App.players[i].position.y.toFixed(2) + ' ' + App.players[i].position.z.toFixed(2);
+      };
+      Session.set('players', buff);
     }
   });
 
