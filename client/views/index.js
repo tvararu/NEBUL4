@@ -1,3 +1,8 @@
+// Configure accounts to require username instead of email.
+Accounts.ui.config({
+  passwordSignupFields: 'USERNAME_ONLY'
+});
+
 Meteor.subscribe('userStatus');
 
 Template.game.helpers({
