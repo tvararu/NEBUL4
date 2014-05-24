@@ -188,43 +188,45 @@ App.playerInit = function() {
   App.players = [];
   App.three.scene.add(new THREE.AxisHelper(100));
 
-  var getRandomShip = function(){
-    var random = Math.floor(Math.random()*4 +1);
-    return random;
-  };
-
   Meteor.users.find().observe({
     added: function(p) {
-      p.profile.shipType = p.profile.shipType || (getRandomShip());
       var shipFunc = null;
-      switch(p.profile.shipType){
-        case 1: shipFunc = THREEx.SpaceShips.loadSpaceFighter01; break;
-        case 2: shipFunc = THREEx.SpaceShips.loadSpaceFighter02; break;
-        case 3: shipFunc = THREEx.SpaceShips.loadSpaceFighter03; break;
-        case 4: shipFunc = THREEx.SpaceShips.loadSpaceFighter04; break;
-        case 5: shipFunc = THREEx.SpaceShips.loadSpaceFighter05; break;
+      switch (p.profile.shipType) {
+        case 1:
+          shipFunc = THREEx.SpaceShips.loadSpaceFighter01;
+          break;
+        case 2:
+          shipFunc = THREEx.SpaceShips.loadSpaceFighter02;
+          break;
+        case 3:
+          shipFunc = THREEx.SpaceShips.loadSpaceFighter03;
+          break;
+        case 4:
+          shipFunc = THREEx.SpaceShips.loadSpaceFighter04;
+          break;
+        case 5:
+          shipFunc = THREEx.SpaceShips.loadSpaceFighter05;
+          break;
       }
+      console.log(p.profile.shipType);
+      
       if (p._id === Meteor.user()._id) {
         player._id = p._id;
         player.name = p.username;
-        player.position = p.profile.position || {
-          x: 0,
-          y: 0,
-          z: 0
-        };
-
+        player.position = p.profile.position;
+      
         App.triggerEvent('playerAdded', p);
-
+      
         shipFunc(function(object3d) {
           var ship = object3d;
-
+              
           player.ship = ship;
           player.add(ship);
-
+              
           player.camera.position.x = ship.position.x + 0;
           player.camera.position.y = ship.position.y + 2.3;
           player.camera.position.z = ship.position.z - 3.5;
-
+              
           player.reticle = new THREE.Mesh(
             new THREE.RingGeometry(0.1, 0.12, 20),
             new THREE.MeshBasicMaterial({
@@ -232,42 +234,38 @@ App.playerInit = function() {
               side: THREE.DoubleSide
             })
           );
-
+              
           player.reticle.position.x = ship.position.x;
           player.reticle.position.y = ship.position.y;
           player.reticle.position.z = ship.position.z + 2.0;
-
+              
           player.reticle.lookAt(player.camera.position);
           player.camera.lookAt(player.reticle.position);
-
+              
           player.add(player.reticle);
-
+              
           App.three.scene.add(player);
-
+              
           App.triggerEvent('playerLoaded', player);
-
+              
           App.players.push(player);
         });
       } else {
         var otherPlayer = new Player();
         otherPlayer._id = p._id;
         otherPlayer.name = p.username;
-        otherPlayer.position = p.profile.position || {
-          x: 0,
-          y: 0,
-          z: 0
-        };
-
+        otherPlayer.position = p.profile.position;
+              
         App.triggerEvent('playerAdded', otherPlayer);
-
+              
         shipFunc(function(object3d) {
           var ship = object3d;
-
+              
           otherPlayer.ship = ship;
           otherPlayer.add(ship);
-
+              
           App.three.scene.add(otherPlayer);
-
+              
           App.players.push(otherPlayer);
         });
       }
@@ -275,7 +273,9 @@ App.playerInit = function() {
     removed: function(p) {
       var somePlayer = App.three.scene.getObjectByName(p.username);
       App.three.scene.remove(somePlayer);
-      App.players.remove(somePlayer);
+      
+      var index = App.players.indexOf(somePlayer);
+      App.players.splice(index, 1);
     }
   });
 
@@ -375,13 +375,10 @@ App.playerInit = function() {
 
   App.container.on('playerLoaded', function() {
     Meteor.setInterval(function() {
-      var p = _.pick(player, 'name', 'position','shipType');
-      Meteor.users.update(p.name, {
+      var p = _.pick(player, '_id', 'position');
+      Meteor.users.update(p._id, {
         $set: {
-          profile: {
-            position: p.position,
-            shipType: p.shipType
-          }
+          'profile.position': p.position
         }
       });
     }, 500);
@@ -434,7 +431,7 @@ App.playerInit = function() {
             App.players[i].position.z
           );
           var coll = ray.distanceToPoint(otherPlayer);
-          if (coll.toFixed(0) == 0) {
+          if (coll.toFixed(0) === 0) {
             console.log('-------MANELE-------');
           }
         }

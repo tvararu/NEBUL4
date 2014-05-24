@@ -58,7 +58,6 @@ App.planetsInit = function () {
   // meshPlanet.position.z = planetZ;
   meshPlanet.rotation.y = 0;
   meshPlanet.rotation.z = tilt;
-  console.log(meshPlanet);
 
   // clouds
 
