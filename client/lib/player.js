@@ -20,6 +20,7 @@ var computeDirection = function(object, dir) {
   dir = dir.applyProjection(matrix);
   return dir;
 };
+
 Player.prototype.MAXSPEED = 0.1;
 Player.prototype.BLINDSPOT = 0.02;
 Player.prototype.ACCEL = 0.004;
@@ -56,9 +57,6 @@ Player.prototype.move = function(direction) {
   Session.set('acceleration', this.acceleration.z);
 };
 
-var isFurtherAway = function(a, b) {
-  return Math.abs(a.x) <= Math.abs(b.x) || Math.abs(a.y) <= Math.abs(b.y) || Math.abs(a.z) <= Math.abs(b.z);
-}
 Player.prototype.shoot = function() {
   if (this.CANSHOOT) {
     this.CANSHOOT = false;
@@ -87,14 +85,13 @@ Player.prototype.shoot = function() {
       laserBeam.object3d.position.y,
       laserBeam.object3d.position.z
     );
-    dir = computeDirection(App.player, new THREE.Vector3(0, 0, 5));
+    dir = computeDirection(App.player, new THREE.Vector3(0, 0, 30));
     endPosition.x += dir.x;
     endPosition.y += dir.y;
     endPosition.z += dir.z;
-    console.log(endPosition);
-    console.log(laserBeam.object3d.position);
+    
     App.three.onRenderFcts.push(function() {
-      if (isFurtherAway(laserBeam.object3d.position, endPosition)) {
+      if (laserBeam.object3d.position.distanceTo(endPosition) > 1) {
         var dir = computeDirection(App.player, new THREE.Vector3(0, 0, 1));
         laserBeam.object3d.position.x += dir.x;
         laserBeam.object3d.position.y += dir.y;
