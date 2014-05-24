@@ -53,9 +53,6 @@ App.planetsInit = function () {
   geometry.computeTangents();
 
   meshPlanet = new THREE.Mesh( geometry, materialNormalMap );
-  // meshPlanet.position.x = planetX;
-  // meshPlanet.position.y = planetY;
-  // meshPlanet.position.z = planetZ;
   meshPlanet.rotation.y = 0;
   meshPlanet.rotation.z = tilt;
 
@@ -65,9 +62,6 @@ App.planetsInit = function () {
 
   meshClouds = new THREE.Mesh( geometry, materialClouds );
   meshClouds.scale.set( cloudsScale, cloudsScale, cloudsScale );
-  // meshClouds.position.x = planetX;
-  // meshClouds.position.y = planetY;
-  // meshClouds.position.z = planetZ;
   meshClouds.rotation.z = tilt;
 
   var planet = new THREE.Object3D();
@@ -77,10 +71,6 @@ App.planetsInit = function () {
   planet.position.y = planetY;
   planet.position.z = planetZ;
   App.three.scene.add( planet );
-
-
-
-
 };
 
 App.starsInit = function () {

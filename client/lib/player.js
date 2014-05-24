@@ -14,9 +14,17 @@ var rayDirections = [
   new THREE.Vector3(-1, -1, -1)
 ];
 
-Player.prototype.MAXSPEED = 0.256;
+var computeDirection = function(object, dir) {
+  var matrix = new THREE.Matrix4();
+  matrix.extractRotation(object.matrix);
+  dir = dir.applyProjection(matrix);
+  return dir;
+};
+
+Player.prototype.MAXSPEED = 0.1;
 Player.prototype.BLINDSPOT = 0.02;
-Player.prototype.ACCEL = 0.001;
+Player.prototype.ACCEL = 0.004;
+Player.prototype.CANSHOOT = true;
 
 Player.prototype.acceleration = {
   x: 0,
@@ -48,6 +56,52 @@ Player.prototype.move = function(direction) {
 
   Session.set('acceleration', this.acceleration.z);
 };
+
+Player.prototype.shoot = function() {
+  if (this.CANSHOOT) {
+    this.CANSHOOT = false;
+    Meteor.setTimeout(function() {
+      App.player.CANSHOOT = true;
+    }, 1000/8);
+
+    var laserBeam = new THREEx.LaserBeam({color: 'magenta', len: 0.5, radius: 0.05});
+    laserBeam.object3d.position.x = this.position.x;
+    laserBeam.object3d.position.y = this.position.y;
+    laserBeam.object3d.position.z = this.position.z;
+
+    var dir = computeDirection(App.player, new THREE.Vector3(0, 0, 1));
+    laserBeam.object3d.position.x += dir.x;
+    laserBeam.object3d.position.y += dir.y;
+    laserBeam.object3d.position.z += dir.z;
+
+    laserBeam.object3d.rotation.x = this.rotation.x;
+    laserBeam.object3d.rotation.y = this.rotation.y;
+    laserBeam.object3d.rotation.z = this.rotation.z;
+    laserBeam.object3d.rotateOnAxis(new THREE.Vector3(0, 1, 0), Math.PI/2);
+    App.three.scene.add(laserBeam.object3d);
+
+    var endPosition = new THREE.Vector3(
+      laserBeam.object3d.position.x,
+      laserBeam.object3d.position.y,
+      laserBeam.object3d.position.z
+    );
+    dir = computeDirection(App.player, new THREE.Vector3(0, 0, 20));
+    endPosition.x += dir.x;
+    endPosition.y += dir.y;
+    endPosition.z += dir.z;
+
+    App.three.onRenderFcts.push(function() {
+      if (laserBeam.object3d.position.distanceTo(endPosition) > 1) {
+        var dir = computeDirection(App.player, new THREE.Vector3(0, 0, 1));
+        laserBeam.object3d.position.x += dir.x + App.player.acceleration.x;
+        laserBeam.object3d.position.y += dir.y + App.player.acceleration.y;
+        laserBeam.object3d.position.z += dir.z + App.player.acceleration.z;
+      } else {
+        App.three.scene.remove(laserBeam.object3d);
+      }
+    });
+  }
+}
 
 Player.prototype.update = function() {
   var dir = new THREE.Vector3(
@@ -297,6 +351,10 @@ App.playerInit = function() {
 
       if (App.keyState('down') || App.keyState('s')) {
         player.move('down');
+      }
+
+      if (App.keyState('shift')) {
+        player.shoot();
       }
     }
 
