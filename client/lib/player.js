@@ -188,8 +188,22 @@ App.playerInit = function() {
   App.players = [];
   App.three.scene.add(new THREE.AxisHelper(100));
 
+  var getRandomShip = function(){
+    var random = Math.floor(Math.random()*4 +1);
+    return random;
+  };
+
   Meteor.users.find().observe({
     added: function(p) {
+      p.profile.shipType = p.profile.shipType || (getRandomShip());
+      var shipFunc = null;
+      switch(p.profile.shipType){
+        case 1: shipFunc = THREEx.SpaceShips.loadSpaceFighter01; break;
+        case 2: shipFunc = THREEx.SpaceShips.loadSpaceFighter02; break;
+        case 3: shipFunc = THREEx.SpaceShips.loadSpaceFighter03; break;
+        case 4: shipFunc = THREEx.SpaceShips.loadSpaceFighter04; break;
+        case 5: shipFunc = THREEx.SpaceShips.loadSpaceFighter05; break;
+      }
       if (p._id === Meteor.user()._id) {
         player._id = p._id;
         player.name = p.username;
@@ -201,7 +215,7 @@ App.playerInit = function() {
 
         App.triggerEvent('playerAdded', p);
 
-        THREEx.SpaceShips.loadSpaceFighter03(function(object3d) {
+        shipFunc(function(object3d) {
           var ship = object3d;
 
           player.ship = ship;
@@ -246,7 +260,7 @@ App.playerInit = function() {
 
         App.triggerEvent('playerAdded', otherPlayer);
 
-        THREEx.SpaceShips.loadSpaceFighter03(function(object3d) {
+        shipFunc(function(object3d) {
           var ship = object3d;
 
           otherPlayer.ship = ship;
@@ -361,11 +375,12 @@ App.playerInit = function() {
 
   App.container.on('playerLoaded', function() {
     Meteor.setInterval(function() {
-      var p = _.pick(player, '_id', 'position');
-      Meteor.users.update(p._id, {
+      var p = _.pick(player, 'name', 'position','shipType');
+      Meteor.users.update(p.name, {
         $set: {
           profile: {
-            position: p.position
+            position: p.position,
+            shipType: p.shipType
           }
         }
       });
