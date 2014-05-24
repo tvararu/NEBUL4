@@ -17,4 +17,6 @@ Package.on_use(function(api) {
   // THREEx plugins.
   api.add_files('lib/threex.spaceships.js', 'client');
   api.add_files('lib/threex.windowresize.js', 'client');
+  api.add_files('lib/threex.laserbeam.js', 'client');
+  // api.add_files('lib/threex.lasercooked.js', 'client');
 });

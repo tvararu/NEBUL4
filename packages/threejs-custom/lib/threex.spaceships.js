@@ -1,5 +1,5 @@
 (function(root) {
-  var THREEx	= THREEx	|| {}
+  var THREEx	= root.THREEx	|| {}
 
   THREEx.SpaceShips		= {}
 
