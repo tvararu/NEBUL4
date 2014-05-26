@@ -562,7 +562,7 @@ App.playerInit = function() {
         );
         var dist = ray.distanceToPoint(otherObject);
         if (dist.toFixed(1) < 0.3) {
-          console.log('-------MANELE-------');
+          console.log('collision!');
         }
       }
     }
