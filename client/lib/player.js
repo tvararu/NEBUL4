@@ -154,7 +154,7 @@ Player.prototype.update = function() {
     name: this.name,
     position: this.position
   });
-  // App.triggerEvent('playerChanged', this.position);
+  App.triggerEvent('playerChanged', this.position);
 };
 
 Player.prototype.reset = function() {

@@ -16,26 +16,23 @@ describe('Landing page', function() {
 //   it('up arrow should move ship forwards', function(done, server, client) {
 //     var position = client.evalSync(function() {
 //       var initial = 0, after = 0;
-//   
-//       console.log(App.container);
-//       emit('return', { initial: initial, after: after });
+// 
 //       App.container.on('playerLoaded', function(e, player) {
 //         initial = player.position.z;
-//         
+// 
 //         App.pushKey('up');
 //       });
-//         
+// 
 //       App.container.on('playerChanged', function(e, player) {
 //         after = player.position.z;
-//         
+// 
 //         emit('return', { initial: initial, after: after });
 //       });
 //     });
-//   
+// 
 //     position.initial.should.be.exactly(0);
-//     console.log(position.after);
-//     position.after.should.be.exactly(0.1);
-//   
+//     position.after.should.be.above(0);
+// 
 //     done();
 //   });
 //   
