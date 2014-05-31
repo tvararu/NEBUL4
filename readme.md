@@ -110,19 +110,3 @@ MBA13 ➜  NEBUL4 git:(master)
 ```
 
 Mai multe detalii despre suita de teste pe [wiki](https://github.com/tvararu/proiect-mds/wiki/Suita-de-teste).
-
-De facut
----
-[Sintaxa Markdown](http://daringfireball.net/projects/markdown/syntax)
-
-Tot aici sau in [wiki](https://github.com/tvararu/proiect-mds/wiki), trebuie sa mai facem (pe masura ce ne dam seama exact ce sunt):
-
-* un document continand specificarea cerintelor, avand structura urmatoare:
-   * descrierea in limbaj natural a intregului sistem
-      (functionalitati, date, interfete);
-   * descrierea structurii sistemului folosind reprezentari UML;
-   * descrierea a doua componente functionale folosind un limbaj structurat
-      si limbajul Z;
-* un document continand proiectul software, cu descrierea functiilor si a
-   datelor pentru limbajul/limbajele de programare alese;
-* o documentatie de testare, referind tehnicile black box si white box;
