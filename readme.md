@@ -110,3 +110,8 @@ MBA13 ➜  NEBUL4 git:(master)
 ```
 
 Mai multe detalii despre suita de teste pe [wiki](https://github.com/tvararu/proiect-mds/wiki/Suita-de-teste).
+
+Licență
+---
+
+[MIT](license.txt).
