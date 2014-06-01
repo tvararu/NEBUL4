@@ -48,7 +48,7 @@ Template.player.helpers({
   }
 });
 
-Template.game.rendered = function() {
+UI.body.rendered = function() {
   // The global application namespace.
   window.App = window.App || {};
   
@@ -58,14 +58,21 @@ Template.game.rendered = function() {
   // Initialize listeners for keyboard events.
   App.keyInit();
   
-  // Another namespace to hold all the graphics stuff.
-  App.three = App.THREEinit();
-  
   // Initialize easter egg.
   App.easterEgg.init();
   
   // Initialize touchscreen gestures.
   App.hammerInit();
+};
+
+Template._loginButtonsLoggedOutDropdown.rendered = function() {
+  App.container = App.container || $(document);
+  App.triggerEvent('loginRendered');
+};
+
+Template.game.rendered = function() {
+  // Another namespace to hold all the graphics stuff.
+  App.three = App.THREEinit();
   
   // Initialize player and camera.
   App.player = App.playerInit();
