@@ -79,4 +79,6 @@ Template.game.rendered = function() {
 
   // Initialize stars.
   App.enviromentInit();
+
+  App.triggerEvent('gameRendered');
 };

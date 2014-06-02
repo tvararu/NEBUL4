@@ -85,6 +85,34 @@ describe('Landing page', function() {
 
       done();
     });
+
+    it('logging in should work', function(done, server, client) {
+      // Username field, password field, sign in button, sign up link
+      // should all be visible.
+      var gameVisible = client.evalSync(function() {
+        App.after('loginRendered', function() {
+          $('#login-dropdown-list .dropdown-toggle').click();
+
+          Meteor.setTimeout(function() {
+            $('#signup-link').click();
+
+            $('#login-username').val('test');
+            $('#login-password').val('qwerty');
+            $('#login-password-again').val('qwerty');
+
+            $('#login-buttons-password').click();
+          }, 1);
+        });
+
+        App.after('gameRendered', function() {
+          emit('return', true);
+        });
+      });
+
+      gameVisible.should.be.ok;
+
+      done();
+    });
   });
 });
 
