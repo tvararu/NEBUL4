@@ -140,7 +140,22 @@ describe('Gameplay', function() {
 
     done();
   });
-  
+
+  // Commented because of instability.
+  // it('players should see each other', function(done, server, c1, c2) {
+  //   signup(c1, 'test1');
+  //   signup(c2, 'test2');
+  // 
+  //   var otherPlayerName = c1.evalSync(function() {
+  //     App.after('playerAdded', function(player) {
+  //       emit('return', player.name);
+  //     });
+  //   });
+  // 
+  //   otherPlayerName.should.equal('test2');
+  //   done();
+  // });
+
   it('konami code should work', function(done, server, client) {
     signup(client);
 
