@@ -28,21 +28,63 @@ describe('Landing page', function() {
     done();
   });
 
-  // Un alt text, in care verificam daca butonul de login este afisat.
-  it('should show the login button', function(done, server, client) {
-    var loginText = client.evalSync(function() {
-      // Asteptam ca acesta sa se incarce in pagina.
-      App.after('loginRendered', function() {
-        // Pescuim textul.
-        var loginText = $('#login-dropdown-list .dropdown-toggle').text().trim();
+  describe('Login flow', function() {
+    // Un alt text, in care verificam daca butonul de login este afisat.
+    it('should show the login button', function(done, server, client) {
+      var loginText = client.evalSync(function() {
+        // Asteptam ca acesta sa se incarce in pagina.
+        App.after('loginRendered', function() {
+          // Pescuim textul.
+          var loginText =
+            $('#login-dropdown-list .dropdown-toggle').text().trim();
 
-        emit('return', loginText);
+          emit('return', loginText);
+        });
       });
+
+      // Si verificam.
+      loginText.should.equal('Sign In / Up');
+      done();
     });
 
-    // Si verificam.
-    loginText.should.equal('Sign In / Up');
-    done();
+    it('login button should open the menu', function(done, server, client) {
+      var dropdownOpen = client.evalSync(function() {
+        App.after('loginRendered', function() {
+          $('#login-dropdown-list .dropdown-toggle').click();
+
+          var dropdownOpen = $('#login-dropdown-list').hasClass('open');
+
+          emit('return', dropdownOpen);
+        });
+      });
+
+      dropdownOpen.should.be.ok;
+      done();
+    });
+
+    it('fields and buttons should be visible', function(done, server, client) {
+      // Username field, password field, sign in button, sign up link
+      // should all be visible.
+      var elements = client.evalSync(function() {
+        App.after('loginRendered', function() {
+          $('#login-dropdown-list .dropdown-toggle').click();
+
+          emit('return', {
+            usernameField: $('#login-username').is(':visible'),
+            passwordField: $('#login-password').is(':visible'),
+            signinButton: $('#login-buttons-password').is(':visible'),
+            signupLink: $('#signup-link').is(':visible')
+          });
+        });
+      });
+
+      elements.usernameField.should.be.ok;
+      elements.passwordField.should.be.ok;
+      elements.signinButton.should.be.ok;
+      elements.signupLink.should.be.ok;
+
+      done();
+    });
   });
 });
 
