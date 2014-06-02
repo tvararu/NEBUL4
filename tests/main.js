@@ -117,52 +117,43 @@ describe('Landing page', function() {
 });
 
 describe('Gameplay', function() {
-  // it('up arrow should move ship forwards', function(done, server, client) {
-  //   var position = client.evalSync(function() {
-  //     var initial = 0, after = 0;
-  // 
-  //     if (App.container) {
-  //       emit('return', { initial: initial, after: 0.1 });
-  //     }
-  // 
-  //     App.container.on('keyboardInitialized', function(e, player) {
-  //       emit('return', { initial: initial, after: 0.1 });
-  //     });
-  // 
-  //     App.container.on('playerLoaded', function(e, player) {
-  //       initial = player.position.z;
-  // 
-  //       emit('return', { initial: initial, after: after });
-  //     });
-  // 
-  //     App.container.on('playerChanged', function(e, player) {
-  //       after = player.position.z;
-  // 
-  //       emit('return', { initial: initial, after: after });
-  //     });
-  //   });
-  // 
-  //   console.log(position);
-  //   position.initial.should.be.exactly(0);
-  //   position.after.should.be.above(0);
-  // 
-  //   done();
-  // });
-  // 
-  // it('konami code should work', function(done, server, client) {
-  //   var codeDidTrigger = client.evalSync(function() {
-  // 
-  //     App.container.on('playerLoaded', function() {
-  //       App.pushKeys('up up down down left right left right b a', 1);
-  //     });
-  // 
-  //     App.container.on('konami', function() {
-  //       emit('return', true);
-  //     });
-  //   });
-  // 
-  //   codeDidTrigger.should.equal(true);
-  // 
-  //   done();
-  // });
+  it('up arrow should move ship forwards', function(done, server, client) {
+    signup(client, 'test');
+
+    var position = client.evalSync(function() {
+      var initial = App.player.position.z;
+
+      App.player.move('up');
+
+      App.container.on('playerChanged', function(event, position) {
+        if (position.z !== initial) {
+          emit('return', {
+            initial: initial,
+            after: position.z
+          });
+        }
+      });
+    });
+
+    position.initial.should.be.exactly(0.0);
+    position.after.should.be.above(0.0);
+
+    done();
+  });
+  
+  it('konami code should work', function(done, server, client) {
+    signup(client);
+
+    var codeDidTrigger = client.evalSync(function() {
+      App.pushKeys('up up down down left right left right b a', 1);
+
+      App.container.on('konami', function() {
+        emit('return', true);
+      });
+    });
+
+    codeDidTrigger.should.be.ok;
+
+    done();
+  });
 });
