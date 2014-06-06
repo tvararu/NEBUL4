@@ -10,7 +10,7 @@
   </a>
 </p>
 
-**Nebula 4** (stilizat ca **NEBUL4**) este un joc multiplayer (posibil si singleplayer) cu nave spatiale, reprezentand proiectul la Metode de Dezvoltare Software al echipei formate din studenții:
+**Nebula 4** (stilizat ca **NEBUL4**) este un joc multiplayer cu nave spatiale, reprezentand proiectul la Metode de Dezvoltare Software al echipei formate din studenții:
 
 * [Bogdan Boamfă](https://github.com/xbogdan)
 * [Radu Constantin Cancel](https://github.com/raducc)
